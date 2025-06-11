@@ -18,9 +18,6 @@ public class Working {
     private int id;
 
     @Column
-    private String account;
-
-    @Column
     private int userId;
 
     @Column

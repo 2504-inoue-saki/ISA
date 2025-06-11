@@ -1,5 +1,6 @@
 package com.example.ISA.service;
 
+import com.example.ISA.Dto.UserWorking;
 import com.example.ISA.controller.form.UserForm;
 import com.example.ISA.repository.UserRepository;
 import com.example.ISA.repository.entity.User;
@@ -50,12 +51,46 @@ public class UserService {
             userForm.setPassword(value.getPassword());
             userForm.setCategory(value.getCategory());
             userForm.setStopped(value.isStopped());
+            userForm.setStatus(value.getStatus());
             userForms.add(userForm);
         }
         return userForms;
     }
 
+    /*
+     * 申請一覧画面表示処理
+     */
+    public List<UserWorking> findUserWorkingDate() {
+        List<Object[]> results = userRepository.findAllUserDate();
+        //List<Object[]>をList<UserForm>に詰め替えるメソッド呼び出し
+        return setListUserWorkingForm(results);
+    }
+    //List<Object[]>をList<UserForm>に詰め替えるメソッド
+    private List<UserWorking> setListUserWorkingForm(List<Object[]> results) {
+        List<UserWorking> forms = new ArrayList<>();
+        for (Object[] objects : results) {
+            UserWorking form = new UserWorking();
+            form.setId((int) objects[0]);
+            form.setAccount((String) objects[1]);
+            form.setName((String) objects[2]);
+            if (objects[3] == null){
+                objects[3] = 0;
+            }
+            form.setStatus((int) objects[3]);
+            forms.add(form);
+        }
+        return forms;
+    }
 
+    // 申請状況をチェック
+    public void saveStatus(int id, int status){
+        userRepository.saveStatusById(id, status);
+    }
 
-
+    // ユーザ情報の取得
+    public List<UserForm> findUserDate() {
+        List<User> results = userRepository.findAll();
+        //List<User>をList<UserForm>に詰め替えるメソッド呼び出し
+        return setUserForm(results);
+    }
 }

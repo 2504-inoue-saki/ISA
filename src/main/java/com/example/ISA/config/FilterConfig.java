@@ -1,11 +1,11 @@
-package com.example.ISA.config;
-
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class FilterConfig {
+//package com.example.ISA.config;
+//
+//import org.springframework.boot.web.servlet.FilterRegistrationBean;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//
+//@Configuration
+//public class FilterConfig {
 //    @Bean
 //    public FilterRegistrationBean<LoginFilter> loginFilter() {
 //        FilterRegistrationBean<LoginFilter> bean = new FilterRegistrationBean<>();
@@ -27,4 +27,4 @@ public class FilterConfig {
 //        bean.setOrder(2);
 //        return bean;
 //    }
-}
+//}

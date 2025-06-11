@@ -31,6 +31,9 @@ public class User {
     @Column
     private boolean isStopped;
 
+    @Column
+    private int status;
+
     @Column(updatable = false)
     private LocalDateTime createdDate;
 

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "calender")
+@Table(name = "calendar")
 @Getter
 @Setter
 public class Calendar {

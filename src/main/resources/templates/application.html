@@ -24,9 +24,11 @@
         </tr>
         <div class="table-contents" th:each="user : ${users}">
             <tr>
-                <td th:text="${user.name}"></td>
+                <td>
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.name}" />
+                </td>
                 <td th:text="${user.account}"></td>
-                <td th:text="${user.category}"></td>
+                <td th:text="${user.status}"></td>
             </tr>
         </div>
         </tbody>

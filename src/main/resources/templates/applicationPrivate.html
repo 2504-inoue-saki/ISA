@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
+    <title>個人申請詳細画面</title>
+</head>
+<body>
+<div class="select-user">
+  <span class="name" th:text="${userData.name}"></span>
+  <span class="account" th:text="'@' + ${userData.account}"></span>
+</div>
+<div class="table" >
+  <table border="1">
+    <tbody>
+    <tr>
+      <th>日付</th>
+      <th>勤務区分</th>
+      <th>開始</th>
+      <th>終了</th>
+      <th>休憩時間</th>
+      <th>労働時間</th>
+    </tr>
+    <div class="table-contents" th:each="datum : ${workingData}">
+      <tr>
+        <td th:text="${datum.date}"></td>
+        <td th:text="${datum.attend}"></td>
+        <td th:text="${datum.startWork}"></td>
+        <td th:text="${datum.endWork}"></td>
+        <td th:text="${datum.startBreak}"></td>
+        <td th:text="${datum.endWork}"></td>
+      </tr>
+    </div>
+    </tbody>
+  </table>
+</div>
+<a href="/application">
+  <button class="signup-button table-button" type="button">申請一覧画面に戻る</button>
+</a>
+
+</body>
+</html>

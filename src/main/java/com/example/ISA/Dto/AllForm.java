@@ -1,34 +1,24 @@
-package com.example.ISA.controller.form;
+package com.example.ISA.Dto;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
-public class WorkingForm {
+public class AllForm {
     private int id;
-
+    private String account;
+    private String name;
     private int userId;
-
-    private Date date;
-
     private int attend;
-
     private String startWork;
-
     private String endWork;
-
     private String startBreak;
-
     private String endBreak;
-
     private int status;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime updatedDate;
+    private Date date;
+    private int fiscalYear;
+    private String dayOfWeek;
 }

@@ -31,6 +31,8 @@ public class UserForm {
 
     private boolean isStopped;
 
+    private int status;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
