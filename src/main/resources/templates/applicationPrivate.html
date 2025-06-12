@@ -28,12 +28,15 @@
     </tr>
     <div class="table-contents" th:each="workingDatum : ${workingData}">
       <tr>
-        <td th:text="${workingDatum.date}"></td>
-        <td th:text="${workingDatum.attendWord}"></td>
+        <td th:text="${workingDatum.localDate}"></td>
+        <td>
+          <span th:if="${workingDatum.attend == 0}">出勤</span>
+          <span th:if="${workingDatum.attend == 1}">リモート</span>
+        </td>
         <td th:text="${workingDatum.startWork}"></td>
         <td th:text="${workingDatum.endWork}"></td>
-        <td th:text="${workingDatum.endBreak}"></td>
-        <td th:text="${workingDatum.endWork}"></td>
+        <td th:text="${workingDatum.breakDuration}"></td>
+        <td th:text="${workingDatum.workDuration}"></td>
         <td>
           <span th:if="${workingDatum.status == 0}">未申請</span>
           <span th:if="${workingDatum.status >= 1}">申請済み</span>
@@ -46,8 +49,10 @@
               <option value="2" th:selected="${workingDatum.status == 2}">承認</option>
               <option value="3" th:selected="${workingDatum.status == 3}">差し戻し</option>
             </select>
+
             <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
             <input type="submit" value="変更">
+
           </form>
         </td>
       </tr>

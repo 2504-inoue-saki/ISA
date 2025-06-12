@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +93,7 @@ public class ApplicationController {
         List<AllForm> userData = workingService.findWorkDate(id);
 
         // viewするデータ
-        // 名前とアカウント名がほしいだけ
+        // 名前とアカウント名用
         mav.addObject("userData", userData.get(0));
         mav.addObject("workingData", userData);
         //画面遷移先指定
@@ -109,8 +111,8 @@ public class ApplicationController {
     @PostMapping("/approval/{subjectId}")
     public ModelAndView approval(@PathVariable(required = false) String subjectId,
                                  @RequestParam(name = "approval", required = false) int status,
-                                 @RequestParam(name = "checkId", required = false) int checkId) {
-
+                                 @RequestParam(name = "checkId", required = false) String checkId) {
+        ModelAndView mav = new ModelAndView();
         int id = Integer.parseInt(subjectId);
         //取得したリクエストをworkingFormにセットする
         WorkingForm workingForm = new WorkingForm();
@@ -119,6 +121,6 @@ public class ApplicationController {
         //workingテーブルのステータスを更新
         workingService.saveStatus(workingForm);
         //個人申請詳細画面へリダイレクト
-        return new ModelAndView("redirect:/applicationPrivate/{checkId}");
+        return new ModelAndView("redirect:/applicationPrivate/" + checkId);
     }
 }

@@ -8,6 +8,8 @@ import com.example.ISA.repository.entity.Working;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,24 +63,41 @@ public class WorkingService {
             formAll.setName((String) objects[1]); // name
             formAll.setId((int) objects[2]); // ID
             formAll.setUserId((int) objects[3]); // userId
-
             formAll.setAttend((int) objects[4]); // attend
-            formAll.setAttendWord("出勤"); // 0のとき
-            if (formAll.getAttend() == 1){ // 1のとき
-                formAll.setAttendWord("リモート");
-            }
-
             formAll.setStartWork((String) objects[5]); // startWork
             formAll.setEndWork((String) objects[6]); // endWork
             formAll.setStartBreak((String) objects[7]); // startBreak
             formAll.setEndBreak((String) objects[8]); // endBreak
+            //労働時間と休憩時間の計算
+            String workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
+            String breakDuration = convertToLocalTime(formAll.getStartBreak(), formAll.getEndBreak());
+            //formAllにセット
+            formAll.setWorkDuration(workDuration);
+            formAll.setBreakDuration(breakDuration);
+
             formAll.setStatus((int) objects[9]); // status
+
             formAll.setDate((Date) objects[10]); // date
+            // Date→LocalDate型に変換してセット
+            formAll.setLocalDate(LocalDate.ofInstant(formAll.getDate().toInstant(), ZoneId.systemDefault()));
+
             formAll.setFiscalYear((int) objects[11]); // fiscalYear
             formAll.setDayOfWeek((String) objects[12]); // dayOfWeek
             formAlls.add(formAll);
         }
         return formAlls;
+    }
+    //LocalTimeに型変換して差分をStringで取得するメソッド
+    public static String convertToLocalTime(String start, String end){
+        //LocalTimeに型変換
+        LocalTime startTime = LocalTime.parse(start, DateTimeFormatter.ofPattern("[]H:mm"));
+        LocalTime endTime = LocalTime.parse(end, DateTimeFormatter.ofPattern("[]H:mm"));
+        //差分
+        Duration duration = Duration.between(startTime, endTime);
+        //Duration→LocalTime型変換
+        LocalTime localTime = LocalTime.MIDNIGHT.plus(duration);
+        //String→LocalTime型変換して返す
+        return DateTimeFormatter.ofPattern("[]H:mm").format(localTime);
     }
 
     //▲ある1人のユーザの申請状況を確認している
