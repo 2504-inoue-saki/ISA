@@ -17,6 +17,7 @@ public class WorkingForm {
     private Date date;
 
     private int attend;
+    private String attendWord;
 
     private String startWork;
 

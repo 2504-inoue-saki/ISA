@@ -1,25 +1,21 @@
 package com.example.ISA.controller;
 
 import com.example.ISA.Dto.AllForm;
-import com.example.ISA.Dto.UserWorking;
-import com.example.ISA.controller.form.CalendarForm;
 import com.example.ISA.controller.form.UserForm;
-import com.example.ISA.service.CalendarService;
+import com.example.ISA.controller.form.WorkingForm;
 import com.example.ISA.service.UserService;
 import com.example.ISA.service.WorkingService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Indexed;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ApplicationController {
@@ -39,14 +35,15 @@ public class ApplicationController {
     public ModelAndView applicationView() {
         ModelAndView mav = new ModelAndView();
 
-        // 登録してあるユーザー勤怠情報を取得
-        List<UserWorking> userWorkingData = userService.findUserWorkingDate();
+        // workingテーブルからユーザIDと申請ステータスを取得
+        List<WorkingForm> workingDate = workingService.findWorkingDate();
+
 
         // 申請状況をチェック
         int status = 0; //0は未申請
         for (int i = 1; i <= 100; i++){
             List<Integer> userIds = new ArrayList<>();
-            for (UserWorking data: userWorkingData){
+            for (WorkingForm data: workingDate){
                 if (data.getId() == i ){
                     userIds.add(i);
                 }
@@ -85,7 +82,9 @@ public class ApplicationController {
         int id = Integer.parseInt(checkId);
         // id(ユーザテーブルの主キー)を使ってその人の表示させたい情報を取得する
         List<AllForm> userData = workingService.findWorkDate(id);
+
         // viewするデータ
+        // 名前とアカウント名がほしいだけ
         mav.addObject("userData", userData.get(0));
         mav.addObject("workingData", userData);
         //画面遷移先指定
@@ -100,4 +99,18 @@ public class ApplicationController {
     /*
      * 個人申請承認処理
      */
+    @PostMapping("/approval/{subjectId}")
+    public ModelAndView approval(@PathVariable(required = false) String subjectId,
+                                 @RequestParam(name = "approval", required = false) int status) {
+
+        int id = Integer.parseInt(subjectId);
+        //取得したリクエストをworkingFormにセットする
+        WorkingForm workingForm = new WorkingForm();
+        workingForm.setId(id);
+        workingForm.setStatus(status);
+        //ユーザー復活停止状態の更新
+        workingService.saveStatus(workingForm);
+        //個人申請詳細画面へリダイレクト
+        return new ModelAndView("redirect:/applicationPrivate/{checkId}");
+    }
 }
