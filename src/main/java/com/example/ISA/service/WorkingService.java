@@ -72,13 +72,7 @@ public class WorkingService {
             formAll.setEndWork((String) objects[6]); // endWork
             formAll.setStartBreak((String) objects[7]); // startBreak
             formAll.setEndBreak((String) objects[8]); // endBreak
-
             formAll.setStatus((int) objects[9]); // status
-            formAll.setAttendWord("未申請"); // 0のとき
-            if (formAll.getAttend() >= 1){ // 1のとき
-                formAll.setAttendWord("申請済み");
-            }
-
             formAll.setDate((Date) objects[10]); // date
             formAll.setFiscalYear((int) objects[11]); // fiscalYear
             formAll.setDayOfWeek((String) objects[12]); // dayOfWeek

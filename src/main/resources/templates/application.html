@@ -28,7 +28,12 @@
                     <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.name}" />
                 </td>
                 <td th:text="${user.account}"></td>
-                <td th:text="${user.status}"></td>
+                <td>
+                    <span th:if="${user.status == 0}">未申請の日があります</span>
+                    <span th:if="${user.status == 1}">承認依頼があります</span>
+                    <span th:if="${user.status == 2}">全て承認しました</span>
+                    <span th:if="${user.status == 3}">差し戻しをしています</span>
+                </td>
             </tr>
         </div>
         </tbody>

@@ -34,13 +34,9 @@ public class ApplicationController {
     @GetMapping("/application")
     public ModelAndView applicationView() {
         ModelAndView mav = new ModelAndView();
-
         // workingテーブルからユーザIDと申請ステータスを取得
         List<WorkingForm> workingDate = workingService.findWorkingDate();
-
-
-        // 申請状況をチェック
-        int status = 0; //0は未申請
+        // 申請状況をチェック(100人までしか登録できない)
         for (int i = 1; i <= 100; i++){
             List<Integer> userIds = new ArrayList<>();
             for (WorkingForm data: workingDate){
@@ -48,11 +44,22 @@ public class ApplicationController {
                     userIds.add(i);
                 }
             }
-            int userStatus = 1;
+            int userStatus = 2; //ユーザの申請が全て承認状態
             for (Integer userId: userIds){
+                int status = 0; //とある１日が未申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    userStatus = 0;
+                    userStatus = 0; //ユーザの申請が少なくとも1つは未申請
                     break;
+                }
+                status = 1; //とある１日が申請状態
+                if (workingService.existCheckByUserIdAndStatus(userId,status)){
+                    userStatus = 1; //ユーザの申請が少なくとも1つは申請
+                }
+                status = 3; //とある１日が差し戻し状態 userStatusが0でここに来る事はない
+                if (workingService.existCheckByUserIdAndStatus(userId,status)){
+                    if (userStatus != 1){
+                        userStatus = 3; //ユーザの申請が少なくとも1つは差し戻し
+                    }
                 }
             }
             userService.saveStatus(i,userStatus);
@@ -101,14 +108,15 @@ public class ApplicationController {
      */
     @PostMapping("/approval/{subjectId}")
     public ModelAndView approval(@PathVariable(required = false) String subjectId,
-                                 @RequestParam(name = "approval", required = false) int status) {
+                                 @RequestParam(name = "approval", required = false) int status,
+                                 @RequestParam(name = "checkId", required = false) int checkId) {
 
         int id = Integer.parseInt(subjectId);
         //取得したリクエストをworkingFormにセットする
         WorkingForm workingForm = new WorkingForm();
         workingForm.setId(id);
         workingForm.setStatus(status);
-        //ユーザー復活停止状態の更新
+        //workingテーブルのステータスを更新
         workingService.saveStatus(workingForm);
         //個人申請詳細画面へリダイレクト
         return new ModelAndView("redirect:/applicationPrivate/{checkId}");

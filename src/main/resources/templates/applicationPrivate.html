@@ -26,23 +26,27 @@
       <th>承認状況</th>
 
     </tr>
-    <div class="table-contents" th:each="datum : ${workingData}">
+    <div class="table-contents" th:each="workingDatum : ${workingData}">
       <tr>
-        <td th:text="${datum.date}"></td>
-        <td th:text="${datum.attendWord}"></td>
-        <td th:text="${datum.startWork}"></td>
-        <td th:text="${datum.endWork}"></td>
-        <td th:text="${datum.endBreak}"></td>
-        <td th:text="${datum.endWork}"></td>
-        <td th:text="${datum.attendWord}"></td>
+        <td th:text="${workingDatum.date}"></td>
+        <td th:text="${workingDatum.attendWord}"></td>
+        <td th:text="${workingDatum.startWork}"></td>
+        <td th:text="${workingDatum.endWork}"></td>
+        <td th:text="${workingDatum.endBreak}"></td>
+        <td th:text="${workingDatum.endWork}"></td>
         <td>
-          <span th:if="${datum.status == 0}">申請されていません</span>
-          <form th:action="@{/approval/{subjectId}(subjectId=${datum.id})}" method="post" th:if="${datum.status > 0}">
+          <span th:if="${workingDatum.status == 0}">未申請</span>
+          <span th:if="${workingDatum.status >= 1}">申請済み</span>
+        </td>
+        <td>
+          <span th:if="${workingDatum.status == 0}">申請されていません</span>
+          <form th:action="@{/approval/{subjectId}(subjectId=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}">
             <select name="approval" class="select-box">
-              <option value="2" th:selected="${datum.status < 3}">承認</option>
-              <option value="3" th:selected="${datum.status == 3}">差し戻し</option>
+              <option value="1" th:selected="${workingDatum.status == 1}">選択してください</option>
+              <option value="2" th:selected="${workingDatum.status == 2}">承認</option>
+              <option value="3" th:selected="${workingDatum.status == 3}">差し戻し</option>
             </select>
-            <input type="hidden" name="checkId" th:value="${datum.userId}">
+            <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
             <input type="submit" value="変更">
           </form>
         </td>
