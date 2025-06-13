@@ -49,4 +49,9 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
     @Modifying
     @Query("UPDATE Working w SET w.status = :status, w.updatedDate = CURRENT_TIMESTAMP WHERE w.id = :id")
     public void saveStatus(@Param("id") Integer id, @Param("status") int status);
+
+    /*
+     * ポップアップ表示処理
+     */
+    public Working findById(int id);
 }

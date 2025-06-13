@@ -1,6 +1,7 @@
 package com.example.ISA.repository;
 
 import com.example.ISA.repository.entity.User;
+import com.example.ISA.repository.entity.Working;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Query("UPDATE User u SET u.status = :status WHERE u.id = :id ")
     public void saveStatusById(@Param("id") int id, @Param("status") int status);
+
+    public User findById(int id);
 }

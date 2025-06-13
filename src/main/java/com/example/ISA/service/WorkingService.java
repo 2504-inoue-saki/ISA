@@ -27,25 +27,6 @@ public class WorkingService {
         //List<Working>をList<UserForm>に詰め替えるメソッド呼び出し
         return setWorkingForm(workings);
     }
-    //型をEntity→Formに変換するメソッド
-    private List<WorkingForm> setWorkingForm(List<Working> workings) {
-        List<WorkingForm> workingForms = new ArrayList<>();
-        for (Working value : workings) {
-            WorkingForm workingForm = new WorkingForm();
-            workingForm.setId(value.getId());
-            workingForm.setUserId(value.getUserId());
-            workingForm.setDate(value.getDate());
-            workingForm.setAttend(value.getAttend());
-            workingForm.setStartWork(value.getStartWork());
-            workingForm.setEndWork(value.getEndWork());
-            workingForm.setStartBreak(value.getStartBreak());
-            workingForm.setEndBreak(value.getEndBreak());
-            workingForm.setStatus(value.getStatus());
-            workingForms.add(workingForm);
-        }
-        return workingForms;
-    }
-
     /*
      * 個人申請詳細画面表示処理
      */
@@ -108,10 +89,65 @@ public class WorkingService {
             return false;
         }
     }
+
     /*
      * 個人申請承認処理
      */
     public void saveStatus(WorkingForm workingForm){
         workingRepository.saveStatus(workingForm.getId(), workingForm.getStatus());
+    }
+
+    /*
+     * ポップアップ表示処理
+     */
+    public WorkingForm findDateDate(int id) {
+        Working working = workingRepository.findById(id);
+        List<Working> workings = new ArrayList<>();
+        workings.add(working);
+        //List<Working>をList<UserForm>に詰め替えるメソッド呼び出し
+        return setWorkingForm(workings).get(0);
+    }
+
+    //型をEntity→Formに変換するメソッド
+    private List<WorkingForm> setWorkingForm(List<Working> workings) {
+        List<WorkingForm> workingForms = new ArrayList<>();
+        for (Working value : workings) {
+            WorkingForm workingForm = new WorkingForm();
+            workingForm.setId(value.getId());
+            workingForm.setUserId(value.getUserId());
+            workingForm.setDate(value.getDate());
+            workingForm.setAttend(value.getAttend());
+            workingForm.setStartWork(value.getStartWork());
+            workingForm.setEndWork(value.getEndWork());
+            workingForm.setStartBreak(value.getStartBreak());
+            workingForm.setEndBreak(value.getEndBreak());
+            workingForm.setStatus(value.getStatus());
+            workingForms.add(workingForm);
+        }
+        return workingForms;
+    }
+
+    /*
+     * 日毎勤怠情報編集機能
+     */
+    public void saveForm(WorkingForm workingForm) {
+        //引数の型をForm→Entityに変換するメソッド呼び出し
+        Working working = setWorkingEntity(workingForm);
+        //ユーザー情報を登録/更新
+        workingRepository.save(working);
+    }
+    //型をForm→Entityに変換するメソッド
+    private Working setWorkingEntity(WorkingForm workingForm) {
+        Working working = new Working();
+        working.setId(workingForm.getId());
+        working.setUserId(workingForm.getUserId());
+        working.setDate(workingForm.getDate());
+        working.setAttend(workingForm.getAttend());
+        working.setStartWork(workingForm.getStartWork());
+        working.setEndWork(workingForm.getEndWork());
+        working.setStartBreak(workingForm.getStartBreak());
+        working.setEndBreak(workingForm.getEndBreak());
+        working.setStatus(workingForm.getStatus());
+        return working;
     }
 }

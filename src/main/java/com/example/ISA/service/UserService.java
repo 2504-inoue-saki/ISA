@@ -61,10 +61,19 @@ public class UserService {
         userRepository.saveStatusById(id, status);
     }
 
-    // ユーザ情報の取得
+    // ユーザ情報の全権取得
     public List<UserForm> findUserDate() {
         List<User> user = userRepository.findAll();
         //List<User>をList<UserForm>に詰め替えるメソッド呼び出し
         return setUserForm(user);
+    }
+
+    // ユーザ情報の単品取得
+    public UserForm findUserDateById(int id) {
+        User user = userRepository.findById(id);
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        //List<User>をList<UserForm>に詰め替えるメソッド呼び出し
+        return setUserForm(users).get(0);
     }
 }

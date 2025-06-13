@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <link href="/css/style.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
     <title>個人申請詳細画面</title>
 </head>
 <body>
@@ -24,8 +22,8 @@
       <th>労働時間</th>
       <th>申請状況</th>
       <th>承認状況</th>
-
     </tr>
+
     <div class="table-contents" th:each="workingDatum : ${workingData}">
       <tr>
         <td th:text="${workingDatum.localDate}"></td>
@@ -49,12 +47,40 @@
               <option value="2" th:selected="${workingDatum.status == 2}">承認</option>
               <option value="3" th:selected="${workingDatum.status == 3}">差し戻し</option>
             </select>
-
             <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
             <input type="submit" value="変更">
-
           </form>
         </td>
+
+        <!-- ポップアップ -->
+        <td>
+          <button class="add" th:value="${workingDatum.id}" th:text="${workingDatum.localDate} + 'の勤怠を登録する'"></button>
+          <dialog class="dialog" id="modalDialog" th:value="${workingDatum.id}">
+            <div class="title-bar">
+              <h2>勤怠登録</h2>
+            </div>
+            <div id="dialog-container">
+              <span>勤務区分</span>
+              <select name="attend" class="select-box">
+                <option value="0" th:selected="${workingDatum.status == 0}">出勤</option>
+                <option value="1" th:selected="${workingDatum.status == 1}">リモート</option>
+                <option value="2" th:selected="${workingDatum.status == 2}">選択してください</option>
+              </select> <br/>
+              <span>開始-終了</span>
+              <input type="text" th:value="${workingDatum.startWork}"/><input type="text" th:value="${workingDatum.endWork}"/> <br/>
+              <span>休憩開始-終了</span>
+              <input type="text" th:value="${workingDatum.startBreak}"/><input type="text" th:value="${workingDatum.endBreak}"/> <br/>
+              <span>メモ</span>
+              <input type="text" th:value="${workingDatum.endBreak}"/> <br/>
+              <form method="dialog">
+                <button type="submit" value="entry">登録</button>
+                <button  value="close">閉じる</button>
+                <button type="submit" value="delete">削除</button>
+              </form>
+            </div>
+          </dialog>
+        </td>
+
       </tr>
     </div>
     </tbody>
@@ -64,5 +90,23 @@
   <button class="signup-button table-button" type="button">申請一覧画面に戻る</button>
 </a>
 
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const buttons = document.querySelectorAll('.add');
+    const modalDialogs = document.querySelectorAll('.dialog');
+
+    for (let index = 0; index < buttons.length; index += 1) {
+      const button = buttons[index];
+	  const modalDialog = modalDialogs[index];
+	  button.addEventListener('click', async () => {
+	    modalDialog.showModal();
+	    // モーダルダイアログを表示する際に背景部分がスクロールしないようにする
+        document.documentElement.style.overflow = "hidden";
+	  });
+	}
+  });
+</script>
 </body>
 </html>
