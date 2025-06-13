@@ -64,6 +64,11 @@ public class WorkingService {
 
             formAll.setFiscalYear((int) objects[11]); // fiscalYear
             formAll.setDayOfWeek((String) objects[12]); // dayOfWeek
+
+            if (objects[13] == null){
+                objects[13] = "";
+            }
+            formAll.setMemo((String) objects[13]); // memo
             formAlls.add(formAll);
         }
         return formAlls;
@@ -77,7 +82,7 @@ public class WorkingService {
         Duration duration = Duration.between(startTime, endTime);
         //Duration→LocalTime型変換
         LocalTime localTime = LocalTime.MIDNIGHT.plus(duration);
-        //String→LocalTime型変換して返す
+        //LocalTime→String型変換して返す
         return DateTimeFormatter.ofPattern("[]H:mm").format(localTime);
     }
 
@@ -148,6 +153,7 @@ public class WorkingService {
         working.setStartBreak(workingForm.getStartBreak());
         working.setEndBreak(workingForm.getEndBreak());
         working.setStatus(workingForm.getStatus());
+        working.setMemo(workingForm.getMemo());
         return working;
     }
 }

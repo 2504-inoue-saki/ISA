@@ -31,8 +31,7 @@ public class AllForm {
 
     private Date date;
     private LocalDate localDate;
-
-
     private int fiscalYear;
     private String dayOfWeek;
+    private String memo;
 }

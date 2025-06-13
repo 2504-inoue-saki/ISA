@@ -29,7 +29,8 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
             "w.status as status, " +
             "c.date as date, " +
             "c.fiscalYear as fiscalYear, " +
-            "c.dayOfWeek as dayOfWeek " +
+            "c.dayOfWeek as dayOfWeek, " +
+            "w.memo as memo " +
             "FROM Working w " +
             "RIGHT OUTER JOIN Calendar c " +
             "ON w.date = c.date " +

@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ public class WorkingForm {
     private int userId;
 
     private Date date;
+    private LocalDate localDate;
 
     private int attend;
     private String attendWord;

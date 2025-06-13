@@ -17,7 +17,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.ISA.constfolder.ErrorMessage.*;
@@ -31,35 +37,19 @@ public class PopupController{
 
     @Autowired
     HttpServletRequest request;
-//    /*
-//     * ポップアップ表示処理
-//     */
-//    @PutMapping("/dateWork/{checkId}")
-//    public ModelAndView popupContent(@PathVariable(required = false) String checkId,
-//                                     @RequestParam(name = "CheckUserId", required = false) String CheckUserId,
-//                                     ModelAndView mav) {
-//        // ユーザ情報の単品取得
-//        int userId = Integer.parseInt(CheckUserId);
-//        UserForm userDate = userService.findUserDateById(userId);
-//
-//        // ↓勤怠情報関連の操作
-//        WorkingForm dateDate = new WorkingForm();
-//        int id = Integer.parseInt(checkId);
-//        // id(ユーザテーブルの主キー)を使ってその人の表示させたい情報を取得する
-//        dateDate = workingService.findDateDate(id);
-//        // viewするデータ
-//        mav.addObject("dateDate", dateDate);
-//        mav.addObject("userData", userDate);
-//        return mav;
-//    }
-
     /*
      * 日毎勤怠情報編集機能
      */
-    @PostMapping("")
-    public ModelAndView Content(@ModelAttribute("@@") WorkingForm workingForm) {
+    @PostMapping("/saveDate/{subjectId}")
+    public ModelAndView Content(@PathVariable(required = false) String subjectId,
+                                @ModelAttribute("workingDatum") WorkingForm workingForm,
+                                @RequestParam(name = "checkId", required = false) String checkId) throws ParseException {
+        int id = Integer.parseInt(subjectId);
+        int userId = Integer.parseInt(checkId);
+        workingForm.setId(id);
+        workingForm.setUserId(userId);
 
         workingService.saveForm(workingForm);
-        return new ModelAndView("redirect:/ISA");
+        return new ModelAndView("redirect:/applicationPrivate/" + checkId);
     }
 }

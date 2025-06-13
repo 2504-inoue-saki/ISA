@@ -20,6 +20,7 @@
       <th>終了</th>
       <th>休憩時間</th>
       <th>労働時間</th>
+      <th>メモ</th>
       <th>申請状況</th>
       <th>承認状況</th>
     </tr>
@@ -35,6 +36,7 @@
         <td th:text="${workingDatum.endWork}"></td>
         <td th:text="${workingDatum.breakDuration}"></td>
         <td th:text="${workingDatum.workDuration}"></td>
+        <td th:text="${workingDatum.memo}"></td>
         <td>
           <span th:if="${workingDatum.status == 0}">未申請</span>
           <span th:if="${workingDatum.status >= 1}">申請済み</span>
@@ -52,30 +54,37 @@
           </form>
         </td>
 
+
         <!-- ポップアップ -->
         <td>
           <button class="add" th:value="${workingDatum.id}" th:text="${workingDatum.localDate} + 'の勤怠を登録する'"></button>
           <dialog class="dialog" id="modalDialog" th:value="${workingDatum.id}">
-            <div class="title-bar">
-              <h2>勤怠登録</h2>
+            <div class="title">
+              <h2 th:text="${workingDatum.localDate} + 'の勤怠登録'" />
             </div>
             <div id="dialog-container">
-              <span>勤務区分</span>
-              <select name="attend" class="select-box">
-                <option value="0" th:selected="${workingDatum.status == 0}">出勤</option>
-                <option value="1" th:selected="${workingDatum.status == 1}">リモート</option>
-                <option value="2" th:selected="${workingDatum.status == 2}">選択してください</option>
-              </select> <br/>
-              <span>開始-終了</span>
-              <input type="text" th:value="${workingDatum.startWork}"/><input type="text" th:value="${workingDatum.endWork}"/> <br/>
-              <span>休憩開始-終了</span>
-              <input type="text" th:value="${workingDatum.startBreak}"/><input type="text" th:value="${workingDatum.endBreak}"/> <br/>
-              <span>メモ</span>
-              <input type="text" th:value="${workingDatum.endBreak}"/> <br/>
-              <form method="dialog">
+              <form th:action="@{/saveDate/{subjectId}(subjectId=${workingDatum.id})}" method="post">
+                <span>勤務区分</span>
+                <select name="attend" class="select-box">
+                  <option value="0" th:selected="${workingDatum.attend == 0}">出勤</option>
+                  <option value="1" th:selected="${workingDatum.attend == 1}">リモート</option>
+                  <option value="2" th:selected="${workingDatum.attend == 2}">選択してください</option>
+                </select> <br/>
+                <span>開始-終了</span>
+                <input type="text" name="startWork" th:value="${workingDatum.startWork}"/>
+                <input type="text" name="endWork" th:value="${workingDatum.endWork}"/> <br/>
+                <span>休憩開始-終了</span>
+                <input type="text" name="startBreak" th:value="${workingDatum.startBreak}"/>
+                <input type="text" name="endBreak" th:value="${workingDatum.endBreak}"/> <br/>
+                <span>メモ</span>
+                <input type="text" name="memo" th:value="${workingDatum.memo}"/> <br/>
+                <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
+                <input type="hidden" name="status" th:value="${workingDatum.status}">
                 <button type="submit" value="entry">登録</button>
-                <button  value="close">閉じる</button>
-                <button type="submit" value="delete">削除</button>
+              </form>
+
+              <form method="dialog">
+                <button class="close" value="close">閉じる</button>
               </form>
             </div>
           </dialog>
@@ -90,20 +99,29 @@
   <button class="signup-button table-button" type="button">申請一覧画面に戻る</button>
 </a>
 
-
-
 <script>
   document.addEventListener('DOMContentLoaded', (event) => {
     const buttons = document.querySelectorAll('.add');
     const modalDialogs = document.querySelectorAll('.dialog');
+    const closeButtons = document.querySelectorAll('.close');
 
     for (let index = 0; index < buttons.length; index += 1) {
       const button = buttons[index];
 	  const modalDialog = modalDialogs[index];
+	  const closeButton = closeButtons[index];
+
+	  // モーダルを開く
 	  button.addEventListener('click', async () => {
 	    modalDialog.showModal();
 	    // モーダルダイアログを表示する際に背景部分がスクロールしないようにする
         document.documentElement.style.overflow = "hidden";
+	  });
+
+	  // モーダルを閉じる
+	  closeButton.addEventListener('click', () => {
+	  modalDialog.close();
+	  // モーダルを解除すると、スクロール可能になる
+	  document.documentElement.removeAttribute("style");
 	  });
 	}
   });
