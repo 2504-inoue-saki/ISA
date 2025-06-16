@@ -31,8 +31,8 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
             "c.fiscalYear as fiscalYear, " +
             "c.dayOfWeek as dayOfWeek, " +
             "w.memo as memo " +
-            "FROM Working w " +
-            "RIGHT OUTER JOIN Calendar c " +
+            "FROM Calendar c " +
+            "LEFT OUTER JOIN Working w " +
             "ON w.date = c.date " +
             "LEFT OUTER JOIN User u " +
             "ON w.userId = u.id " +

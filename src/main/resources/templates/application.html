@@ -10,6 +10,8 @@
 <body>
 <!--<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false)}"></header>-->
 
+<h1>申請一覧画面</h1>
+
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
@@ -18,16 +20,16 @@
     <table border="1">
         <tbody>
         <tr>
-            <th>名前</th>
             <th>アカウント名</th>
+            <th>名前</th>
             <th>申請状況</th>
         </tr>
         <div class="table-contents" th:each="user : ${users}">
             <tr>
                 <td>
-                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.name}" />
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.account}" />
                 </td>
-                <td th:text="${user.account}"></td>
+                <td th:text="${user.name}"></td>
                 <td>
                     <span th:if="${user.status == 0}">未申請の日があります</span>
                     <span th:if="${user.status == 1}">承認依頼があります</span>
