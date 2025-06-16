@@ -1,7 +1,8 @@
 package com.example.ISA.controller.form;
 
 
-//import com.example.ISA.groups.AddGroup;
+
+import com.example.ISA.groups.EditPasswordGroup;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
