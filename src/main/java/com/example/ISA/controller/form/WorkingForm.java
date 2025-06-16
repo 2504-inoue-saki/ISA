@@ -32,6 +32,8 @@ public class WorkingForm {
 
     private int status;
 
+    private String memo;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
