@@ -1,7 +1,8 @@
 package com.example.ISA.controller.form;
 
 
-//import com.example.ISA.groups.AddGroup;
+
+import com.example.ISA.groups.EditPasswordGroup;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -31,9 +32,9 @@ public class UserForm {
 
     private String name;
 
-//    @NotEmpty(message = E0016, groups = {AddGroup.class})
-//    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class})
-//    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class})
+    @NotEmpty(message = E0016, groups = {EditPasswordGroup.class})
+    @Size(min = 6, max = 20, message = E0017, groups = {EditPasswordGroup.class})
+    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {EditPasswordGroup.class})
     private String password;
 
     private int category;

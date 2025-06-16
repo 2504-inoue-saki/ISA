@@ -88,11 +88,8 @@ public class WorkingService {
         month.setStatus(monthWork.getStatus());
         month.setMemo(monthWork.getMemo());
         return month;
-      
-@Service
-public class WorkingService {
-    @Autowired
-    WorkingRepository workingRepository;
+    }
+
 
     /*
      * 申請一覧画面表示処理
@@ -212,7 +209,7 @@ public class WorkingService {
      */
     public void saveForm(WorkingForm workingForm) {
         //引数の型をForm→Entityに変換するメソッド呼び出し
-        Working working = setWorkingEntity(workingForm);
+        Working working = setWorkingEntity2(workingForm);
         //ユーザー情報を登録/更新
         workingRepository.save(working);
     }
