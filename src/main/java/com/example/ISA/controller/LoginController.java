@@ -89,7 +89,7 @@ public class LoginController {
         UserForm loginUser = userService.findLoginUser(requestLogin);
 
         //ログインユーザー情報チェック
-        if (loginUser == null || !loginUser.isStopped()) {
+        if (loginUser == null || !loginUser.getStopped()) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
             errorMessages.add(E0003);
