@@ -3,6 +3,7 @@ package com.example.ISA.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,12 +19,9 @@ public class Working {
     private int id;
 
     @Column
-    private String account;
-
-    @Column
     private int userId;
 
-    @Column
+    @Column(updatable = false)
     private Date date;
 
     @Column
@@ -44,9 +42,12 @@ public class Working {
     @Column
     private int status;
 
+    @Column
+    private String memo;
+
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-    @Column
+    @Column(updatable = false)
     private LocalDateTime updatedDate;
 }
