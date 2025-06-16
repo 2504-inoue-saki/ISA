@@ -194,7 +194,7 @@ public class WorkingService {
      */
     public void saveForm(WorkingForm workingForm) {
         //引数の型をForm→Entityに変換するメソッド呼び出し
-        Working working = setWorkingEntity2(workingForm);
+        Working working = setWorkingEntity(workingForm);
         //ユーザー情報を登録/更新
         workingRepository.save(working);
     }
