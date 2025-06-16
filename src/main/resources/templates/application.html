@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
     <title>申請一覧画面</title>
 </head>
 <body>
+<!--<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false)}"></header>-->
 
+<h1>申請一覧画面</h1>
+
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
+
+<div class="table" >
+    <table border="1">
+        <tbody>
+        <tr>
+            <th>アカウント名</th>
+            <th>名前</th>
+            <th>申請状況</th>
+        </tr>
+        <div class="table-contents" th:each="user : ${users}">
+            <tr>
+                <td>
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.account}" />
+                </td>
+                <td th:text="${user.name}"></td>
+                <td>
+                    <span th:if="${user.status == 0}">未申請の日があります</span>
+                    <span th:if="${user.status == 1}">承認依頼があります</span>
+                    <span th:if="${user.status == 2}">全て承認しました</span>
+                    <span th:if="${user.status == 3}">差し戻しをしています</span>
+                </td>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+</div>
+<a href="/ISA">
+    <button class="signup-button table-button" type="button">ホーム画面に戻る</button>
+</a>
 </body>
 </html>
