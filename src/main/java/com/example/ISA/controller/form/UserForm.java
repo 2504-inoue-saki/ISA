@@ -26,9 +26,9 @@ public class UserForm {
 
     private String name;
 
-//    @NotEmpty(message = E0016, groups = {AddGroup.class})
-//    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class})
-//    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class})
+    @NotEmpty(message = E0016, groups = {AddGroup.class})
+    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class})
+    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class})
     @NotEmpty(message = E0002, groups = { LoginGroup.class })
     private String password;
 
