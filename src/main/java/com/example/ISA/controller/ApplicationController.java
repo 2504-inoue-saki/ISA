@@ -6,6 +6,7 @@ import com.example.ISA.controller.form.WorkingForm;
 import com.example.ISA.service.UserService;
 import com.example.ISA.service.WorkingService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.ISA.constfolder.ErrorMessage.*;
 
 @Controller
 public class ApplicationController {
@@ -36,6 +39,22 @@ public class ApplicationController {
     @GetMapping("/application")
     public ModelAndView applicationView() {
         ModelAndView mav = new ModelAndView();
+
+        ////▲自身の個人申請詳細画面は表示できないの処理
+        //セッションの獲得
+        HttpSession session = request.getSession(true);
+        //セッション内にエラーメッセージがある時
+        if (session.getAttribute("ErrorMessage") != null) {
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<>();
+            //エラーメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
+            errorMessages.add((String) session.getAttribute("ErrorMessage"));
+            //セッション内のエラーメッセージを消す
+            session.removeAttribute("ErrorMessage");
+            //エラーメッセージが詰まったリストをviewに送る
+            mav.addObject("errorMessages", errorMessages);
+        }
+
         // workingテーブルからユーザIDと申請ステータスを取得
         List<WorkingForm> workingDate = workingService.findWorkingDate();
         // 申請状況をチェック(100人までしか登録できない)
@@ -89,6 +108,22 @@ public class ApplicationController {
         ModelAndView mav = new ModelAndView();
 
         int id = Integer.parseInt(checkId);
+
+        //▲自身の個人申請詳細画面は表示できないの処理
+        //セッションからログインユーザの獲得
+        HttpSession session = request.getSession(true);
+        Object loginUser = session.getAttribute("loginUser");
+        //ログインユーザIDとリクエストのIDが同じ場合
+        if (session.getAttribute("loginUser") != null ){
+            //型変更
+            UserForm loginUserForm = (UserForm) loginUser;
+            if (loginUserForm.getId() == id){
+                session.setAttribute("ErrorMessage", E0023);
+                //申請一覧画面へリダイレクト
+                return new ModelAndView("redirect:/application/");
+            }
+        }
+
         // id(ユーザテーブルの主キー)を使ってその人の表示させたい情報を取得する
         List<AllForm> userData = workingService.findWorkDate(id);
 

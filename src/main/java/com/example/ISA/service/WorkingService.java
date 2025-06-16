@@ -44,7 +44,7 @@ public class WorkingService {
         //List<Object[]>をList<WorkingForm>に詰め替えるメソッド呼び出し
         return setListWorkingForm(results);
     }
-    //List<Object[]>をList<UserForm>に詰め替えるメソッド
+    //List<Object[]>をList<UserForm>に詰め替えるメソッド（旭）
     private List<WorkingForm> setListWorkingForm(List<Working> results) {
         List<WorkingForm> formMonth = new ArrayList<>();
         for (Working w: results) {
@@ -74,22 +74,6 @@ public class WorkingService {
         //ユーザー情報を登録/更新
         workingRepository.save(month);
     }
-    //型をForm→Entityに変換するメソッド
-    private Working setWorkingEntity(WorkingForm monthWork) {
-        Working month = new Working();
-        month.setId(monthWork.getId());
-        month.setUserId(monthWork.getUserId());
-        month.setDate(monthWork.getDate());
-        month.setAttend(monthWork.getAttend());
-        month.setStartWork(monthWork.getStartWork());
-        month.setEndWork(monthWork.getEndWork());
-        month.setStartBreak(monthWork.getStartBreak());
-        month.setEndBreak(monthWork.getEndBreak());
-        month.setStatus(monthWork.getStatus());
-        month.setMemo(monthWork.getMemo());
-        return month;
-    }
-
 
     /*
      * 申請一覧画面表示処理
@@ -122,8 +106,9 @@ public class WorkingService {
             formAll.setStartBreak((String) objects[7]); // startBreak
             formAll.setEndBreak((String) objects[8]); // endBreak
             //労働時間と休憩時間の計算
-            String workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
             String breakDuration = convertToLocalTime(formAll.getStartBreak(), formAll.getEndBreak());
+            String workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
+
             //formAllにセット
             formAll.setWorkDuration(workDuration);
             formAll.setBreakDuration(breakDuration);
@@ -185,7 +170,7 @@ public class WorkingService {
         return setWorkingForm(workings).get(0);
     }
 
-    //型をEntity→Formに変換するメソッド
+    //型をEntity→Formに変換するメソッド（鈴木）
     private List<WorkingForm> setWorkingForm(List<Working> workings) {
         List<WorkingForm> workingForms = new ArrayList<>();
         for (Working value : workings) {
@@ -213,8 +198,8 @@ public class WorkingService {
         //ユーザー情報を登録/更新
         workingRepository.save(working);
     }
-    //型をForm→Entityに変換するメソッド
-    private Working setWorkingEntity2(WorkingForm workingForm) {
+    //型をForm→Entityに変換するメソッド（鈴木）
+    private Working setWorkingEntity(WorkingForm workingForm) {
         Working working = new Working();
         working.setId(workingForm.getId());
         working.setUserId(workingForm.getUserId());
@@ -223,7 +208,15 @@ public class WorkingService {
         working.setStartWork(workingForm.getStartWork());
         working.setEndWork(workingForm.getEndWork());
         working.setStartBreak(workingForm.getStartBreak());
+        //休憩時間を取っていない場合→休憩時間の入力欄が空
+        if (StringUtils.isEmpty(working.getStartBreak())){
+            working.setStartBreak("00:00");
+        }
         working.setEndBreak(workingForm.getEndBreak());
+        //休憩時間を取っていない場合→休憩時間の入力欄が空
+        if (StringUtils.isEmpty(working.getEndBreak())){
+            working.setEndBreak("00:00");
+        }
         working.setStatus(workingForm.getStatus());
         working.setMemo(workingForm.getMemo());
         return working;

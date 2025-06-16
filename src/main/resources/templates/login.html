@@ -8,6 +8,8 @@
 <body>
 <!--<header th:replace="~{fragments/header :: commonHeader('ログイン', false)}"></header>-->
 
+<h1>ログイン画面</h1>
+
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
