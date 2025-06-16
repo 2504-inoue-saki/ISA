@@ -19,7 +19,6 @@ public class WorkingForm {
     private LocalDate localDate;
 
     private int attend;
-    private String attendWord;
 
     private String startWork;
 
@@ -28,13 +27,11 @@ public class WorkingForm {
     private String startBreak;
 
     private String endBreak;
+
     private String memo;
 
     private int status;
 
-    private String memo;
-
     private LocalDateTime createdDate;
-
     private LocalDateTime updatedDate;
 }
