@@ -1,10 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>月毎勤怠編集画面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${currentYear} + '年' + ${currentMonth} + '月 ホーム画面'">ホーム画面</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
 </head>
 <body>
+<header th:replace="~{fragments/header :: commonHeader(
+        ${currentYear} + '年' + ${currentMonth} + '月 勤怠入力',  false,                                            ${isLoggedIn},
+        ${userCategory},
+        ${currentPage}
+    )}"></header>
+
+<div class="attendance-container">
+    <div class="month-navigation">
+        <span class="current-month-display" th:text="${currentYear} + '年' + ${currentMonth} + '月'"></span>
+    </div>
+
+    <form id="attendanceForm" th:action="@{/monthWork/save}" th:object="${workingMonthForm}" method="post">
+        <input type="hidden" th:field="*{year}"/>
+        <input type="hidden" th:field="*{month}"/>
+        <input type="hidden" th:field="*{userId}"/> <div class="attendance-table-container">
+    </div>
+
+        <div class="attendance-table-container">
+            <table class="attendance-table">
+                <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>曜日</th>
+                    <th>勤務区分</th>
+                    <th>出勤</th>
+                    <th>退勤</th>
+                    <th>休憩開始</th>
+                    <th>休憩終了</th>
+                    <th>メモ</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="workingEntry, stat : *{workings}">
+                    <td th:text="${#temporals.format(workingEntry.date, 'yyyy-MM-dd')}">YYYY-MM-DD</td>
+                    <td th:text="${workingEntry.dayOfWeek}">曜日</td>
+                    <td>
+                        <select th:field="*{workings[__${stat.index}__].status}">
+                            <option value="-1">未入力</option>
+                            <option value="0">出勤</option>
+                            <option value="1">リモート</option>
+                            <option value="2">有給</option>
+                            <option value="2">欠勤</option>
+                        </select>
+                    </td>
+
+                    <input type="hidden" th:field="*{workings[__${stat.index}__].id}"/>
+                    <input type="hidden" th:field="*{workings[__${stat.index}__].userId}"/>
+                    <input type="hidden" th:field="*{workings[__${stat.index}__].date}"/>
+
+                    <td><input type="time" th:field="*{workings[__${stat.index}__].startWork}"/></td>
+                    <td><input type="time" th:field="*{workings[__${stat.index}__].endWork}"/></td>
+                    <td><input type="time" th:field="*{workings[__${stat.index}__].startBreak}"/></td>
+                    <td><input type="time" th:field="*{workings[__${stat.index}__].endBreak}"/></td>
+                    <td><input type="text" th:field="*{workings[__${stat.index}__].memo}"/></td>
+                    <td>
+                        <button type="button" class="reset-button" onclick="resetWorkingEntry(this)">リセット</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="primary-button">入力内容を保存</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function resetWorkingEntry(button) {
+        const row = button.closest('tr');
+        row.querySelector('select[name$=".status"]').value = '-1'; // "未入力" に設定
+        row.querySelector('input[type="time"][name$=".startWork"]').value = '';
+        row.querySelector('input[type="time"][name$=".endWork"]').value = '';
+        row.querySelector('input[type="time"][name$=".startBreak"]').value = '';
+        row.querySelector('input[type="time"][name$=".endBreak"]').value = '';
+        row.querySelector('input[type="text"][name$=".memo"]').value = '';
+    }
+</script>
 
 </body>
 </html>

@@ -1,0 +1,504 @@
+/* --- 1. カラーパレット定義（現在のCSSで使われている色を基準に変数化） --- */
+:root {
+    /* 主要色 */
+    --primary-blue: #1976D2;    /* ヘッダー、リンク、更新ボタンなど（深めの青） */
+    --accent-green: #4CAF50;    /* テーブルヘッダー、新規登録ボタンなど（緑） */
+    --accent-purple: #7986CB;   /* 編集ボタン（少し紫がかった青） */
+    --accent-red: #EF5350;      /* ログアウト、必須マークなど（赤） */
+    --accent-gray: #9E9E9E;     /* トップに戻るボタンなど（グレー） */
+
+    /* 文字色 */
+    --text-dark: #343A40;       /* 基本の文字色（濃いグレー） */
+    --text-light: #FFFFFF;      /* 明るい背景上の文字色（白） */
+    --text-error: #D32F2F;      /* エラーメッセージ文字色 */
+
+    /* 背景色 */
+    --bg-light: #F8F9FA;        /* 全体背景色（柔らかいライトグレー） */
+    --bg-white: #FFFFFF;        /* カード、フォーム背景色 */
+    --bg-stripe: #F5F5F5;       /* テーブル偶数行の縞模様 */
+    --bg-hover-blue: #E3F2FD;   /* テーブルホバー時の背景色（薄い青） */
+    --bg-error: #FFCDD2;        /* エラーメッセージ背景色 */
+
+    /* ボーダー＆シャドウ */
+    --border-light: #E0E0E0;    /* 薄いグレーの罫線 */
+    --border-input: #BDBDBD;    /* 入力フォームのボーダー */
+    --shadow-base: rgba(0, 0, 0, 0.1);   /* ヘッダーや共通シャドウ */
+    --shadow-card: rgba(0, 0, 0, 0.05);  /* カード（コンテナ）のシャドウ */
+    --shadow-focus: rgba(25, 118, 210, 0.2); /* フォーカス時のシャドウ（primary-blueを基に） */
+}
+
+/* --- 2. 基本設定 --- */
+body {
+    font-family: 'Segoe UI', 'Meiryo UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2196F3; /* ホバー時のリンク色は元の少し明るい青を維持 */
+    text-decoration: underline;
+}
+
+/* --- 3. ボタン共通スタイル --- */
+/* 全てのbutton要素とinput[type="submit"]に共通のスタイル */
+button, input[type="submit"] {
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px; /* ここで角丸を統一 */
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    color: var(--text-light); /* ボタンの文字色は基本的に白 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 統一されたシャドウ */
+}
+
+button:hover:not(:disabled), input[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-1px); /* 少し浮き上がるような効果 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* ホバー時のシャドウを強調 */
+}
+
+button:disabled, input[type="submit"]:disabled {
+    background-color: #BDBDBD; /* 無効時のグレー */
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none; /* 無効時は浮き上がりなし */
+}
+
+/* 特定のボタンのオーバーライド（色） */
+.primary-button { /* フォームの「登録」「更新」ボタンなど */
+    background-color: var(--accent-green);
+}
+.primary-button:hover {
+    background-color: #388E3C;
+}
+
+.secondary-button { /* 「戻る」「削除」ボタンなど */
+    background-color: var(--accent-gray);
+}
+.secondary-button:hover {
+    background-color: #757575;
+}
+
+/* --- 4. ヘッダー --- */
+header {
+    background-color: var(--primary-blue);
+    color: var(--text-light);
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px var(--shadow-base);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.header-nav {
+    margin-left: auto;
+}
+
+.header-nav .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.header-nav .nav-links li {
+    display: inline-block;
+}
+
+.header-nav .nav-button,
+.header-nav .logout-button {
+    background-color: transparent; /* ヘッダー内のボタンは背景透明 */
+    color: var(--text-light);
+    border: 1px solid var(--text-light);
+    padding: 8px 15px;
+    border-radius: 5px; /* ここも共通の角丸に */
+    font-size: 0.9em;
+    font-weight: 500; /* ヘッダーボタンは少し軽めのフォント */
+    box-shadow: none; /* ヘッダー内のボタンはシャドウなし */
+    transform: none; /* 浮き上がり効果なし */
+}
+
+.header-nav .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+    border-color: var(--text-light);
+}
+
+.header-nav .logout-button {
+    background-color: var(--accent-red); /* ログアウトボタンは赤 */
+    border-color: var(--accent-red);
+    color: var(--text-light);
+}
+
+.header-nav .logout-button:hover {
+    background-color: #E53935; /* 少し濃い赤 */
+    border-color: #E53935;
+}
+
+.header-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- 5. エラーメッセージ --- */
+.error-messages {
+    background-color: var(--bg-error);
+    color: var(--text-error);
+    border: 1px solid #EF9A9A; /* この色は直接指定された色を保持 */
+    padding: 10px 15px;
+    margin: 20px auto;
+    border-radius: 5px;
+    max-width: 800px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* --- 6. テーブル共通スタイル (.user-list-container) --- */
+.user-list-container {
+    margin: 20px auto;
+    max-width: 900px;
+    background-color: var(--bg-white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-card);
+    overflow-x: auto;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.user-table th {
+    background-color: var(--accent-green);
+    color: var(--text-light);
+    font-weight: bold;
+    text-transform: none; /* 元々の大文字化は削除 */
+}
+
+.user-table tbody tr:nth-child(even) {
+    background-color: var(--bg-stripe);
+}
+
+.user-table tbody tr:hover {
+    background-color: var(--bg-hover-blue);
+}
+
+/* --- 7. フォーム内のセレクトボックスとボタン（userAdmin.html用） --- */
+.status-update-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-select-box {
+    padding: 8px;
+    border: 1px solid var(--border-input);
+    border-radius: 4px;
+    background-color: var(--bg-white);
+}
+
+/* userAdmin.html内の更新ボタンと編集ボタン */
+.update-button { /* .primary-buttonに統合できる可能性あり */
+    background-color: #2196F3; /* 既存の色を維持 */
+    color: var(--text-light);
+    padding: 8px 15px;
+}
+.update-button:hover:not(:disabled) {
+    background-color: var(--primary-blue);
+}
+
+.edit-button { /* .secondary-buttonに統合できる可能性あり */
+    background-color: var(--accent-green); /* 既存の色を維持 */
+    color: var(--text-light);
+    padding: 8px 15px;
+}
+.edit-button:hover {
+    background-color: #388E3C;
+}
+
+
+/* --- 8. ページ下部の共通ボタン群 (.button-group) --- */
+.button-group {
+    text-align: center;
+    margin: 30px auto;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* .signup-button と .back-to-top-button は .primary-button / .secondary-button に置き換えを推奨 */
+/* ただし、ここでは既存のクラス名を維持し、スタイルを統一する */
+.signup-button {
+    background-color: var(--accent-green);
+}
+.signup-button:hover {
+    background-color: #388E3C;
+}
+
+.back-to-top-button {
+    background-color: var(--accent-gray);
+}
+.back-to-top-button:hover {
+    background-color: #757575;
+}
+
+
+/* --- 9. フォームコンテナスタイル（userAdd.html, userEdit.html 共通） --- */
+.user-add-container,
+.user-edit-container { /* userEdit.html 用の追加 */
+    margin: 30px auto;
+    max-width: 500px;
+    background-color: var(--bg-white);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px var(--shadow-card); /* より目立つシャドウ */
+    padding: 30px;
+}
+
+.user-add-container h2,
+.user-edit-container h2 { /* userEdit.html 用の追加 */
+    text-align: center;
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+.user-add-form .form-group,
+.user-edit-form .form-group { /* userEdit.html 用の追加 */
+    margin-bottom: 20px;
+}
+
+.user-add-form label,
+.user-edit-form label { /* userEdit.html 用の追加 */
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.user-add-form input[type="text"],
+.user-add-form input[type="password"],
+.user-add-form select,
+.user-edit-form input[type="text"], /* userEdit.html 用の追加 */
+.user-edit-form input[type="password"], /* userEdit.html 用の追加 */
+.user-edit-form select { /* userEdit.html 用の追加 */
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-input);
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.user-add-form input:focus,
+.user-add-form select:focus,
+.user-edit-form input:focus, /* userEdit.html 用の追加 */
+.user-edit-form select:focus { /* userEdit.html 用の追加 */
+    border-color: var(--primary-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--shadow-focus);
+}
+
+.user-add-form .required,
+.user-edit-form .required { /* userEdit.html 用の追加 */
+    color: var(--accent-red); /* 赤色の必須マーク */
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.readonly-field { /* userEdit.html の社員ID用 */
+    background-color: #F0F0F0; /* 読み取り専用フィールドの背景色 */
+    color: #666666; /* 読み取り専用フィールドの文字色 */
+    cursor: default;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+    display: flex; /* ボタンを横並びにする */
+    justify-content: center; /* 中央寄せ */
+    gap: 15px; /* ボタン間のスペース */
+}
+
+/* 登録/更新ボタンは button.primary-button でスタイルを統一する */
+.submit-button { /* このクラスは、共通の.primary-buttonに統合を推奨 */
+    /* background-color: var(--accent-green); */
+    /* color: var(--text-light); */
+    padding: 12px 25px;
+    font-size: 1.1em;
+    width: auto;
+    min-width: 150px;
+}
+/* .submit-button:hover は .primary-button:hover で定義済み */
+
+
+/* 「戻る」ボタンと「削除」ボタンのスタイル */
+.back-link-container,
+.delete-link-container { /* userEdit.html 用の追加 */
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-button,
+.delete-button { /* .secondary-button に統合を推奨 */
+    /* background-color: var(--accent-gray); */
+    /* color: var(--text-light); */
+    padding: 10px 20px;
+    font-size: 1em; /* 少し小さめに */
+}
+
+/* .back-button:hover, .delete-button:hover は .secondary-button:hover で定義済み */
+
+/* 削除ボタンの色を特に強調したい場合 */
+.delete-button {
+    background-color: #DC3545; /* 危険な操作なので赤系に */
+}
+.delete-button:hover {
+    background-color: #C82333;
+}
+
+/* ホーム画面 */
+    .attendance-container {
+        margin: 30px auto;
+        max-width: 1000px;
+        background-color: var(--bg-white);
+        border-radius: 8px;
+        box-shadow: 0 5px 15px var(--shadow-card);
+        padding: 30px;
+    }
+
+    .attendance-container h2 {
+        text-align: center;
+        color: var(--primary-blue);
+        margin-bottom: 20px;
+        font-size: 2em;
+    }
+
+    .month-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .nav-arrow {
+        color: var(--primary-blue);
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid var(--primary-blue);
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-arrow:hover {
+        background-color: var(--primary-blue);
+        color: var(--text-light);
+        text-decoration: none;
+    }
+
+    .current-month-display {
+        color: var(--text-dark);
+    }
+
+    .attendance-table-container {
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    .attendance-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .attendance-table th,
+    .attendance-table td {
+        padding: 10px 12px;
+        text-align: center;
+        border: 1px solid var(--border-light);
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .attendance-table th {
+        background-color: #607D8B;
+        color: var(--text-light);
+        font-weight: bold;
+    }
+
+    .attendance-table tbody tr:nth-child(even) {
+        background-color: var(--bg-stripe);
+    }
+
+    .attendance-table tbody tr:hover {
+        background-color: var(--bg-hover-blue);
+    }
+
+    .attendance-table input[type="time"],
+    .attendance-table input[type="number"],
+    .attendance-table input[type="text"],
+    .attendance-table select {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid var(--border-input);
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 0.95em;
+    }
+
+    .attendance-table input[type="time"] {
+        min-width: 90px;
+    }
+    .attendance-table input[type="number"] {
+        min-width: 60px;
+    }
+    .attendance-table select {
+        min-width: 80px;
+    }
+    .attendance-table input[type="text"] {
+        min-width: 120px;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .reset-button {
+        background-color: #FFC107;
+        color: #212121;
+        padding: 6px 12px;
+        font-size: 0.9em;
+        box-shadow: none;
+        transform: none;
+    }
+    .reset-button:hover {
+        background-color: #FFA000;
+    }

@@ -4,21 +4,22 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
 @Setter
 public class WorkingForm {
-    private int id;
+    private Integer id;
 
     private String account;
 
-    private int userId;
+    private Integer userId;
 
-    private Date date;
+    private LocalDate date;
 
-    private int attend;
+    private Integer attend;
 
     private String startWork;
 
@@ -28,7 +29,16 @@ public class WorkingForm {
 
     private String endBreak;
 
-    private int status;
+    private String memo;
+
+    private Integer status;
+
+    // 曜日
+    private String dayOfWeek;
+    // 休憩時間
+    private String breakTimeDisplay;
+    // 労働時間
+    private String workingTimeDisplay;
 
     private LocalDateTime createdDate;
 

@@ -24,7 +24,7 @@ public class ErrorMessage {
     public static final String E0020 = "氏名は10文字以下で入力してください";
     public static final String E0021 = "支社を選択してください";
     public static final String E0022 = "部署を選択してください";
-    public static final String E0023 = "支社と部署の組み合わせが不正です";
+    public static final String E0023 = "自身の個人申請承認画面は表示できません";
     public static final String E0024 = "ログインしてください";
     public static final String E0025 = "不正なパラメータが入力されました";
 }

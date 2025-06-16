@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>新規アカウント登録画面</title>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <title>ユーザ登録</title>
 </head>
 <body>
+<header th:replace="~{fragments/header :: commonHeader('ユーザ登録', false, ${isLoggedIn}, ${userCategory})}"></header></header>
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
 
+<div class="main-contents">
+    <form th:action="@{/signup}" method="post" th:object="${addUser}">
+        アカウント
+        <input type="text" th:field="*{account}"/> <br/>
+        パスワード
+        <input type="password" th:field="*{password}"/> <br/>
+        パスワード確認用
+        <input type="password" th:field="*{checkPassword}"/> <br/>
+        名前
+        <input type="text" th:field="*{name}"/> <br/>
+        ユーザ区分
+        <select th:field="*{category}"> <br/>
+            <option value="1">一般ユーザ</option>
+            <option value="2">承認者</option>
+            <option value="3">システム管理者</option>
+            <option value="0" selected>選択してください</option>
+        </select> <br/>
+        <input type="submit" value="登録" class="primary-button">
+    </form>
+    <br>
+    <a href="/userAdmin">
+        <button class="back-to-top-button" type="button">ユーザ管理画面に戻る</button>
+    </a>
+</div>
 </body>
 </html>

@@ -14,7 +14,7 @@ public class User {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column
     private String account;
@@ -26,9 +26,12 @@ public class User {
     private String password;
 
     @Column
-    private int category;
+    private Integer category;
 
     @Column
+    private Integer status;
+
+    @Column(name = "is_stopped")
     private boolean isStopped;
 
     @Column(updatable = false)
