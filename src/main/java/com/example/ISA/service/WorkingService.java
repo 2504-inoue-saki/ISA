@@ -44,7 +44,7 @@ public class WorkingService {
         //List<Object[]>をList<WorkingForm>に詰め替えるメソッド呼び出し
         return setListWorkingForm(results);
     }
-    //List<Object[]>をList<UserForm>に詰め替えるメソッド
+    //List<Object[]>をList<UserForm>に詰め替えるメソッド（旭）
     private List<WorkingForm> setListWorkingForm(List<Working> results) {
         List<WorkingForm> formMonth = new ArrayList<>();
         for (Working w: results) {
@@ -74,25 +74,6 @@ public class WorkingService {
         //ユーザー情報を登録/更新
         workingRepository.save(month);
     }
-    //型をForm→Entityに変換するメソッド
-    private Working setWorkingEntity(WorkingForm monthWork) {
-        Working month = new Working();
-        month.setId(monthWork.getId());
-        month.setUserId(monthWork.getUserId());
-        month.setDate(monthWork.getDate());
-        month.setAttend(monthWork.getAttend());
-        month.setStartWork(monthWork.getStartWork());
-        month.setEndWork(monthWork.getEndWork());
-        month.setStartBreak(monthWork.getStartBreak());
-        month.setEndBreak(monthWork.getEndBreak());
-        month.setStatus(monthWork.getStatus());
-        month.setMemo(monthWork.getMemo());
-        return month;
-      
-@Service
-public class WorkingService {
-    @Autowired
-    WorkingRepository workingRepository;
 
     /*
      * 申請一覧画面表示処理
@@ -188,7 +169,7 @@ public class WorkingService {
         return setWorkingForm(workings).get(0);
     }
 
-    //型をEntity→Formに変換するメソッド
+    //型をEntity→Formに変換するメソッド（鈴木）
     private List<WorkingForm> setWorkingForm(List<Working> workings) {
         List<WorkingForm> workingForms = new ArrayList<>();
         for (Working value : workings) {
@@ -216,19 +197,34 @@ public class WorkingService {
         //ユーザー情報を登録/更新
         workingRepository.save(working);
     }
-    //型をForm→Entityに変換するメソッド
-    private Working setWorkingEntity2(WorkingForm workingForm) {
-        Working working = new Working();
-        working.setId(workingForm.getId());
-        working.setUserId(workingForm.getUserId());
-        working.setDate(workingForm.getDate());
-        working.setAttend(workingForm.getAttend());
-        working.setStartWork(workingForm.getStartWork());
-        working.setEndWork(workingForm.getEndWork());
-        working.setStartBreak(workingForm.getStartBreak());
-        working.setEndBreak(workingForm.getEndBreak());
-        working.setStatus(workingForm.getStatus());
-        working.setMemo(workingForm.getMemo());
-        return working;
+//    //型をForm→Entityに変換するメソッド（鈴木）
+//    private Working setWorkingEntity(WorkingForm workingForm) {
+//        Working working = new Working();
+//        working.setId(workingForm.getId());
+//        working.setUserId(workingForm.getUserId());
+//        working.setDate(workingForm.getDate());
+//        working.setAttend(workingForm.getAttend());
+//        working.setStartWork(workingForm.getStartWork());
+//        working.setEndWork(workingForm.getEndWork());
+//        working.setStartBreak(workingForm.getStartBreak());
+//        working.setEndBreak(workingForm.getEndBreak());
+//        working.setStatus(workingForm.getStatus());
+//        working.setMemo(workingForm.getMemo());
+//        return working;
+//    }
+    //型をForm→Entityに変換するメソッド（旭）
+    private Working setWorkingEntity(WorkingForm monthWork) {
+        Working month = new Working();
+        month.setId(monthWork.getId());
+        month.setUserId(monthWork.getUserId());
+        month.setDate(monthWork.getDate());
+        month.setAttend(monthWork.getAttend());
+        month.setStartWork(monthWork.getStartWork());
+        month.setEndWork(monthWork.getEndWork());
+        month.setStartBreak(monthWork.getStartBreak());
+        month.setEndBreak(monthWork.getEndBreak());
+        month.setStatus(monthWork.getStatus());
+        month.setMemo(monthWork.getMemo());
+        return month;
     }
 }
