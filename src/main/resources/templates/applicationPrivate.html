@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <link href="/css/style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
     <title>個人申請詳細画面</title>
 </head>
 <body>
@@ -44,17 +46,17 @@
         </td>
         <td>
           <span th:if="${workingDatum.status == 0}">申請されていません</span>
-          <form th:action="@{/approval/{subjectId}(subjectId=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}">
+          <form th:action="@{/approval/{subjectId}(subjectId=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}" class="switch-approval">
+            <input type="hidden"  th:value="${workingDatum.localDate}" name="date" />
             <select name="approval" class="select-box">
-              <option value="1" th:selected="${workingDatum.status == 1}">選択してください</option>
+              <option value="1" th:selected="${workingDatum.status == 1}" th:if="${workingDatum.status == 1}">選択してください</option>
               <option value="2" th:selected="${workingDatum.status == 2}">承認</option>
               <option value="3" th:selected="${workingDatum.status == 3}">差し戻し</option>
             </select>
             <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
-            <input type="submit" value="変更">
+            <input type="submit" value="変更" disabled class="submit-approval">
           </form>
         </td>
-
 
         <!-- ポップアップ -->
         <td>
