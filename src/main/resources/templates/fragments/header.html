@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<header th:fragment="commonHeader(pageTitle, isLoginPage, isLoggedIn, userCategory, currentPage)">
+    <div class="header-content">
+        <h1><span th:text="${pageTitle}">デフォルトタイトル</span></h1>
+
+        <nav class="header-nav">
+            <ul th:if="${isLoggedIn}" class="nav-links">
+                <li>
+                    <form th:action="@{/changePassword}" method="get">
+                        <button type="submit" class="nav-button">パスワード変更</button>
+                    </form>
+                </li>
+
+                <li th:if="${userCategory == 2}">
+                    <form th:action="@{/applicationList}" method="get">
+                        <button type="submit" class="nav-button">申請一覧</button>
+                    </form>
+                </li>
+
+                <li th:if="${userCategory == 3}">
+                    <form th:action="@{/userAdmin}" method="get">
+                        <button type="submit" class="nav-button">ユーザ管理</button>
+                    </form>
+                </li>
+
+                <li th:unless="${isLoginPage}">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="logout-button">ログアウト</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+</body>
+</html>

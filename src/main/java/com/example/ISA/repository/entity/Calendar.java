@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -15,10 +16,10 @@ public class Calendar {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Date date;
+    private LocalDate date;
 
     @Column
-    private int fiscalYear;
+    private Integer fiscalYear;
 
     @Column
     private String dayOfWeek;

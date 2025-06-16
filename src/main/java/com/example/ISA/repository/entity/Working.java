@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -16,16 +17,16 @@ public class Working {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column
-    private int userId;
+    private Integer userId;
 
     @Column(updatable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column
-    private int attend;
+    private Integer attend;
 
     @Column
     private String startWork;
@@ -40,7 +41,7 @@ public class Working {
     private String endBreak;
 
     @Column
-    private int status;
+    private Integer status;
 
     @Column
     private String memo;

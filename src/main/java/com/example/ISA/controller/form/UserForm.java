@@ -1,11 +1,6 @@
 package com.example.ISA.controller.form;
 
-
-
-import com.example.ISA.groups.EditPasswordGroup;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import com.example.ISA.groups.LoginGroup;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +18,8 @@ import static com.example.ISA.constfolder.ErrorMessage.*;
 @Getter
 @Setter
 public class UserForm {
-    private int id;
+
+    private Integer id;
 
     @NotEmpty(message = E0001, groups = { LoginGroup.class })
     private String account;
@@ -36,15 +32,15 @@ public class UserForm {
     @NotEmpty(message = E0002, groups = { LoginGroup.class })
     private String password;
 
-    private int category;
+    private String checkPassword;
 
-    private boolean isStopped;
+    private Integer category;
 
-    private int status;
+    private Integer status;
+
+    private Boolean stopped;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
-
-    private String checkPassword;
 }

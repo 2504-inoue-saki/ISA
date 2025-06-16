@@ -8,10 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Optional;
+
 
 @Repository
 public interface WorkingRepository extends JpaRepository<Working, Integer> {
@@ -61,4 +63,8 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
      * ポップアップ表示処理
      */
     public Working findById(int id);
+
+    List<Working> findByUserIdAndDateBetweenOrderByDateAsc(Integer userId, LocalDate startDate, LocalDate endDate);
+
+    Optional<Working> findByUserIdAndDate(Integer userId, LocalDate date);
 }

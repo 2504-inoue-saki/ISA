@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ホーム画面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${currentYear} + '年' + ${currentMonth} + '月 勤怠'">勤怠ホーム</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+<header th:replace="~{fragments/header :: commonHeader(
+        ${currentYear} + '年' + ${currentMonth} + '月 勤怠',
+        false,
+        ${isLoggedIn},
+        ${userCategory},
+        ${currentPage}
+    )}"></header>
+
+<div class="attendance-container">
+    <div class="month-navigation">
+        <a th:href="@{/ISA/month/{year}/{month}(year=${prevYear}, month=${prevMonth})}" class="nav-arrow">&lt; 前月</a>
+        <span class="current-month-display"
+              th:text="${currentYear} + '年' + ${currentMonth} + '月'"
+              th:onclick="|goToInputScreen(${currentYear}, ${currentMonth})|"
+              style="cursor: pointer; text-decoration: underline; color: blue;">
+</span>
+        <a th:href="@{/ISA/month/{year}/{month}(year=${nextYear}, month=${nextMonth})}" class="nav-arrow">次月 &gt;</a>
+    </div>
+
+    <div class="attendance-table-container">
+        <table class="attendance-table">
+            <thead>
+            <tr>
+                <th>日付</th>
+                <th>曜日</th>
+                <th>勤務区分</th>
+                <th>出勤</th>
+                <th>退勤</th>
+                <th>休憩時間</th>
+                <th>労働時間</th>
+                <th>メモ</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="workingEntry, stat : ${workingMonthForm.workings}">
+                <td th:text="${#temporals.format(workingEntry.date, 'yyyy-MM-dd')}"></td>
+                <td th:text="${workingEntry.dayOfWeek}">曜日</td>
+                <td th:switch="${workingEntry.status}">
+                    <span th:case="-1">未入力</span>
+                    <span th:case="0">出勤</span>
+                    <span th:case="1">リモート</span>
+                    <span th:case="2">有給</span>
+                    <span th:case="3">欠勤</span>
+                </td>
+                <td th:text="${workingEntry.startWork ?: '-'}"></td>
+                <td th:text="${workingEntry.endWork ?: '-'}"></td>
+                <td th:text="${workingEntry.breakTimeDisplay}"></td>
+                <td th:text="${workingEntry.workingTimeDisplay}"></td>
+                <td th:text="${workingEntry.memo}"></td>
+                <td>
+                    <button type="button" class="open-popup-button"
+                            th:data-date="${#temporals.format(workingEntry.date, 'yyyy-MM-dd')}"
+                            th:data-id="${workingEntry.id}">編集
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function goToInputScreen(year, month) {
+        // 新しい入力画面へのURLを構築
+        const url = `/monthWork?year=${year}&month=${month}`;
+
+        // ページをリダイレクト
+        window.location.href = url;
+    }
+</script>
 
 </body>
 </html>

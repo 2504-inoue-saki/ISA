@@ -11,14 +11,15 @@ import java.util.Date;
 @Getter
 @Setter
 public class WorkingForm {
-    private int id;
+    private Integer id;
 
-    private int userId;
+    private String account;
 
-    private Date date;
-    private LocalDate localDate;
+    private Integer userId;
 
-    private int attend;
+    private LocalDate date;
+
+    private Integer attend;
 
     private String startWork;
 
@@ -30,7 +31,14 @@ public class WorkingForm {
 
     private String memo;
 
-    private int status;
+    private Integer status;
+
+    // 曜日
+    private String dayOfWeek;
+    // 休憩時間
+    private String breakTimeDisplay;
+    // 労働時間
+    private String workingTimeDisplay;
 
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
