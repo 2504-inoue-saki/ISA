@@ -22,11 +22,9 @@ import static com.example.ISA.constfolder.ErrorMessage.*;
 @Getter
 @Setter
 public class UserForm {
-
-    @NotEmpty(message = E0001, groups = { LoginGroup.class })
     private int id;
 
-    @NotEmpty(message = E0002, groups = { LoginGroup.class })
+    @NotEmpty(message = E0001, groups = { LoginGroup.class })
     private String account;
 
     private String name;
@@ -34,6 +32,7 @@ public class UserForm {
 //    @NotEmpty(message = E0016, groups = {AddGroup.class})
 //    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class})
 //    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class})
+    @NotEmpty(message = E0002, groups = { LoginGroup.class })
     private String password;
 
     private int category;
