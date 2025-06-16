@@ -18,9 +18,6 @@ public class Working {
     private int id;
 
     @Column
-    private String account;
-
-    @Column
     private int userId;
 
     @Column
@@ -43,6 +40,9 @@ public class Working {
 
     @Column
     private int status;
+
+    @Column
+    private String memo;
 
     @Column(updatable = false)
     private LocalDateTime createdDate;

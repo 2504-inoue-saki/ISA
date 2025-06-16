@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>ユーザ情報編集画面</title>
+<!--    <link href="/css/style.css" rel="stylesheet">-->
+    <title>パスワード変更画面</title>
 </head>
 <body>
 
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
+
+<div class="main-contents">
+    <form th:action="@{/myInformation}" th:method="put" th:object="${password}">
+    新しいパスワード
+    <input type="password" th:field="*{password}"/> <br/>
+    新しいパスワード確認用
+    <input type="password" th:field="*{checkPassword}"/> <br/>
+    <input type="submit" value="更新">
+    </form>
+    <a href="/ISA/">
+        <button type="button">戻る</button>
+    </a>
+</div>
 </body>
 </html>

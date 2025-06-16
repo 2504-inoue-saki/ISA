@@ -12,8 +12,6 @@ import java.util.Date;
 public class WorkingForm {
     private int id;
 
-    private String account;
-
     private int userId;
 
     private Date date;
@@ -29,6 +27,8 @@ public class WorkingForm {
     private String endBreak;
 
     private int status;
+
+    private String memo;
 
     private LocalDateTime createdDate;
 
