@@ -28,7 +28,6 @@ public class WorkingForm {
     private String startBreak;
 
     private String endBreak;
-    private String memo;
 
     private int status;
 
