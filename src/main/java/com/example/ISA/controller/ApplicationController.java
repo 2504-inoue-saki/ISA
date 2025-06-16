@@ -55,7 +55,6 @@ public class ApplicationController {
             mav.addObject("errorMessages", errorMessages);
         }
 
-
         // workingテーブルからユーザIDと申請ステータスを取得
         List<WorkingForm> workingDate = workingService.findWorkingDate();
         // 申請状況をチェック(100人までしか登録できない)
