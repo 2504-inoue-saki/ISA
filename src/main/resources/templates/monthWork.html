@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -90,5 +91,57 @@
     }
 </script>
 
+=======
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!--    <link href="/css/style.css" rel="stylesheet">-->
+    <title>月毎勤怠編集</title>
+</head>
+<body>
+日付：<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
+<!--<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">-->
+<!--    <span th:text="${errorMessage}"></span>-->
+<!--</div>-->
+<form th:action="@{/monthWork/save}" th:method="put" >
+    <table>
+        <tr>
+            <th>日付</th>
+            <th>勤務区分</th>
+            <th>開始</th>
+            <th>終了</th>
+            <th>休憩時間</th>
+            <th>労働時間</th>
+            <th>申請状況</th>
+            <th>メモ</th>
+        </tr>
+        <div class="work" th:each="month : ${monthWork}">
+            <tr>
+                <td><input  type="text" th:field="*{date}"></td>
+                <td>
+                    <select th:field="$*{attend}">
+                        <option value="o">出勤</option>
+                        <option value="1">リモート</option>
+                    </select>
+                </td>
+                <td> <input type="text" th:field="${month.start_work}"></td>
+                <td> <input type="text" th:field="${month.end_work}"></td>
+                <td> <input type="text" th:field="${month.break}"></td>
+                <td> <input type="text" th:field="${month.work}"></td>
+                <td>
+                    <select th:field="${month.status}">
+                        <option value="0">未申請</option>
+                        <option value="1">申請済み</option>
+                        <option value="2">申請済みかつ承認</option>
+                        <option value="3">申請済みかつ差し戻し</option>
+                    </select>
+                </td>
+                <td> <input type="text" th:field="${month.memo}"></td>
+            </tr>
+        </div>
+    </table>
+    <input type="submit" value="更新">
+</form>
+>>>>>>> 15df05c15f164d68f93ae362b9a4a7954749413b
 </body>
 </html>

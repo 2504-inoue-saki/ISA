@@ -22,6 +22,7 @@ public class Working {
     @Column
     private Integer userId;
 
+    @Column(updatable = false)
     private LocalDate date;
 
     @Column

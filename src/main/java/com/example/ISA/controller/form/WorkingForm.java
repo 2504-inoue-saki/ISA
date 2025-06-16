@@ -41,6 +41,5 @@ public class WorkingForm {
     private String workingTimeDisplay;
 
     private LocalDateTime createdDate;
-
     private LocalDateTime updatedDate;
 }
