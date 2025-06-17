@@ -49,10 +49,9 @@ public class PopupController{
         workingForm.setId(id);
         workingForm.setUserId(userId);
         workingService.saveForm(workingForm);
-
+      
         int month = date.getMonthValue();
         int year = date.getYear();
-
 
         return new ModelAndView("redirect:/ISA/" + year + "/" + month);
     }

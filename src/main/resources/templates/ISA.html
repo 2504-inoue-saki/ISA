@@ -50,8 +50,6 @@
                     <span th:case="-1">未入力</span>
                     <span th:case="0">出勤</span>
                     <span th:case="1">リモート</span>
-                    <span th:case="2">有給</span>
-                    <span th:case="3">欠勤</span>
                 </td>
                 <td th:text="${workingDatum.startWork ?: '-'}"></td>
                 <td th:text="${workingDatum.endWork ?: '-'}"></td>
@@ -78,8 +76,6 @@
                             <select name="attend" class="select-box">
                                 <option value="0" th:selected="${workingDatum.attend == 0}">出勤</option>
                                 <option value="1" th:selected="${workingDatum.attend == 1}">リモート</option>
-                                <option value="2" th:selected="${workingDatum.attend == 2}">有給</option>
-                                <option value="3" th:selected="${workingDatum.attend == 3}">欠勤</option>
                             </select> <br/>
                             <span>開始-終了</span>
                             <input type="text" name="startWork" th:value="${workingDatum.startWork}"/>
@@ -116,8 +112,6 @@
                                 <select name="attend" class="select-box">
                                     <option value="0" th:selected="${workingDatum.attend == 0}">出勤</option>
                                     <option value="1" th:selected="${workingDatum.attend == 1}">リモート</option>
-                                    <option value="2" th:selected="${workingDatum.attend == 2}">有給</option>
-                                    <option value="3" th:selected="${workingDatum.attend == 3}">欠勤</option>
                                 </select> <br/>
                                 <span>開始-終了</span>
                                 <input type="text" name="startWork" th:value="${workingDatum.startWork}"/>
