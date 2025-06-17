@@ -231,25 +231,6 @@ public class WorkingService {
         }
     }
 
-    /*
-     * 月毎勤怠登録＆編集画面表示処理
-     */
-//    public List<WorkingForm> findMonthWork(int userId, String startDate, String endDate) {
-//
-//        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date start;
-//        Date end;
-//        try {
-//            start = sdFormat.parse(startDate + " 00:00:00");
-//            end = sdFormat.parse(endDate + " 23:59:59");
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
-//        List<Working> results = workingRepository.findByUserIdAndDateBetween(userId, start, end);
-//        //List<Object[]>をList<WorkingForm>に詰め替えるメソッド呼び出し
-//        return setListWorkingForm(results);
-//    }
-
     //List<Object[]>をList<UserForm>に詰め替えるメソッド（旭）
     private List<WorkingForm> setListWorkingForm(List<Working> results) {
         List<WorkingForm> formMonth = new ArrayList<>();
