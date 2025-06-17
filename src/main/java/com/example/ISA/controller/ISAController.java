@@ -38,9 +38,6 @@ public class ISAController {
     @Autowired
     private WorkingService workingService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ISAController.class);
-
-
     // ホーム画面表示処理
     // URLに年月がない場合は現在の月を表示
     @GetMapping
@@ -83,18 +80,6 @@ public class ISAController {
         model.addAttribute("prevMonth", currentMonthDate.minusMonths(1).getMonthValue());
         model.addAttribute("nextYear", currentMonthDate.plusMonths(1).getYear());
         model.addAttribute("nextMonth", currentMonthDate.plusMonths(1).getMonthValue());
-
-        logger.info("Fetched {} monthly workings for user ID {} in {}-{}:", monthlyWorkings.size(), loggedInUserId, year, month);
-        if (monthlyWorkings.isEmpty()) {
-            logger.warn("No working data found for user ID {} in {}-{}", loggedInUserId, year, month);
-        } else {
-            // 各勤怠データの詳細をログ出力して確認
-            for (WorkingForm workingDatum : monthlyWorkings) {
-                logger.debug("  Working ID: {}, Date: {}, Status: {}, StartWork: {}, EndWork: {}",
-                        workingDatum.getId(), workingDatum.getDate(), workingDatum.getStatus(),
-                        workingDatum.getStartWork(), workingDatum.getEndWork());
-            }
-        }
 
         return "ISA";
     }
