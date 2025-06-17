@@ -56,7 +56,7 @@ public class MonthWorkController {
         // WorkingServiceにリストを渡して保存/更新処理を呼び出す
         workingService.saveOrUpdateMonthlyWorkings(userId, workingMonthForm.getWorkings());
 
-        return "redirect:/";
+        return "redirect:/ISA/" + year + "/" + month;
 
 //@Controller
 //public class MonthWorkController {

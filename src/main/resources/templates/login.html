@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
-    <title>ログイン画面</title>
+    <title th:text="${pageTitle} ?: 'ログイン'"></title>
 </head>
 <body>
-<!--<header th:replace="~{fragments/header :: commonHeader('ログイン', false)}"></header>-->
-
-<h1>ログイン画面</h1>
+<header th:insert="~{fragments/header :: commonHeader(
+        pageTitle=${pageTitle},
+        isLoginPage=${true},
+        isLoggedIn=${false},
+        userCategory=${-1},
+        currentPage=${currentPage}
+    )}"></header>
 
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>

@@ -18,13 +18,13 @@
 
 <div class="attendance-container">
     <div class="month-navigation">
-        <a th:href="@{/ISA/month/{year}/{month}(year=${prevYear}, month=${prevMonth})}" class="nav-arrow">&lt; 前月</a>
+        <a th:href="@{/ISA/{year}/{month}(year=${prevYear}, month=${prevMonth})}" class="nav-arrow">&lt; 前月</a>
         <span class="current-month-display"
               th:text="${currentYear} + '年' + ${currentMonth} + '月'"
               th:onclick="|goToInputScreen(${currentYear}, ${currentMonth})|"
               style="cursor: pointer; text-decoration: underline; color: blue;">
 </span>
-        <a th:href="@{/ISA/month/{year}/{month}(year=${nextYear}, month=${nextMonth})}" class="nav-arrow">次月 &gt;</a>
+        <a th:href="@{/ISA/{year}/{month}(year=${nextYear}, month=${nextMonth})}" class="nav-arrow">次月 &gt;</a>
     </div>
 
     <div class="attendance-table-container">

@@ -26,7 +26,7 @@ public class MyInformationController {
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
-    @GetMapping("/myInformation/")
+    @GetMapping("/myInformation")
     public ModelAndView editPassword() {
         ModelAndView mav = new ModelAndView();
         UserForm password = new UserForm();
