@@ -12,7 +12,7 @@
     </div>
 
     <div class="main-contents">
-        <form th:action="@{/myInformation}" th:method="put" th:object="${password}">
+        <form th:action="@{/changePassword/{id}(id=${id})}" th:method="put" th:object="${password}">
         新しいパスワード
         <input type="password" th:field="*{password}"/> <br/>
         新しいパスワード確認用
