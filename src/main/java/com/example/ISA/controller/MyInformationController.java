@@ -43,7 +43,7 @@ public class MyInformationController {
     }
 
     @PutMapping("/changePassword/{id}")
-    public ModelAndView editPassword(@Validated({EditPasswordGroup.class})@PathVariable int id, @ModelAttribute ("password")UserForm password, BindingResult result){
+    public ModelAndView editPassword(@PathVariable int id,@Validated({EditPasswordGroup.class}) @ModelAttribute ("password")UserForm password, BindingResult result){
         ModelAndView mav = new ModelAndView();
         //エラーメッセージを入れる用のリストを作っておく
         List<String> errorMessages = new ArrayList<String>();
