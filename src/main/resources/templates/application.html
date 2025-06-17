@@ -17,13 +17,15 @@
 </div>
 
 <div class="table" >
-    <table border="1">
-        <tbody>
+    <table class="user-table">
+        <thead>
         <tr>
             <th>アカウント名</th>
             <th>名前</th>
             <th>申請状況</th>
         </tr>
+        </thead>
+        <tbody>
         <div class="table-contents" th:each="user : ${users}">
             <tr>
                 <td>

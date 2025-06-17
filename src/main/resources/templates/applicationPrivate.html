@@ -14,8 +14,8 @@
   <span class="account" th:text="'@' + ${userData.account}"></span>
 </div>
 <div class="table" >
-  <table border="1">
-    <tbody>
+  <table class="user-table">
+    <thead>
     <tr>
       <th>日付</th>
       <th>勤務区分</th>
@@ -27,7 +27,8 @@
       <th>申請状況</th>
       <th>承認状況</th>
     </tr>
-
+    </thead>
+    <tbody>
     <div class="table-contents" th:each="workingDatum : ${workingData}">
       <tr>
         <td th:text="${workingDatum.date}"></td>
