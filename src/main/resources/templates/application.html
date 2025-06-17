@@ -29,7 +29,8 @@
         <div class="table-contents" th:each="user : ${users}">
             <tr>
                 <td>
-                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.account}" />
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:if="${user.status < 4}" th:text="${user.account}" />
+                    <span th:if="${user.status == 4}" th:text="${user.account}" />
                 </td>
                 <td th:text="${user.name}"></td>
                 <td>
