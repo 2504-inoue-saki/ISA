@@ -128,33 +128,7 @@ public class ISAController {
         model.addAttribute("workingForm", workingForm);
         return "fragments/daily_working_form :: dailyWorkingForm"; // 作成したフラグメントを返す
     }
-
-    // 単一日の勤怠データを保存するエンドポイント (Ajax呼び出し用)
-//    @PostMapping("/daily-save")
-//    public String saveDailyWorking(@ModelAttribute WorkingForm dailyForm, Model model) {
-//        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
-//        if (loginUser == null || !Objects.equals(loginUser.getId(), dailyForm.getUserId())) {
-//            // エラーハンドリング: ログインユーザーと保存対象ユーザーが一致しない場合など
-//            // エラーメッセージをModelに追加して、エラーフラグメントを返すか、リダイレクト
-//            return "fragments/empty :: emptyFragment"; // 仮の空フラグメント
-//        }
-//
-//        workingService.saveOrUpdateDailyWorking(dailyForm);
-//
-//        // 更新後のWorkingFormを再度取得して返すことで、フロントが更新された状態を反映
-//        LocalDate updatedDate = dailyForm.getDate();
-//        Optional<WorkingForm> updatedDailyForm = workingService.getDailyWorking(loginUser.getId(), updatedDate);
-//
-//        if(updatedDailyForm.isPresent()){
-//            model.addAttribute("workingForm", updatedDailyForm.get());
-//        } else {
-//            // エラーの場合、元のフォームを返すか、エラーメッセージをセット
-//            model.addAttribute("workingForm", dailyForm);
-//        }
-//
-//        return "fragments/daily_working_form :: dailyWorkingForm";
-//    }
-
+    
     // 勤怠データ保存処理
     @PostMapping("/monthWork/save")
     public String saveMonthlyWorking(@ModelAttribute("workingMonthForm") WorkingMonthForm form, Model model) {

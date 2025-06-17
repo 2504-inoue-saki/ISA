@@ -502,3 +502,52 @@ header h1 {
     .reset-button:hover {
         background-color: #FFA000;
     }
+
+    /* 申請ボタンのスタイル */
+    .apply-button {
+        background-color: #f0ad4e; /* 明るいオレンジ色 */
+        color: white; /* 白い文字色 */
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+        margin-left: 5px; /* 登録ボタンとの間隔 */
+        transition: background-color 0.3s ease;
+    }
+
+    .apply-button:hover {
+        background-color: #ec971f; /* ホバー時の少し濃いオレンジ色 */
+    }
+
+    /* 無効化されたボタンのスタイル（status == 1 の場合） */
+    .apply-button:disabled {
+        background-color: #cccccc; /* 薄いグレー */
+        color: #666666; /* 濃いめのグレー文字 */
+        cursor: not-allowed;
+        opacity: 0.7; /* 少し透明度を下げる */
+    }
+
+        .add-button {
+            background-color: #28a745;
+            color: white; /* 白い文字色 */
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 5px; /* 登録ボタンとの間隔 */
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #218838;
+        }
+
+        /* 無効化されたボタンのスタイル（status == 1 の場合） */
+        .add-button:disabled {
+            background-color: #cccccc; /* 薄いグレー */
+            color: #666666; /* 濃いめのグレー文字 */
+            cursor: not-allowed;
+            opacity: 0.7; /* 少し透明度を下げる */
+        }
