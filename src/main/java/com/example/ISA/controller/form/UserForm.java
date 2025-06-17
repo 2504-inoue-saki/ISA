@@ -1,6 +1,7 @@
 package com.example.ISA.controller.form;
 
 import com.example.ISA.groups.EditPasswordGroup;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import com.example.ISA.groups.LoginGroup;
 import jakarta.validation.constraints.Pattern;
@@ -36,6 +37,7 @@ public class UserForm {
 
     private Integer status;
 
+    private Boolean isStopped;
     private Boolean stopped;
 
     private LocalDateTime createdDate;
