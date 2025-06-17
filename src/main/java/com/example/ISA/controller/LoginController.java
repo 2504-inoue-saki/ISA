@@ -117,7 +117,7 @@ public class LoginController {
         //チェックに引っかからなければ、ログイン情報を保持＆ホーム画面へリダイレクト(旭)
         HttpSession session = request.getSession(true);
         session.setAttribute("loginUser", loginUser);
-        return new ModelAndView("redirect:/ISA/");
+        return new ModelAndView("redirect:/ISA/2025/6");
     }
 
     /*

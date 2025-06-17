@@ -2,10 +2,14 @@ package com.example.ISA.controller;
 
 
 import com.example.ISA.controller.form.UserForm;
+import com.example.ISA.groups.EditPasswordGroup;
+import com.example.ISA.groups.LoginGroup;
 import com.example.ISA.service.UserService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,7 +40,7 @@ public class MyInformationController {
     }
 
     @PutMapping("/myInformation")
-    public ModelAndView editPassword(@ModelAttribute ("password")UserForm password){
+    public ModelAndView editPassword(@Validated({EditPasswordGroup.class}) @ModelAttribute ("password")UserForm password, BindingResult result){
         ModelAndView mav = new ModelAndView();
         //エラーメッセージを入れる用のリストを作っておく
         List<String> errorMessages = new ArrayList<String>();
@@ -62,6 +66,6 @@ public class MyInformationController {
         }
 
         userService.savePassword(password);
-        return new ModelAndView("redirect:/ISA/");
+        return new ModelAndView("redirect:/ISA/2025/6");
     }
 }
