@@ -128,6 +128,7 @@ public class UserService {
         user.setName(reqUser.getName());
         user.setCategory(reqUser.getCategory());
         user.setStatus(reqUser.getStatus());
+        user.setStopped(reqUser.getStopped());
         user.setCreatedDate(reqUser.getCreatedDate());
         user.setUpdatedDate(reqUser.getUpdatedDate());
         return user;
@@ -152,5 +153,12 @@ public class UserService {
         users.add(user);
         //List<User>をList<UserForm>に詰め替えるメソッド呼び出し
         return setUserForm(users).get(0);
+    }
+
+    /*
+     * ユーザ削除処理
+     */
+    public void delete(int id) {
+        userRepository.deleteById(id);
     }
 }

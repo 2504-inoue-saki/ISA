@@ -98,7 +98,7 @@ public class UserController {
             mav.addObject("errorMessages", errorMessages);
 
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
@@ -110,7 +110,7 @@ public class UserController {
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
@@ -122,10 +122,11 @@ public class UserController {
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
+        addUser.setStopped(true);
         //入力された情報を登録しに行く
         userService.saveUser(addUser);
         //ユーザー管理画面へリダイレクト
@@ -251,6 +252,20 @@ public class UserController {
         user.setStopped(isStopped);
         //ユーザー復活停止状態の更新
         userService.saveIsStopped(user);
+        //ユーザー管理画面へリダイレクト
+        return new ModelAndView("redirect:/userAdmin");
+    }
+
+    /*
+     * ユーザ削除処理
+     */
+    @PostMapping("/userDelete/{id}")
+    public ModelAndView delete(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+
+        //入力された情報を更新しに行く
+        userService.delete(id);
         //ユーザー管理画面へリダイレクト
         return new ModelAndView("redirect:/userAdmin");
     }

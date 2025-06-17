@@ -31,7 +31,7 @@ public class User {
     @Column(insertable = false)
     private Integer status;
 
-    @Column(name = "is_stopped", insertable = false)
+    @Column(name = "is_stopped")
     private boolean isStopped;
 
     @Column(insertable = false, updatable = false)

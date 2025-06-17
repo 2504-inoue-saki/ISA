@@ -4,6 +4,7 @@ import com.example.ISA.groups.AddGroup;
 import com.example.ISA.groups.EditGroup;
 import com.example.ISA.groups.EditPasswordGroup;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import com.example.ISA.groups.LoginGroup;
 import jakarta.validation.constraints.Pattern;
@@ -38,11 +39,11 @@ public class UserForm {
 
     private String checkPassword;
 
-    private Integer category;
+    @Min(value = 1, message = E0021, groups = { AddGroup.class, EditGroup.class })
+    private Integer category; //権限系
 
-    private Integer status;
+    private Integer status; //申請系
 
-    private Boolean isStopped;
     private Boolean stopped;
 
     private LocalDateTime createdDate;
