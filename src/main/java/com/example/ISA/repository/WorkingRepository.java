@@ -51,6 +51,9 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
     //▲ある1人のユーザの申請状況を確認している
     public boolean existsByUserIdAndStatus(int userId, int status);
 
+    // ★勤怠登録していない新人さんを弾く用
+    public boolean existsByUserId(int userId);
+
     /*
      * 個人申請承認処理
      */

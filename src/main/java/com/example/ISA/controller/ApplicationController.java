@@ -61,11 +61,15 @@ public class ApplicationController {
         for (int i = 1; i <= 100; i++){
             List<Integer> userIds = new ArrayList<>();
             for (WorkingForm data: workingDate){
-                if (data.getId() == i ){
+                if (data.getUserId() == i ){
                     userIds.add(i);
                 }
             }
             int userStatus = 2; //ユーザの申請が全て承認状態
+            // 勤怠登録の無い新人さん
+            if (userIds.size() == 0){
+                userStatus = 4;
+            }
             for (Integer userId: userIds){
                 int status = 0; //とある１日が未申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
