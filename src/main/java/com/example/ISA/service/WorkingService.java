@@ -323,9 +323,7 @@ public class WorkingService {
 
             formAll.setStatus((int) objects[9]); // status
 
-            formAll.setDate((Date) objects[10]); // date
-            // Date→LocalDate型に変換してセット
-            formAll.setLocalDate(LocalDate.ofInstant(formAll.getDate().toInstant(), ZoneId.systemDefault()));
+            formAll.setDate((LocalDate) objects[10]); // date
 
             formAll.setFiscalYear((int) objects[11]); // fiscalYear
             formAll.setDayOfWeek((String) objects[12]); // dayOfWeek

@@ -29,8 +29,8 @@ public class AllForm {
     private int status;
     private String statusWord;
 
-    private Date date;
-    private LocalDate localDate;
+    private LocalDate date;
+
     private int fiscalYear;
     private String dayOfWeek;
     private String memo;

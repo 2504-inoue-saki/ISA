@@ -6,7 +6,7 @@
     <title>ユーザ編集</title>
 </head>
 <body>
-<header th:replace="~{fragments/header :: commonHeader('ユーザ編集', false, ${isLoggedIn}, ${userCategory})}"></header>
+<!--<header th:replace="~{fragments/header :: commonHeader('ユーザ編集', false, ${isLoggedIn}, ${userCategory})}"></header>-->
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
