@@ -86,7 +86,7 @@ public class ApplicationController {
             userService.saveStatus(i,userStatus);
         }
         // ユーザ情報の全権取得
-        List<UserForm> userData = userService.findUserDate();
+        List<UserForm> userData = userService.findUserData();
 
         // viewするデータ
         mav.addObject("users", userData);

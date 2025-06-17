@@ -28,15 +28,15 @@ public class User {
     @Column
     private Integer category;
 
-    @Column
+    @Column(insertable = false)
     private Integer status;
 
-    @Column(name = "is_stopped")
+    @Column(name = "is_stopped", insertable = false)
     private boolean isStopped;
 
-    @Column(updatable = false)
+    @Column(insertable = false, updatable = false)
     private LocalDateTime createdDate;
 
-    @Column
+    @Column(insertable = false, updatable = false)
     private LocalDateTime updatedDate;
 }

@@ -8,7 +8,7 @@
     <title>ユーザ管理</title>
 </head>
 <body>
-<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false, ${isLoggedIn}, ${userCategory})}"></header>
+<!--<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false, ${isLoggedIn}, ${userCategory})}"></header>-->
 
 <div th:if="${errorMessages}" class="error-messages">
     <span th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></span>
@@ -18,17 +18,15 @@
     <table class="user-table">
         <thead>
         <tr>
-            <th>社員ID</th>
             <th>アカウント名</th>
             <th>名前</th>
             <th>ユーザ区分</th>
             <th>ユーザ状態</th>
-            <th></th>
+            <th>ユーザ編集</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
             <td th:text="${user.account}"></td>
             <td th:text="${user.name}"></td>
             <td>
@@ -36,15 +34,12 @@
                 <span th:if="${user.category == 2}">承認者</span>
                 <span th:if="${user.category == 3}">システム管理者</span> </td>
             <td>
-                <form th:action="@{/switch/{id}(id=${user.id})}" method="post" class="status-update-form">
-                    <input type="hidden" name="_method" value="put"/>
-                    <input type="hidden" name="userName" th:value="${user.name}"/>
-                    <input type="hidden" name="category" th:value="${user.category}"/>
-                    <select name="stopped" class="status-select-box">
-                        <option value="false" th:selected="${user.stopped == false}">稼働</option>
-                        <option value="true" th:selected="${user.stopped == true}">停止</option>
+                <form th:action="@{/switch/{id}(id=${user.id})}" method="post">
+                    <select>
+                        <option value="0" th:selected="${user.stopped == true}">稼働</option>
+                        <option value="1" th:selected="${user.stopped == false}">停止</option>
                     </select>
-                    <input type="submit" value="変更" class="update-button" disabled/>
+                    <input type="submit" value="変更" class="update-isStopped-button" disabled>
                 </form>
             </td>
             <td>
