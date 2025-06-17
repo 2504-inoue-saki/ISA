@@ -106,8 +106,8 @@ public class ISAController {
             workingForm.setId(0); // 新規なのでIDは0
             workingForm.setUserId(loggedInUserId);
             workingForm.setDate(date);
-            workingForm.setStatus(-1); // 未入力
-            workingForm.setAttend(0);
+            workingForm.setStatus(0);
+            workingForm.setAttend(-1);
             workingForm.setMemo("");
         }
 
