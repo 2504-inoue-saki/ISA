@@ -140,10 +140,10 @@ public class WorkingService {
                 // calculateAndSetTimes は時間表示フィールドのみを更新する
                 calculateAndSetTimes(form, existingWorking);
             } else {
-                // 初期値をセット (memoはここで空文字列に設定されている)
+                // 初期値をセット
                 form.setId(0);
-                form.setStatus(-1);
-                form.setAttend(0);
+                form.setStatus(0);
+                form.setAttend(-1);
                 form.setBreakTimeDisplay("0:00");
                 form.setWorkingTimeDisplay("0:00");
                 form.setMemo(""); // 新規作成時は空のメモ
@@ -168,8 +168,8 @@ public class WorkingService {
             form.setId(0);
             form.setUserId(userId);
             form.setDate(date);
-            form.setStatus(-1);
-            form.setAttend(0);
+            form.setStatus(0);
+            form.setAttend(-1);
             form.setBreakTimeDisplay("0:00");
             form.setWorkingTimeDisplay("0:00");
             form.setMemo("");
@@ -209,7 +209,7 @@ public class WorkingService {
             workingEntity.setDate(workingDate);
 
             if (dailyForm.getAttend() == null) {
-                workingEntity.setAttend(0); // nullの場合はデフォルト値を設定
+                workingEntity.setAttend(-1);
             } else {
                 workingEntity.setAttend(dailyForm.getAttend());
             }
@@ -220,7 +220,7 @@ public class WorkingService {
             workingEntity.setEndBreak(dailyForm.getEndBreak());
 
             if (dailyForm.getStatus() == null) {
-                workingEntity.setStatus(0); // デフォルトを「未入力」に設定
+                workingEntity.setStatus(0);
             } else {
                 workingEntity.setStatus(dailyForm.getStatus());
             }
@@ -285,15 +285,15 @@ public class WorkingService {
         List<AllForm> formAlls = new ArrayList<>();
         for (Object[] objects : results) {
             AllForm formAll = new AllForm();
-            formAll.setAccount((String) objects[0]); // account
-            formAll.setName((String) objects[1]); // name
-            formAll.setId((int) objects[2]); // ID
-            formAll.setUserId((int) objects[3]); // userId
-            formAll.setAttend((int) objects[4]); // attend
-            formAll.setStartWork((String) objects[5]); // startWork
-            formAll.setEndWork((String) objects[6]); // endWork
-            formAll.setStartBreak((String) objects[7]); // startBreak
-            formAll.setEndBreak((String) objects[8]); // endBreak
+            formAll.setAccount((String) objects[0]);
+            formAll.setName((String) objects[1]);
+            formAll.setId((int) objects[2]);
+            formAll.setUserId((int) objects[3]);
+            formAll.setAttend((int) objects[4]);
+            formAll.setStartWork((String) objects[5]);
+            formAll.setEndWork((String) objects[6]);
+            formAll.setStartBreak((String) objects[7]);
+            formAll.setEndBreak((String) objects[8]);
             //労働時間と休憩時間の計算
             String breakDuration = convertToLocalTime(formAll.getStartBreak(), formAll.getEndBreak());
             String workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
@@ -302,17 +302,17 @@ public class WorkingService {
             formAll.setWorkDuration(workDuration);
             formAll.setBreakDuration(breakDuration);
 
-            formAll.setStatus((int) objects[9]); // status
+            formAll.setStatus((int) objects[9]);
 
-            formAll.setDate((LocalDate) objects[10]); // date
+            formAll.setDate((LocalDate) objects[10]);
 
-            formAll.setFiscalYear((int) objects[11]); // fiscalYear
-            formAll.setDayOfWeek((String) objects[12]); // dayOfWeek
+            formAll.setFiscalYear((int) objects[11]);
+            formAll.setDayOfWeek((String) objects[12]);
 
             if (objects[13] == null) {
                 objects[13] = "";
             }
-            formAll.setMemo((String) objects[13]); // memo
+            formAll.setMemo((String) objects[13]);
             formAlls.add(formAll);
         }
         return formAlls;

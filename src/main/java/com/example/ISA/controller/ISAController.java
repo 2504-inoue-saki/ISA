@@ -20,10 +20,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/ISA")
@@ -42,6 +39,21 @@ public class ISAController {
     // URLに年月がない場合は現在の月を表示
     @GetMapping
     public String home(Model model) {
+        //フィルターの処理
+        //セッションの獲得
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession(true);
+        //セッション内にフィルターメッセージがある時フィルターに引っかかる
+        if (session.getAttribute("filterMessage") != null) {
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<>();
+            //フィルターメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
+            errorMessages.add((String) session.getAttribute("filterMessage"));
+            //セッション内のフィルターメッセージを消す
+            session.removeAttribute("filterMessage");
+            //エラーメッセージが詰まったリストをviewに送る
+            mav.addObject("errorMessages", errorMessages);
+        }
         LocalDate today = LocalDate.now();
         return "redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue();
     }
@@ -106,8 +118,8 @@ public class ISAController {
             workingForm.setId(0); // 新規なのでIDは0
             workingForm.setUserId(loggedInUserId);
             workingForm.setDate(date);
-            workingForm.setStatus(-1); // 未入力
-            workingForm.setAttend(0);
+            workingForm.setStatus(0);
+            workingForm.setAttend(-1);
             workingForm.setMemo("");
         }
 

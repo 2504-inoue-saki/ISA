@@ -46,7 +46,7 @@
             <tr th:each="workingDatum, stat : ${workingMonthForm.workings}">
                 <td th:text="${#temporals.format(workingDatum.date, 'yyyy-MM-dd')}"></td>
                 <td th:text="${workingDatum.dayOfWeek}">曜日</td>
-                <td th:switch="${workingDatum.status}">
+                <td th:switch="${workingDatum.attend}">
                     <span th:case="-1">未入力</span>
                     <span th:case="0">出勤</span>
                     <span th:case="1">リモート</span>
