@@ -52,6 +52,6 @@ public class PopupController{
         workingForm.setUserId(userId);
 
         workingService.saveForm(workingForm);
-        return new ModelAndView("redirect:/ISA/" + year + "/" + month + checkId);
+        return new ModelAndView("redirect:/ISA/" + year + "/" + month);
     }
 }
