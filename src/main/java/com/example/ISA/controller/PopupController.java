@@ -43,13 +43,15 @@ public class PopupController{
     @PostMapping("/saveDate/{subjectId}")
     public ModelAndView Content(@PathVariable(required = false) String subjectId,
                                 @ModelAttribute("workingDatum") WorkingForm workingForm,
-                                @RequestParam(name = "checkId", required = false) String checkId) throws ParseException {
+                                @RequestParam(name = "checkId", required = false) String checkId,
+                                @RequestParam(name = "year") int year,
+                                @RequestParam(name = "month") int month) throws ParseException {
         int id = Integer.parseInt(subjectId);
         int userId = Integer.parseInt(checkId);
         workingForm.setId(id);
         workingForm.setUserId(userId);
 
         workingService.saveForm(workingForm);
-        return new ModelAndView("redirect:/applicationPrivate/" + checkId);
+        return new ModelAndView("redirect:/ISA/" + year + "/" + month + checkId);
     }
 }

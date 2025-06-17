@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,10 @@ public class LoginController {
         //チェックに引っかからなければ、ログイン情報を保持＆ホーム画面へリダイレクト(旭)
         HttpSession session = request.getSession(true);
         session.setAttribute("loginUser", loginUser);
-        return new ModelAndView("redirect:/ISA/2025/6");
+        
+        // 井上追加
+        LocalDate today = LocalDate.now(); // 現在の年月を取得
+        return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
     }
 
     /*
@@ -126,10 +130,10 @@ public class LoginController {
     @PostMapping("/logout")
     public ModelAndView logoutContent() {
         HttpSession session = request.getSession(true);
-        //ログインユーザが存在しない場合→エラーメッセージをホーム画面に表示(旭)
+        //ログインユーザが存在しない場合→エラーメッセージをホーム画面に表示
         if (session.getAttribute("loginUser") == null) {
             session.setAttribute("filterMessage", E0025);
-            return new ModelAndView("redirect:/IS/");
+            return new ModelAndView("redirect:/ISA/");
         }
         session.removeAttribute("loginUser");
         return new ModelAndView("redirect:/login");

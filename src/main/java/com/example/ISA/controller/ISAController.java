@@ -45,7 +45,6 @@ public class ISAController {
     // URLに年月がない場合は現在の月を表示
     @GetMapping
     public String home(Model model) {
-        logger.info("ISAController home() method called. Attempting to redirect to current month.");
         LocalDate today = LocalDate.now();
         return "redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue();
     }
@@ -53,21 +52,11 @@ public class ISAController {
     // 特定の月でのホーム画面表示処理
     @GetMapping("/{year}/{month}")
     public String showMonthlyWorking(@PathVariable int year, @PathVariable int month, Model model) {
-        logger.info("ISAController showMonthlyWorking() method called for year={}, month={}", year, month);
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
 
-//        if (loginUser == null) {
-//            // ログインしていない場合はログインページへリダイレクト
-//            return "redirect:/ISA/login";
-//        }
-
         if (loginUser == null) {
-            // ログインしていない場合の一時的なダミーユーザー設定
-            loginUser = new UserForm();
-            loginUser.setId(1);
-            loginUser.setName("仮ユーザー");
-            loginUser.setCategory(1);
-            session.setAttribute("loginUser", loginUser);
+            // ログインしていない場合はログインページへリダイレクト
+            return "redirect:/login";
         }
 
         int loggedInUserId = loginUser.getId();
@@ -94,6 +83,18 @@ public class ISAController {
         model.addAttribute("prevMonth", currentMonthDate.minusMonths(1).getMonthValue());
         model.addAttribute("nextYear", currentMonthDate.plusMonths(1).getYear());
         model.addAttribute("nextMonth", currentMonthDate.plusMonths(1).getMonthValue());
+
+        logger.info("Fetched {} monthly workings for user ID {} in {}-{}:", monthlyWorkings.size(), loggedInUserId, year, month);
+        if (monthlyWorkings.isEmpty()) {
+            logger.warn("No working data found for user ID {} in {}-{}", loggedInUserId, year, month);
+        } else {
+            // 各勤怠データの詳細をログ出力して確認
+            for (WorkingForm workingDatum : monthlyWorkings) {
+                logger.debug("  Working ID: {}, Date: {}, Status: {}, StartWork: {}, EndWork: {}",
+                        workingDatum.getId(), workingDatum.getDate(), workingDatum.getStatus(),
+                        workingDatum.getStartWork(), workingDatum.getEndWork());
+            }
+        }
 
         return "ISA";
     }
@@ -128,33 +129,7 @@ public class ISAController {
         model.addAttribute("workingForm", workingForm);
         return "fragments/daily_working_form :: dailyWorkingForm"; // 作成したフラグメントを返す
     }
-
-    // 単一日の勤怠データを保存するエンドポイント (Ajax呼び出し用)
-//    @PostMapping("/daily-save")
-//    public String saveDailyWorking(@ModelAttribute WorkingForm dailyForm, Model model) {
-//        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
-//        if (loginUser == null || !Objects.equals(loginUser.getId(), dailyForm.getUserId())) {
-//            // エラーハンドリング: ログインユーザーと保存対象ユーザーが一致しない場合など
-//            // エラーメッセージをModelに追加して、エラーフラグメントを返すか、リダイレクト
-//            return "fragments/empty :: emptyFragment"; // 仮の空フラグメント
-//        }
-//
-//        workingService.saveOrUpdateDailyWorking(dailyForm);
-//
-//        // 更新後のWorkingFormを再度取得して返すことで、フロントが更新された状態を反映
-//        LocalDate updatedDate = dailyForm.getDate();
-//        Optional<WorkingForm> updatedDailyForm = workingService.getDailyWorking(loginUser.getId(), updatedDate);
-//
-//        if(updatedDailyForm.isPresent()){
-//            model.addAttribute("workingForm", updatedDailyForm.get());
-//        } else {
-//            // エラーの場合、元のフォームを返すか、エラーメッセージをセット
-//            model.addAttribute("workingForm", dailyForm);
-//        }
-//
-//        return "fragments/daily_working_form :: dailyWorkingForm";
-//    }
-
+    
     // 勤怠データ保存処理
     @PostMapping("/monthWork/save")
     public String saveMonthlyWorking(@ModelAttribute("workingMonthForm") WorkingMonthForm form, Model model) {

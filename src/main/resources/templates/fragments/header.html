@@ -11,6 +11,9 @@
 
         <nav class="header-nav">
             <ul th:if="${isLoggedIn}" class="nav-links">
+                <li th:if="${loginUser != null}">
+                    <span class="user-name" th:text="${loginUser.name} + 'さん'"></span>
+                </li>
                 <li>
                     <form th:action="@{/myInformation/{id}(id=${loginUser.id})}" method="get">
                         <button type="submit" class="nav-button">パスワード変更</button>
@@ -18,7 +21,7 @@
                 </li>
 
                 <li th:if="${userCategory == 2}">
-                    <form th:action="@{/applicationList}" method="get">
+                    <form th:action="@{/application}" method="get">
                         <button type="submit" class="nav-button">申請一覧</button>
                     </form>
                 </li>
