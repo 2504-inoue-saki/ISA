@@ -12,7 +12,7 @@
         <nav class="header-nav">
             <ul th:if="${isLoggedIn}" class="nav-links">
                 <li>
-                    <form th:action="@{/changePassword}" method="get">
+                    <form th:action="@{/myInformation}" method="get">
                         <button type="submit" class="nav-button">パスワード変更</button>
                     </form>
                 </li>
@@ -29,7 +29,7 @@
                     </form>
                 </li>
 
-                <li th:unless="${isLoginPage}">
+                <li th:if="${!isLoginPage}">
                     <form th:action="@{/logout}" method="post">
                         <button type="submit" class="logout-button">ログアウト</button>
                     </form>

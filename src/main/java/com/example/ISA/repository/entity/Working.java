@@ -3,7 +3,9 @@ package com.example.ISA.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.util.Date;
 @Table(name = "working")
 @Getter
 @Setter
+@EntityListeners(AuditingEntityListener.class)
 public class Working {
     @Id
     @Column
@@ -22,7 +25,7 @@ public class Working {
     @Column
     private Integer userId;
 
-    @Column(updatable = false)
+    @Column
     private LocalDate date;
 
     @Column
@@ -46,9 +49,11 @@ public class Working {
     @Column
     private String memo;
 
+    @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
-    @Column(updatable = false)
+    @LastModifiedDate
+    @Column
     private LocalDateTime updatedDate;
 }

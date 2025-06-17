@@ -52,6 +52,14 @@ public class LoginController {
         UserForm loginUser = new UserForm();
         mav.addObject("loginUser", loginUser);
 
+        // ヘッダー表示に必要なModel属性を設定
+        mav.addObject("pageTitle", "ログイン"); // ページタイトル
+        mav.addObject("isLoginPage", true);   // ログインページである
+        mav.addObject("isLoggedIn", false);   // まだログインしていない
+        mav.addObject("userCategory", -1);    // ログイン前なのでカテゴリは不要
+        mav.addObject("currentPage", "/login"); // 現在のページURL (login.htmlから遷移する際に使用)
+
+
         // ヘッダー表示処理
         // ログイン画面なので、ログアウトボタンは非表示にする
         mav.addObject("isLoginPage", true);
@@ -94,6 +102,14 @@ public class LoginController {
             List<String> errorMessages = new ArrayList<String>();
             errorMessages.add(E0003);
             mav.addObject("errorMessages", errorMessages);
+
+            // ヘッダー表示に必要なModel属性を設定
+            mav.addObject("pageTitle", "ログイン"); // ページタイトル
+            mav.addObject("isLoginPage", true);   // ログインページである
+            mav.addObject("isLoggedIn", false);   // まだログインしていない
+            mav.addObject("userCategory", -1);    // ログイン前なのでカテゴリは不要
+            mav.addObject("currentPage", "/login"); // 現在のページURL (login.htmlから遷移する際に使用)
+
             // 画面遷移先を指定
             mav.setViewName("/login");
             return mav;

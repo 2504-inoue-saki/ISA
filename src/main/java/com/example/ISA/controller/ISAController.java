@@ -7,7 +7,10 @@ import com.example.ISA.repository.entity.Calendar;
 import com.example.ISA.service.WorkingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,17 +38,22 @@ public class ISAController {
     @Autowired
     private WorkingService workingService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ISAController.class);
+
+
     // ホーム画面表示処理
     // URLに年月がない場合は現在の月を表示
     @GetMapping
     public String home(Model model) {
+        logger.info("ISAController home() method called. Attempting to redirect to current month.");
         LocalDate today = LocalDate.now();
-        return showMonthlyWorking(today.getYear(), today.getMonthValue(), model);
+        return "redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue();
     }
 
     // 特定の月でのホーム画面表示処理
-    @GetMapping("/month/{year}/{month}")
+    @GetMapping("/{year}/{month}")
     public String showMonthlyWorking(@PathVariable int year, @PathVariable int month, Model model) {
+        logger.info("ISAController showMonthlyWorking() method called for year={}, month={}", year, month);
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
 
 //        if (loginUser == null) {
@@ -67,7 +75,7 @@ public class ISAController {
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("isLoggedIn", true);
         model.addAttribute("userCategory", loginUser.getCategory());
-        model.addAttribute("currentPage", "/ISA"); // ホーム画面のパス
+        model.addAttribute("currentPage", "/ISA/" + year + "/" + month); // ホーム画面のパス
 
         List<String> filterErrorMessages = (List<String>) session.getAttribute("filterErrorMessages");
         if (filterErrorMessages != null && !filterErrorMessages.isEmpty()) {
@@ -162,7 +170,6 @@ public class ISAController {
         workingService.saveOrUpdateMonthlyWorkings(loggedInUserId, form.getWorkings());
 
         // 保存後、同じ月（または保存した月）のホーム画面にリダイレクト
-        return "redirect:/ISA/month/" + form.getYear() + "/" + form.getMonth();
+        return "redirect:/ISA/" + form.getYear() + "/" + form.getMonth();
     }
-
 }
