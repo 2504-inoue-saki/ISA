@@ -19,8 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,14 +43,16 @@ public class PopupController{
     public ModelAndView Content(@PathVariable(required = false) String subjectId,
                                 @ModelAttribute("workingDatum") WorkingForm workingForm,
                                 @RequestParam(name = "checkId", required = false) String checkId,
-                                @RequestParam(name = "year") int year,
-                                @RequestParam(name = "month") int month) throws ParseException {
+                                @RequestParam(name = "date") LocalDate date) throws ParseException {
         int id = Integer.parseInt(subjectId);
         int userId = Integer.parseInt(checkId);
         workingForm.setId(id);
         workingForm.setUserId(userId);
-
         workingService.saveForm(workingForm);
+      
+        int month = date.getMonthValue();
+        int year = date.getYear();
+
         return new ModelAndView("redirect:/ISA/" + year + "/" + month);
     }
 }

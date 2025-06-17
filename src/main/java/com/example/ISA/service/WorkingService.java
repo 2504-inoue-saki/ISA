@@ -340,6 +340,15 @@ public class WorkingService {
         }
     }
 
+    // ★勤怠登録していない新人さんを弾く用
+    public boolean existCheckByUserId(int userId) {
+        if (workingRepository.existsByUserId(userId)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
      * 個人申請承認処理
      */

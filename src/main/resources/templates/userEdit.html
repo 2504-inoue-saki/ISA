@@ -15,6 +15,7 @@
     <form th:action="@{/userEdit}" th:method="put" th:object="${editUser}">
         <input type="hidden" th:field="*{id}">
         <input type="hidden" th:field="*{stopped}">
+        <input type="hidden" th:field="*{status}">
         アカウント
         <input type="text" th:field="*{account}"/> <br/>
         パスワード
@@ -28,7 +29,6 @@
             <option value="1">一般ユーザ</option>
             <option value="2">承認者</option>
             <option value="3">システム管理者</option>
-            <option value="0" selected>選択してください</option>
         </select> <br/>
         <input type="submit" value="更新" class="primary-button">
     </form>

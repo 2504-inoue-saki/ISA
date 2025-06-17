@@ -40,7 +40,7 @@ public class ApplicationController {
     public ModelAndView applicationView() {
         ModelAndView mav = new ModelAndView();
 
-        ////▲自身の個人申請詳細画面は表示できないの処理
+        //▲自身の個人申請詳細画面は表示できないの処理
         //セッションの獲得
         HttpSession session = request.getSession(true);
         //セッション内にエラーメッセージがある時
@@ -60,12 +60,18 @@ public class ApplicationController {
         // 申請状況をチェック(100人までしか登録できない)
         for (int i = 1; i <= 100; i++){
             List<Integer> userIds = new ArrayList<>();
+            //ユーザIDがiのデータ数を数える
             for (WorkingForm data: workingDate){
-                if (data.getId() == i ){
+                if (data.getUserId() == i ){
+                    //リストにユーザIDをデータ数分追加
                     userIds.add(i);
                 }
             }
             int userStatus = 2; //ユーザの申請が全て承認状態
+            // 勤怠登録の無い新人さん
+            if (userIds.size() == 0){
+                userStatus = 4;
+            }
             for (Integer userId: userIds){
                 int status = 0; //とある１日が未申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
@@ -120,7 +126,7 @@ public class ApplicationController {
             if (loginUserForm.getId() == id){
                 session.setAttribute("ErrorMessage", E0023);
                 //申請一覧画面へリダイレクト
-                return new ModelAndView("redirect:/application/");
+                return new ModelAndView("redirect:/application");
             }
         }
 

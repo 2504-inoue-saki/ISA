@@ -1,7 +1,10 @@
 package com.example.ISA.controller.form;
 
+import com.example.ISA.groups.AddGroup;
+import com.example.ISA.groups.EditGroup;
 import com.example.ISA.groups.EditPasswordGroup;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import com.example.ISA.groups.LoginGroup;
 import jakarta.validation.constraints.Pattern;
@@ -20,24 +23,27 @@ public class UserForm {
 
     private Integer id;
 
-    @NotEmpty(message = E0001, groups = { LoginGroup.class })
+    @NotEmpty(message = E0001, groups = { LoginGroup.class, AddGroup.class, EditGroup.class })
+    @Size(min = 6, max = 20, message = E0014, groups = { AddGroup.class, EditGroup.class })
+    @Pattern(regexp="^[0-9a-zA-Z]+$", message = E0014, groups = { AddGroup.class, EditGroup.class })
     private String account;
 
-    private String name;
-
-    @NotEmpty(message = E0016, groups = {EditPasswordGroup.class})
-    @Size(min = 6, max = 20, message = E0017, groups = {EditPasswordGroup.class})
-    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {EditPasswordGroup.class})
-    @NotEmpty(message = E0002, groups = { LoginGroup.class })
+    @NotEmpty(message = E0002, groups = { LoginGroup.class, EditPasswordGroup.class, AddGroup.class })
+    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class, EditPasswordGroup.class})
+    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class, EditPasswordGroup.class})
     private String password;
+
+    @NotEmpty(message = E0019, groups = { AddGroup.class, EditGroup.class })
+    @Size(max = 10, message = E0020, groups = { AddGroup.class, EditGroup.class })
+    private String name;
 
     private String checkPassword;
 
-    private Integer category;
+    @Min(value = 1, message = E0021, groups = { AddGroup.class, EditGroup.class })
+    private Integer category; //権限系
 
-    private Integer status;
+    private Integer status; //申請系
 
-    private Boolean isStopped;
     private Boolean stopped;
 
     private LocalDateTime createdDate;

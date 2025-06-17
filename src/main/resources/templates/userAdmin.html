@@ -23,6 +23,7 @@
             <th>ユーザ区分</th>
             <th>ユーザ状態</th>
             <th>ユーザ編集</th>
+            <th>ユーザ削除</th>
         </tr>
         </thead>
         <tbody>
@@ -45,6 +46,11 @@
             <td>
                 <form th:action="@{/userEdit/{checkId}(checkId=${user.id})}" method="get">
                     <input type="submit" value="編集" class="edit-button"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/userDelete/{id}(id=${user.id})}" method="post">
+                    <input type="submit" value="削除" class="edit-button"/>
                 </form>
             </td>
         </tr>

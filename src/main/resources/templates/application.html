@@ -17,17 +17,20 @@
 </div>
 
 <div class="table" >
-    <table border="1">
-        <tbody>
+    <table class="user-table">
+        <thead>
         <tr>
             <th>アカウント名</th>
             <th>名前</th>
             <th>申請状況</th>
         </tr>
+        </thead>
+        <tbody>
         <div class="table-contents" th:each="user : ${users}">
             <tr>
                 <td>
-                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:text="${user.account}" />
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:if="${user.status < 4}" th:text="${user.account}" />
+                    <span th:if="${user.status == 4}" th:text="${user.account}" />
                 </td>
                 <td th:text="${user.name}"></td>
                 <td>
@@ -35,6 +38,7 @@
                     <span th:if="${user.status == 1}">承認依頼があります</span>
                     <span th:if="${user.status == 2}">全て承認しました</span>
                     <span th:if="${user.status == 3}">差し戻しをしています</span>
+                    <span th:if="${user.status == 4}">勤怠登録がありません</span>
                 </td>
             </tr>
         </div>

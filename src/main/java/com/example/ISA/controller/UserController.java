@@ -1,6 +1,7 @@
 package com.example.ISA.controller;
 
 import com.example.ISA.controller.form.UserForm;
+import com.example.ISA.groups.AddGroup;
 import com.example.ISA.groups.EditGroup;
 import com.example.ISA.groups.LoginGroup;
 import com.example.ISA.service.UserService;
@@ -82,7 +83,7 @@ public class UserController {
     //ユーザ新規登録処理
     @PostMapping("/userAdd")
     //リクエストパラメータの取得
-    public ModelAndView userAddProcessContent(@Validated({LoginGroup.class}) @ModelAttribute("addUser") UserForm addUser, BindingResult result) {
+    public ModelAndView userAddProcessContent(@Validated({AddGroup.class}) @ModelAttribute("addUser") UserForm addUser, BindingResult result) {
         ModelAndView mav = new ModelAndView();
 
         //リクエストパラメータの必須＆文字数＆半角文字チェック
@@ -97,7 +98,7 @@ public class UserController {
             mav.addObject("errorMessages", errorMessages);
 
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
@@ -109,7 +110,7 @@ public class UserController {
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
@@ -121,10 +122,11 @@ public class UserController {
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
-            mav.setViewName("/userAdd");
+            mav.setViewName("/signup");
             return mav;
         }
 
+        addUser.setStopped(true);
         //入力された情報を登録しに行く
         userService.saveUser(addUser);
         //ユーザー管理画面へリダイレクト
@@ -250,6 +252,20 @@ public class UserController {
         user.setStopped(isStopped);
         //ユーザー復活停止状態の更新
         userService.saveIsStopped(user);
+        //ユーザー管理画面へリダイレクト
+        return new ModelAndView("redirect:/userAdmin");
+    }
+
+    /*
+     * ユーザ削除処理
+     */
+    @PostMapping("/userDelete/{id}")
+    public ModelAndView delete(@PathVariable Integer id) {
+        ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession();
+
+        //入力された情報を更新しに行く
+        userService.delete(id);
         //ユーザー管理画面へリダイレクト
         return new ModelAndView("redirect:/userAdmin");
     }
