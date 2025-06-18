@@ -124,7 +124,7 @@ public class ApplicationController {
             //型変更
             UserForm loginUserForm = (UserForm) loginUser;
             if (loginUserForm.getId() == id){
-                session.setAttribute("ErrorMessage", E0023);
+                session.setAttribute("ErrorMessage", E0018);
                 //申請一覧画面へリダイレクト
                 return new ModelAndView("redirect:/application");
             }

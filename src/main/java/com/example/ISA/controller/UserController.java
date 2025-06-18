@@ -106,7 +106,7 @@ public class UserController {
         if (!addUser.getPassword().equals(addUser.getCheckPassword())) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0018);
+            errorMessages.add(E0010);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
@@ -118,7 +118,7 @@ public class UserController {
         if (userService.existCheck(addUser.getAccount())) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0015);
+            errorMessages.add(E0009);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
@@ -199,7 +199,7 @@ public class UserController {
         String password = editUser.getPassword();
         if (!StringUtils.isEmpty(password) &&
                 ((password.length() < 6 || password.length() > 20) || password.matches("^[!-~]$"))) {
-            errorMessages.add(E0017);
+            errorMessages.add(E0005);
         }
 
         if (errorMessages.size() >= 1){
@@ -212,7 +212,7 @@ public class UserController {
 
         //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
         if (!editUser.getPassword().equals(editUser.getCheckPassword())) {
-            errorMessages.add(E0018);
+            errorMessages.add(E0010);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
@@ -222,7 +222,7 @@ public class UserController {
 
         //●重複チェック→同じアカウント名が存在かつidが異なる場合エラーメッセージ
         if (userService.existCheck(editUser.getAccount()) && (editUser.getId() != userService.findId(editUser.getAccount()))) {
-            errorMessages.add(E0015);
+            errorMessages.add(E0009);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定

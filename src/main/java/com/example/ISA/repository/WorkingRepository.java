@@ -54,6 +54,12 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
     // ★勤怠登録していない新人さんを弾く用
     public boolean existsByUserId(int userId);
 
+    //♥未申請→申請の更新
+    @Transactional
+    @Modifying
+    @Query("UPDATE Working w SET w.status = 1 WHERE w.id = :id ")
+    public void saveApplyById(@Param("id") int id);
+
     /*
      * 個人申請承認処理
      */

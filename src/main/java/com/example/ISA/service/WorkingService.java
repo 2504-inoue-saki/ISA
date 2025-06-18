@@ -10,6 +10,9 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -410,5 +413,10 @@ public class WorkingService {
         working.setStatus(workingForm.getStatus());
         working.setMemo(workingForm.getMemo());
         return working;
+    }
+
+    //♥未申請→申請の更新
+    public void saveUpdateStatusStatus(int id){
+        workingRepository.saveApplyById(id);
     }
 }
