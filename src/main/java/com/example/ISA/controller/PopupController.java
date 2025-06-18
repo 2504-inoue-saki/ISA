@@ -3,7 +3,7 @@ package com.example.ISA.controller;
 import com.example.ISA.Dto.AllForm;
 import com.example.ISA.controller.form.UserForm;
 import com.example.ISA.controller.form.WorkingForm;
-import com.example.ISA.groups.LoginGroup;
+import com.example.ISA.groups.PopupGroup;
 import com.example.ISA.service.UserService;
 import com.example.ISA.service.WorkingService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,16 +42,28 @@ public class PopupController{
      */
     @PostMapping("/saveDate/{id}")
     public ModelAndView Content(@PathVariable(required = false) int id,
-                                @ModelAttribute("workingDatum") WorkingForm workingForm,
-                                @RequestParam(name = "checkId", required = false) int userId,
-                                @RequestParam(name = "date") LocalDate date) throws ParseException {
-        workingForm.setId(id);
+                                @Validated({PopupGroup.class}) @ModelAttribute("workingDatum") WorkingForm workingForm, BindingResult result,
+                                @RequestParam(name = "checkId", required = false) int userId) throws ParseException {
+        int month = workingForm.getDate().getMonthValue();
+        int year = workingForm.getDate().getYear();
+
+        //必須チェック
+        if (result.hasErrors()) {
+            HttpSession session =request.getSession(true);
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<>();
+            //result.getFieldErrors()はresultの持つ全エラーを要素にしたリスト→型はList<FieldError>
+            //要素を1つ取り出してerrorに代入して処理→全ての要素が尽きるまで繰り返す
+            for (FieldError error : result.getFieldErrors()) {
+                //error.getDefaultMessage()で取得したエラーメッセージをリストに追加
+                errorMessages.add(error.getDefaultMessage());
+            }
+            session.setAttribute("popupErrorMessages", errorMessages);
+            return new ModelAndView("redirect:/ISA/" + year + "/" + month);
+        }
         workingForm.setUserId(userId);
         workingForm.setStatus(0);
         workingService.saveForm(workingForm);
-      
-        int month = date.getMonthValue();
-        int year = date.getYear();
 
         return new ModelAndView("redirect:/ISA/" + year + "/" + month);
     }
@@ -60,9 +73,18 @@ public class PopupController{
      */
     @PostMapping("/ISA/apply/{workingId}")
     public ModelAndView apply(@PathVariable(required = false) int workingId){
+
+        //申請処理のヌルチェック
+        WorkingForm workingDate = workingService.findDateDate(workingId);
+        if (StringUtils.isEmpty(workingDate.getStartWork()) || StringUtils.isEmpty(workingDate.getEndWork()) || StringUtils.isEmpty(workingDate.getStartBreak()) || StringUtils.isEmpty(workingDate.getEndBreak())){
+            HttpSession session =request.getSession(true);
+            session.setAttribute("errorMessage", E0017);
+            LocalDate today = LocalDate.now(); // 現在の年月を取得
+            return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
+        }
+
         //♥未申請→申請の更新
         workingService.saveUpdateStatusStatus(workingId);
-
         LocalDate today = LocalDate.now(); // 現在の年月を取得
         return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
     }

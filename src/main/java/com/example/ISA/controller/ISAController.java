@@ -39,6 +39,7 @@ public class ISAController {
     // URLに年月がない場合は現在の月を表示
     @GetMapping
     public String home(Model model) {
+
         //フィルターの処理
         //セッションの獲得
         ModelAndView mav = new ModelAndView();
@@ -76,6 +77,29 @@ public class ISAController {
             session.removeAttribute("filterMessage");
             //エラーメッセージが詰まったリストをviewに送る
             model.addAttribute("errorMessages", errorMessages);
+        }
+        //申請のエラーメッセージ処理
+        //セッション内にフィルターメッセージがある時フィルターに引っかかる
+        if (session.getAttribute("errorMessage") != null) {
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<>();
+            //フィルターメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
+            errorMessages.add((String) session.getAttribute("errorMessage"));
+            //セッション内のフィルターメッセージを消す
+            session.removeAttribute("errorMessage");
+            //エラーメッセージが詰まったリストをviewに送る
+            model.addAttribute("errorMessages", errorMessages);
+        }
+
+        //ポップアップのエラーメッセージ処理
+        //セッション内にフィルターメッセージがある時フィルターに引っかかる
+        if (session.getAttribute("popupErrorMessages") != null) {
+            //ポップアップエラーメッセージをエラーメッセージリストに詰め替える（List<String>に合わせる）
+            List<String> errorMessages = (List<String>) session.getAttribute("popupErrorMessages");
+            //セッション内のポップアップエラーメッセージを消す
+            session.removeAttribute("popupErrorMessages");
+            //エラーメッセージが詰まったリストをviewに送る
+            model.addAttribute("popupErrorMessages", errorMessages);
         }
 
 //        if (loginUser == null) {
