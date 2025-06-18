@@ -33,9 +33,15 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     /*
      * ユーザ復活・停止処理
      */
+    @Transactional
     @Modifying
     @Query("UPDATE User u SET u.isStopped = :isStopped, u.updatedDate = CURRENT_TIMESTAMP WHERE u.id = :id")
     public void saveIsStopped(@Param("id") Integer id, @Param("isStopped") boolean isStopped);
 
     public User findById(int id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.password = :password WHERE u.id = :id ")
+    public void savePassword(@Param("id") int id, @Param("password") String password );
 }

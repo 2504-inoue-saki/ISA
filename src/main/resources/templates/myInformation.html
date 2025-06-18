@@ -12,14 +12,14 @@
     </div>
 
     <div class="main-contents">
-        <form th:action="@{/myInformation}" th:method="put" th:object="${password}">
+        <form th:action="@{/changePassword/{id}(id=${id})}" th:method="put" th:object="${password}">
         新しいパスワード
         <input type="password" th:field="*{password}"/> <br/>
         新しいパスワード確認用
         <input type="password" th:field="*{checkPassword}"/> <br/>
         <input type="submit" value="更新">
         </form>
-        <a href="/ISA/">
+        <a href="/ISA/2025/6">
             <button type="button">戻る</button>
         </a>
     </div>

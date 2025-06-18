@@ -58,6 +58,10 @@ public class UserController {
         mav.addObject("isLoggedIn", isLoggedIn);
         mav.addObject("userCategory", userCategory);
 
+        //ユーザ状態を変更できないようにするためにログインユーザの情報を送る(旭)
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        mav.addObject("loginUser", loginUser);
+
         //画面遷移先指定
         mav.setViewName("userAdmin");
         //フォワード
@@ -160,6 +164,9 @@ public class UserController {
             //ユーザ管理画面へリダイレクト
             return new ModelAndView("redirect:/userAdmin");
         }
+        //ユーザ区分を変更できないようにするためにログインユーザの情報を送る(旭)
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        mav.addObject("loginUser", loginUser);
 
         mav.addObject("editUser", editUser);
         mav.setViewName("userEdit");

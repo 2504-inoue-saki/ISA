@@ -15,7 +15,7 @@
                     <span class="user-name" th:text="${loginUser.name} + 'さん'"></span>
                 </li>
                 <li>
-                    <form th:action="@{/myInformation}" method="get">
+                    <form th:action="@{/myInformation/{id}(id=${loginUser.id})}" method="get">
                         <button type="submit" class="nav-button">パスワード変更</button>
                     </form>
                 </li>

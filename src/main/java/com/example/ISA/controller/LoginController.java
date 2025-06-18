@@ -118,7 +118,7 @@ public class LoginController {
         //チェックに引っかからなければ、ログイン情報を保持＆ホーム画面へリダイレクト(旭)
         HttpSession session = request.getSession(true);
         session.setAttribute("loginUser", loginUser);
-
+        
         // 井上追加
         LocalDate today = LocalDate.now(); // 現在の年月を取得
         return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
