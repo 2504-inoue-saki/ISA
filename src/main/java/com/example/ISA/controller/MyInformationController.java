@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,8 @@ public class MyInformationController {
         }
         String pw = password.getPassword();
         userService.savePassword(pw, id);
-        return new ModelAndView("redirect:/ISA/2025/6");
+
+        LocalDate today = LocalDate.now(); // 現在の年月を取得
+        return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
     }
 }
