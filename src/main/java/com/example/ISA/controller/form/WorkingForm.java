@@ -40,11 +40,14 @@ public class WorkingForm {
     @Pattern(regexp = "^([01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
     private String endWork;
 
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$|^$", message = E0009)
     private String startBreak;
 
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$|^$", message = E0009)
     private String endBreak;
 
     @Size(max = 100, message = E0016, groups = {PopupGroup.class})
+
     private String memo;
 
     private Integer status;
