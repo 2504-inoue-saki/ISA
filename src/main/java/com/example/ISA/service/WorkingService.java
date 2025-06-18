@@ -333,20 +333,12 @@ public class WorkingService {
 
     //▲ある1人のユーザの申請状況を確認している
     public boolean existCheckByUserIdAndStatus(int userId, int status) {
-        if (workingRepository.existsByUserIdAndStatus(userId, status)) {
-            return true;
-        } else {
-            return false;
-        }
+        return workingRepository.existsByUserIdAndStatus(userId, status);
     }
 
     // ★勤怠登録していない新人さんを弾く用
     public boolean existCheckByUserId(int userId) {
-        if (workingRepository.existsByUserId(userId)) {
-            return true;
-        } else {
-            return false;
-        }
+        return workingRepository.existsByUserId(userId);
     }
 
     /*
