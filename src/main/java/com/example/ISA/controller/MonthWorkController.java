@@ -67,9 +67,6 @@ public class MonthWorkController {
         if (redirectAttributes.getFlashAttributes().containsKey("errorMessage")) {
             model.addAttribute("errorMessage", redirectAttributes.getFlashAttributes().get("errorMessage"));
         }
-        if (redirectAttributes.getFlashAttributes().containsKey("successMessage")) {
-            model.addAttribute("successMessage", redirectAttributes.getFlashAttributes().get("successMessage"));
-        }
 
         return "monthWork";
     }
