@@ -94,11 +94,6 @@ public class UserService {
     public void savePassword(String pw,int id) {
         //パスワードを暗号化
         String encPassword = passwordEncoder.encode(pw);
-//        //暗号化したパスワードでセットし直す
-//        userForm.setPassword(encPassword);
-
-//        //引数の型をForm→Entityに変換するメソッド呼び出し
-//        User user = setUserEntity(userForm);
         //ユーザー情報を登録/更新
         userRepository.savePassword(id,encPassword);
     }

@@ -35,10 +35,11 @@
                 <span th:if="${user.category == 2}">承認者</span>
                 <span th:if="${user.category == 3}">システム管理者</span> </td>
             <td>
-                <form th:action="@{/switch/{id}(id=${user.id})}" method="post">
-                    <select>
-                        <option value="0" th:selected="${user.stopped == true}">稼働</option>
-                        <option value="1" th:selected="${user.stopped == false}">停止</option>
+                <form th:action="@{/switch/{id}(id=${user.id})}" th:method="put" class="switch-isStopped">
+                    <input type="hidden"  th:value="${user.name}" name="name" />
+                    <select name="isStopped" class="select-box" th:disabled="${user.id==loginUser.id}">
+                        <option value="1" th:selected="${user.stopped == true}">稼働</option>
+                        <option value="0" th:selected="${user.stopped == false}">停止</option>
                     </select>
                     <input type="submit" value="変更" class="update-isStopped-button" disabled>
                 </form>
@@ -50,7 +51,7 @@
             </td>
             <td>
                 <form th:action="@{/userDelete/{id}(id=${user.id})}" method="post">
-                    <input type="submit" value="削除" class="edit-button"/>
+                    <input type="submit" value="削除" class="delete"/>
                 </form>
             </td>
         </tr>

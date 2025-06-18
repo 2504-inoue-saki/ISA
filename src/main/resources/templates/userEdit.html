@@ -25,7 +25,7 @@
         名前
         <input type="text" th:field="*{name}"/> <br/>
         ユーザ区分
-        <select th:field="*{category}"> <br/>
+        <select th:field="*{category}" th:disabled="${editUser.id==loginUser.id}"> <br/>
             <option value="1">一般ユーザ</option>
             <option value="2">承認者</option>
             <option value="3">システム管理者</option>

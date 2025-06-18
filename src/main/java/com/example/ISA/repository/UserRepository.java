@@ -33,6 +33,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     /*
      * ユーザ復活・停止処理
      */
+    @Transactional
     @Modifying
     @Query("UPDATE User u SET u.isStopped = :isStopped, u.updatedDate = CURRENT_TIMESTAMP WHERE u.id = :id")
     public void saveIsStopped(@Param("id") Integer id, @Param("isStopped") boolean isStopped);
