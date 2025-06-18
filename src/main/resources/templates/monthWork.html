@@ -20,6 +20,16 @@
         <span class="current-month-display" th:text="${currentYear} + '年' + ${currentMonth} + '月'"></span>
     </div>
 
+    <div th:if="${dateErrorMessages != null and !dateErrorMessages.isEmpty()}" class="error-message-section">
+        <h3>入力エラーがあります。内容を確認してください。</h3>
+        <div th:each="entry : ${dateErrorMessages}">
+            <h4 th:text="${#temporals.format(entry.key, 'yyyy-MM-dd')}">2025-06-01</h4>
+            <ul>
+                <li th:each="message : ${entry.value}" th:text="${'・' + message}"></li>
+            </ul>
+        </div>
+    </div>
+
     <form id="attendanceForm" th:action="@{/monthWork/save}" th:object="${workingMonthForm}" method="post">
         <input type="hidden" th:field="*{year}"/>
         <input type="hidden" th:field="*{month}"/>
