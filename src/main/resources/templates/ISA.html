@@ -19,6 +19,9 @@
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
+<div class="errorMessages" th:each="errorMessage : ${popupErrorMessages}" th:if="${popupErrorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
 
 <div class="attendance-container">
     <div class="month-navigation">
@@ -62,11 +65,13 @@
                 <td th:text="${workingDatum.workingTimeDisplay}"></td>
                 <td th:text="${workingDatum.memo}"></td>
                 <td>
+                    <!-- 非活性：申請状況が申請１または承認２の時は入力できない-->
                     <button class="add-button" th:value="${workingDatum.id}" th:text="入力" th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2}"></button>
+                    <!-- 非活性：申請状況が申請１または承認２、勤務区分が未登録-１の時は申請できない-->
                     <button class="apply-button"
                             th:data-id="${workingDatum.id}"
                             th:data-date="${#temporals.format(workingDatum.date, 'yyyy年MM月dd日')}"
-                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1 OR workingDatum.startWork == null OR workingDatum.endWork == null OR workingDatum.breakTimeDisplay == null}"
+                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1}"
                     >申請
                     </button>
                 </td>
@@ -100,40 +105,6 @@
                         </form>
                     </div>
                 </dialog>
-
-                <!-- エラーメッセージがある場合のポップアップ内容 -->
-                <div class="errorMessages" th:each="errorMessage : ${popupErrorMessages}" th:if="${popupErrorMessages != null}">
-                    <dialog id="autoOpenDialog" open>
-                        <div class="title">
-                            <h2 th:text="${workingDatum.date} + 'の勤怠登録'"/>
-                            <span th:text="${errorMessage}"></span>
-                        </div>
-
-                        <div>
-                            <form th:action="@{/saveDate/{subjectId}(subjectId=${workingDatum.id})}" method="post">
-                                <span>勤務区分</span>
-                                <select name="attend" class="select-box">
-                                    <option value="0" th:selected="${workingDatum.attend == 0}">出勤</option>
-                                    <option value="1" th:selected="${workingDatum.attend == 1}">リモート</option>
-                                </select> <br/>
-                                <span>開始-終了</span>
-                                <input type="text" name="startWork" th:value="${workingDatum.startWork}"/>
-                                <input type="text" name="endWork" th:value="${workingDatum.endWork}"/> <br/>
-                                <span>休憩開始-終了</span>
-                                <input type="text" name="startBreak" th:value="${workingDatum.startBreak}"/>
-                                <input type="text" name="endBreak" th:value="${workingDatum.endBreak}"/> <br/>
-                                <span>メモ</span>
-                                <input type="text" name="memo" th:value="${workingDatum.memo}"/> <br/>
-                                <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
-                                <input type="hidden" name="status" th:value="${workingDatum.status}">
-                                <button type="submit" value="entry">登録</button>
-                            </form>
-                            <form method="dialog">
-                                <button class="close" value="close">閉じる</button>
-                            </form>
-                        </div>
-                    </dialog>
-                </div>
             </tr>
             </tr>
             </tbody>

@@ -359,17 +359,6 @@ public class WorkingService {
         workingRepository.saveStatus(workingForm.getId(), workingForm.getStatus());
     }
 
-    /*
-     * ポップアップ表示処理
-     */
-    public WorkingForm findDateDate(int id) {
-        Working working = workingRepository.findById(id);
-        List<Working> workings = new ArrayList<>();
-        workings.add(working);
-        //List<Working>をList<UserForm>に詰め替えるメソッド呼び出し
-        return setWorkingForm(workings).get(0);
-    }
-
     //型をEntity→Formに変換するメソッド（鈴木）
     private List<WorkingForm> setWorkingForm(List<Working> workings) {
         List<WorkingForm> workingForms = new ArrayList<>();
@@ -421,6 +410,15 @@ public class WorkingService {
         working.setStatus(workingForm.getStatus());
         working.setMemo(workingForm.getMemo());
         return working;
+    }
+
+    //申請処理のヌルチェック
+    public WorkingForm findDateDate(int id) {
+        Working working = workingRepository.findById(id);
+        List<Working> workings = new ArrayList<>();
+        workings.add(working);
+        //List<Working>をList<UserForm>に詰め替えるメソッド呼び出し
+        return setWorkingForm(workings).get(0);
     }
 
     //♥未申請→申請の更新
