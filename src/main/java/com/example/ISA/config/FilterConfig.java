@@ -14,7 +14,7 @@ public class FilterConfig {
         FilterRegistrationBean<LoginFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new LoginFilter());
         //ログイン情報が必要なURL
-        bean.addUrlPatterns("/ISA/"); //ホーム画面
+        bean.addUrlPatterns("/ISA/*"); //ホーム画面
         bean.addUrlPatterns("/myInformation/"); //パスワード変更画面
         bean.addUrlPatterns("/monthWork/*"); //月毎勤怠情報編集画面
 
