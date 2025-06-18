@@ -1,6 +1,7 @@
 package com.example.ISA.filter;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import com.example.ISA.controller.form.UserForm;
 import jakarta.servlet.Filter;
@@ -34,7 +35,8 @@ public class ApproveFilter implements Filter {
         //セッション内にログインユーザーがないorそのログインユーザが承認者権限を持たない(2)場合→ホーム画面にエラーメッセージ表示
         if (loginUser == null || loginUserForm.getCategory() != 2) {
             session.setAttribute("filterMessage", E0025);
-            httpResponse.sendRedirect("/ISA/");
+            LocalDate today = LocalDate.now();
+            httpResponse.sendRedirect("/ISA/" + today.getYear() + "/" + today.getMonthValue());
         } else {
             // 通常実行
             chain.doFilter(httpRequest, httpResponse);

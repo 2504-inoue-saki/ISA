@@ -97,7 +97,7 @@ public class LoginController {
         // 入力されたアカウントとパスワードが存在するか確認しに行く
         UserForm loginUser = userService.findLoginUser(requestLogin);
 
-        //ログインユーザー情報チェック
+        //ログインユーザー存在有無と停止チェック
         if (loginUser == null || !loginUser.getStopped()) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();

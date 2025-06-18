@@ -24,22 +24,22 @@ public class UserForm {
     private Integer id;
 
     @NotEmpty(message = E0001, groups = { LoginGroup.class, AddGroup.class, EditGroup.class })
-    @Size(min = 6, max = 20, message = E0014, groups = { AddGroup.class, EditGroup.class })
-    @Pattern(regexp="^[0-9a-zA-Z]+$", message = E0014, groups = { AddGroup.class, EditGroup.class })
+    @Size(min = 6, max = 20, message = E0004, groups = { AddGroup.class, EditGroup.class })
+    @Pattern(regexp="^[0-9a-zA-Z]+$", message = E0004, groups = { AddGroup.class, EditGroup.class })
     private String account;
 
     @NotEmpty(message = E0002, groups = { LoginGroup.class, EditPasswordGroup.class, AddGroup.class })
-    @Size(min = 6, max = 20, message = E0017, groups = {AddGroup.class, EditPasswordGroup.class})
-    @Pattern(regexp = "^[!-~]+$", message = E0017, groups = {AddGroup.class, EditPasswordGroup.class})
+    @Size(min = 6, max = 20, message = E0005, groups = {AddGroup.class, EditPasswordGroup.class})
+    @Pattern(regexp = "^[!-~]+$", message = E0005, groups = {AddGroup.class, EditPasswordGroup.class})
     private String password;
 
-    @NotEmpty(message = E0019, groups = { AddGroup.class, EditGroup.class })
-    @Size(max = 10, message = E0020, groups = { AddGroup.class, EditGroup.class })
+    @NotEmpty(message = E0006, groups = { AddGroup.class, EditGroup.class })
+    @Size(max = 10, message = E0007, groups = { AddGroup.class, EditGroup.class })
     private String name;
 
     private String checkPassword;
 
-    @Min(value = 1, message = E0021, groups = { AddGroup.class, EditGroup.class })
+    @Min(value = 1, message = E0008, groups = { AddGroup.class, EditGroup.class })
     private Integer category; //権限系
 
     private Integer status; //申請系

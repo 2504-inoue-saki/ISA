@@ -14,8 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ISA.constfolder.ErrorMessage.E0017;
-import static com.example.ISA.constfolder.ErrorMessage.E0018;
+import static com.example.ISA.constfolder.ErrorMessage.*;
 
 @Controller
 public class MyInformationController {
@@ -44,7 +43,7 @@ public class MyInformationController {
         String newPassword = password.getPassword();
         if (!StringUtils.isEmpty(newPassword) &&
                 ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
-            errorMessages.add(E0017);
+            errorMessages.add(E0005);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
@@ -53,7 +52,7 @@ public class MyInformationController {
         }
         //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
         if (!password.getPassword().equals(password.getCheckPassword())) {
-            errorMessages.add(E0018);
+            errorMessages.add(E0010);
             //エラーメッセージが詰まったリストをviewに送る
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定

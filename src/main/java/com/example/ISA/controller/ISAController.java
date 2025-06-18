@@ -63,10 +63,25 @@ public class ISAController {
     public String showMonthlyWorking(@PathVariable int year, @PathVariable int month, Model model) {
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
 
-        if (loginUser == null) {
-            // ログインしていない場合はログインページへリダイレクト
-            return "redirect:/login";
+        //フィルターの処理
+        //セッションの獲得
+        HttpSession session = request.getSession(true);
+        //セッション内にフィルターメッセージがある時フィルターに引っかかる
+        if (session.getAttribute("filterMessage") != null) {
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<>();
+            //フィルターメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
+            errorMessages.add((String) session.getAttribute("filterMessage"));
+            //セッション内のフィルターメッセージを消す
+            session.removeAttribute("filterMessage");
+            //エラーメッセージが詰まったリストをviewに送る
+            model.addAttribute("errorMessages", errorMessages);
         }
+
+//        if (loginUser == null) {
+//            // ログインしていない場合はログインページへリダイレクト
+//            return "redirect:/login";
+//        }
 
         int loggedInUserId = loginUser.getId();
 
