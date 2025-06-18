@@ -20,8 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.ISA.constfolder.ErrorMessage.E0017;
-import static com.example.ISA.constfolder.ErrorMessage.E0018;
+import static com.example.ISA.constfolder.ErrorMessage.*;
 
 @Controller
 public class MyInformationController {
@@ -36,19 +35,20 @@ public class MyInformationController {
     public ModelAndView editPassword(@PathVariable String id) {
         ModelAndView mav = new ModelAndView();
         UserForm password = new UserForm();
-        mav.addObject("password",password);
-        mav.addObject("id",id);
+        mav.addObject("password", password);
+        mav.addObject("id", id);
         mav.setViewName("/myInformation");
         return mav;
     }
 
     @PutMapping("/changePassword/{id}")
-    public ModelAndView editPassword(@PathVariable int id,@Validated({EditPasswordGroup.class}) @ModelAttribute ("password")UserForm password, BindingResult result){
+    public ModelAndView editPassword(@PathVariable int id, @Validated({EditPasswordGroup.class}) @ModelAttribute("password") UserForm password, BindingResult result) {
         ModelAndView mav = new ModelAndView();
         //エラーメッセージを入れる用のリストを作っておく
         List<String> errorMessages = new ArrayList<String>();
 
         String newPassword = password.getPassword();
+
 //        if (!StringUtils.isEmpty(newPassword) &&
 //                ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
 //            errorMessages.add(E0017);
@@ -65,24 +65,33 @@ public class MyInformationController {
                 //error.getDefaultMessage()で取得したエラーメッセージをリストに追加
                 errorMessages.add(error.getDefaultMessage());
             }
-            //エラーメッセージが詰まったリストをviewに送る
-            mav.addObject("errorMessages", errorMessages);
-            // 画面遷移先を指定
-            mav.setViewName("/myInformation");
-            return mav;
-        }
 
-        //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
-        if (!newPassword.equals(password.getCheckPassword())) {
-            errorMessages.add(E0018);
-            //エラーメッセージが詰まったリストをviewに送る
-            mav.addObject("errorMessages", errorMessages);
-            // 画面遷移先を指定
-            mav.setViewName("/myInformation");
-            return mav;
+            if (!StringUtils.isEmpty(newPassword) &&
+                    ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
+                errorMessages.add(E0005);
+
+                //エラーメッセージが詰まったリストをviewに送る
+                mav.addObject("errorMessages", errorMessages);
+                // 画面遷移先を指定
+                mav.setViewName("/myInformation");
+                return mav;
+            }
+
+            //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
+
+            if (!password.getPassword().equals(password.getCheckPassword())) {
+                errorMessages.add(E0010);
+
+                //エラーメッセージが詰まったリストをviewに送る
+                mav.addObject("errorMessages", errorMessages);
+                // 画面遷移先を指定
+                mav.setViewName("/myInformation");
+                return mav;
+            }
+
         }
         String pw = password.getPassword();
-        userService.savePassword(pw,id);
+        userService.savePassword(pw, id);
         return new ModelAndView("redirect:/ISA/2025/6");
     }
 }

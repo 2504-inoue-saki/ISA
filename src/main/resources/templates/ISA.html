@@ -16,6 +16,10 @@
         ${currentPage}
     )}"></header>
 
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
+
 <div class="attendance-container">
     <div class="month-navigation">
         <a th:href="@{/ISA/{year}/{month}(year=${prevYear}, month=${prevMonth})}" class="nav-arrow">&lt; 前月</a>
@@ -23,7 +27,8 @@
               th:text="${currentYear} + '年' + ${currentMonth} + '月'"
               th:onclick="|goToInputScreen(${currentYear}, ${currentMonth})|"
               style="cursor: pointer; text-decoration: underline; color: blue;">
-</span>
+
+        </span>
         <a th:href="@{/ISA/{year}/{month}(year=${nextYear}, month=${nextMonth})}" class="nav-arrow">次月 &gt;</a>
     </div>
 
@@ -57,21 +62,22 @@
                 <td th:text="${workingDatum.workingTimeDisplay}"></td>
                 <td th:text="${workingDatum.memo}"></td>
                 <td>
-                    <button class="add-button" th:value="${workingDatum.id}" th:text="入力"></button>
+                    <button class="add-button" th:value="${workingDatum.id}" th:text="入力" th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2}"></button>
                     <button class="apply-button"
                             th:data-id="${workingDatum.id}"
                             th:data-date="${#temporals.format(workingDatum.date, 'yyyy年MM月dd日')}"
-                            th:disabled="${workingDatum.status == 1}"
+                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1 OR workingDatum.startWork == null OR workingDatum.endWork == null OR workingDatum.breakTimeDisplay == null}"
                     >申請
                     </button>
                 </td>
+
                 <!-- ポップアップ内容 -->
                 <dialog class="dialog" id="modalDialog" th:value="${workingDatum.id}">
                     <div class="title">
                         <h2 th:text="${workingDatum.date} + 'の勤怠登録'"/>
                     </div>
                     <div id="dialog-container">
-                        <form th:action="@{/saveDate/{subjectId}(subjectId=${workingDatum.id})}" method="post">
+                        <form th:action="@{/saveDate/{id}(id=${workingDatum.id})}" method="post">
                             <span>勤務区分</span>
                             <select name="attend" class="select-box">
                                 <option value="0" th:selected="${workingDatum.attend == 0}">出勤</option>
@@ -86,7 +92,6 @@
                             <span>メモ</span>
                             <input type="text" name="memo" th:value="${workingDatum.memo}"/> <br/>
                             <input type="hidden" name="checkId" th:value="${workingDatum.userId}">
-                            <input type="hidden" name="status" th:value="${workingDatum.status}">
                             <input type="hidden" name="date" th:value="${workingDatum.date}">
                             <button type="submit" value="entry">登録</button>
                         </form>
@@ -97,9 +102,7 @@
                 </dialog>
 
                 <!-- エラーメッセージがある場合のポップアップ内容 -->
-                <div class="errorMessages" th:each="errorMessage : ${popupErrorMessages}"
-                     th:if="${popupErrorMessages != null}">
-
+                <div class="errorMessages" th:each="errorMessage : ${popupErrorMessages}" th:if="${popupErrorMessages != null}">
                     <dialog id="autoOpenDialog" open>
                         <div class="title">
                             <h2 th:text="${workingDatum.date} + 'の勤怠登録'"/>

@@ -39,15 +39,14 @@ public class PopupController{
     /*
      * 日毎勤怠情報編集機能
      */
-    @PostMapping("/saveDate/{subjectId}")
-    public ModelAndView Content(@PathVariable(required = false) String subjectId,
+    @PostMapping("/saveDate/{id}")
+    public ModelAndView Content(@PathVariable(required = false) int id,
                                 @ModelAttribute("workingDatum") WorkingForm workingForm,
-                                @RequestParam(name = "checkId", required = false) String checkId,
+                                @RequestParam(name = "checkId", required = false) int userId,
                                 @RequestParam(name = "date") LocalDate date) throws ParseException {
-        int id = Integer.parseInt(subjectId);
-        int userId = Integer.parseInt(checkId);
         workingForm.setId(id);
         workingForm.setUserId(userId);
+        workingForm.setStatus(0);
         workingService.saveForm(workingForm);
       
         int month = date.getMonthValue();
@@ -55,4 +54,17 @@ public class PopupController{
 
         return new ModelAndView("redirect:/ISA/" + year + "/" + month);
     }
+
+    /*
+     * 申請処理
+     */
+    @PostMapping("/ISA/apply/{workingId}")
+    public ModelAndView apply(@PathVariable(required = false) int workingId){
+        //♥未申請→申請の更新
+        workingService.saveUpdateStatusStatus(workingId);
+
+        LocalDate today = LocalDate.now(); // 現在の年月を取得
+        return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
+    }
+
 }
