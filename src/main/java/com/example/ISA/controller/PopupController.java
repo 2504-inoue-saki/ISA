@@ -47,17 +47,33 @@ public class PopupController{
         int month = workingForm.getDate().getMonthValue();
         int year = workingForm.getDate().getYear();
 
+        //エラーメッセージを入れる用のリストを作っておく
+        List<String> errorMessages = new ArrayList<>();
         //必須チェック
         if (result.hasErrors()) {
-            HttpSession session =request.getSession(true);
-            //エラーメッセージを入れる用のリストを作っておく
-            List<String> errorMessages = new ArrayList<>();
             //result.getFieldErrors()はresultの持つ全エラーを要素にしたリスト→型はList<FieldError>
             //要素を1つ取り出してerrorに代入して処理→全ての要素が尽きるまで繰り返す
             for (FieldError error : result.getFieldErrors()) {
                 //error.getDefaultMessage()で取得したエラーメッセージをリストに追加
                 errorMessages.add(error.getDefaultMessage());
             }
+        }
+        //休憩の入力がある場合は文字数&半角チェック
+        String start = workingForm.getStartBreak();
+        String end = workingForm.getEndBreak();
+        if (!StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)){
+            if ((start.length() < 3 || start.length() > 5) || start.matches("^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$")
+                    || (end.length() < 3 || end.length() > 5) || end.matches("^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$")){
+                errorMessages.add(E0015);
+            }
+        } else if (StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)) {
+            errorMessages.add(E0013);
+        } else if (!StringUtils.isEmpty(start) && StringUtils.isEmpty(end)) {
+            errorMessages.add(E0014);
+        }
+        HttpSession session =request.getSession(true);
+        if (errorMessages.size() >= 1){
+            //エラーメッセージが詰まったリストをviewに送る
             session.setAttribute("popupErrorMessages", errorMessages);
             return new ModelAndView("redirect:/ISA/" + year + "/" + month);
         }
