@@ -225,6 +225,7 @@ public class WorkingService {
             if (dailyForm.getStatus() == null) {
                 workingEntity.setStatus(0);
             } else {
+                // ★★★
                 workingEntity.setStatus(dailyForm.getStatus());
             }
 
