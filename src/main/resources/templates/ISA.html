@@ -47,6 +47,7 @@
                 <th>休憩時間</th>
                 <th>労働時間</th>
                 <th>メモ</th>
+                <th>申請状況</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -65,13 +66,19 @@
                 <td th:text="${workingDatum.workingTimeDisplay}"></td>
                 <td th:text="${workingDatum.memo}"></td>
                 <td>
+                    <span th:if="${workingDatum.status <= 0}">未申請です</span>
+                    <span th:if="${workingDatum.status == 1}">申請しました</span>
+                    <span th:if="${workingDatum.status == 2}">承認されました</span>
+                    <span th:if="${workingDatum.status == 3}">差し戻しがきました</span>
+                </td>
+                <td>
                     <!-- 非活性：申請状況が申請１または承認２の時は入力できない-->
                     <button class="add-button" th:value="${workingDatum.id}" th:text="入力" th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2}"></button>
                     <!-- 非活性：申請状況が申請１または承認２、勤務区分が未登録-１の時は申請できない-->
                     <button class="apply-button"
                             th:data-id="${workingDatum.id}"
                             th:data-date="${#temporals.format(workingDatum.date, 'yyyy年MM月dd日')}"
-                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1}"
+                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1 OR workingDatum.workingTimeDisplay == '0:00'}"
                     >申請
                     </button>
                 </td>

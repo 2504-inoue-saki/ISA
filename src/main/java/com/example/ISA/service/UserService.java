@@ -147,7 +147,10 @@ public class UserService {
 
     // ユーザ情報の単品取得
     public UserForm findUserDateById(int id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null){
+            return null;
+        };
         List<User> users = new ArrayList<>();
         users.add(user);
         //List<User>をList<UserForm>に詰め替えるメソッド呼び出し

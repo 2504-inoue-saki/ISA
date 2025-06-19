@@ -47,7 +47,7 @@
         </td>
         <td>
           <span th:if="${workingDatum.status == 0}">申請されていません</span>
-          <form th:action="@{/approval/{subjectId}(subjectId=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}" class="switch-approval">
+          <form th:action="@{/approval/{id}(id=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}" class="switch-approval">
             <input type="hidden"  th:value="${workingDatum.date}" name="date" />
             <select name="approval" class="select-box">
               <option value="1" th:selected="${workingDatum.status == 1}" th:if="${workingDatum.status == 1}">選択してください</option>
