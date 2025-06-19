@@ -37,9 +37,6 @@ public class MyInformationController {
     @Autowired
     HttpSession session;
 
-    @Autowired
-    HttpSession session;
-
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
@@ -66,7 +63,8 @@ public class MyInformationController {
         List<String> errorMessages = new ArrayList<String>();
         //ログインユーザとURLリクエストのidをチェック
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
-        if(!id.equals(loginUser.getId())){
+        String stringId = String.valueOf(loginUser.getId());
+        if(!id.equals(stringId)){
             session.setAttribute("errorMessage", E0026);
             LocalDate today = LocalDate.now(); // 現在の年月を取得
             return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
@@ -75,8 +73,6 @@ public class MyInformationController {
         mav.addObject("password", password);
         mav.addObject("id", id);
         mav.setViewName("/myInformation");
-
-        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
 
         model.addAttribute("isLoggedIn", true);
         model.addAttribute("loginUser", loginUser);
