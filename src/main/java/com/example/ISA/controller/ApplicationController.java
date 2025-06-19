@@ -73,19 +73,20 @@ public class ApplicationController {
             int userStatus = 2; //ユーザの申請が全て承認状態
             // 勤怠登録の無い人
             if (userIds.size() == 0){
-                userStatus = 4;
+                userStatus = 0;
             }
             for (Integer userId: userIds){
                 int status = 0; //とある１日が未申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
                     userStatus = 0; //ユーザの申請が少なくとも1つは未申請
-                    break;
                 }
                 status = 1; //とある１日が申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    userStatus = 1; //ユーザの申請が少なくとも1つは申請
+                    if (userStatus != 0){
+                        userStatus = 1; //ユーザの申請が少なくとも1つは申請
+                    }
                 }
-                status = 3; //とある１日が差し戻し状態 userStatusが0でここに来る事はない
+                status = 3; //とある１日が差し戻し状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
                     if (userStatus != 1){
                         userStatus = 3; //ユーザの申請が少なくとも1つは差し戻し

@@ -45,7 +45,7 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
             "INNER JOIN User u " +
             "ON w.userId = u.id " +
             //変更箇所
-            "WHERE w.userId = :id AND w.status >= 0 " +
+            "WHERE w.userId = :id AND w.status >= 1 " +
             "ORDER BY date ASC ")
     public List<Object[]> findUserDateById(@Param("id") Integer id);
 
