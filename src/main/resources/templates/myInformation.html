@@ -1,27 +1,36 @@
-    <!DOCTYPE html>
-    <html xmlns:th="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="UTF-8">
-        <link href="/css/style.css" rel="stylesheet">
-        <title>パスワード変更画面</title>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <title>パスワード変更画面</title>
+    <th:block th:insert="~{fragments/header :: commonHeader(
+        pageTitle='パスワード変更',
+        isLoginPage=false,
+        isLoggedIn=${isLoggedIn},
+        loginUser=${loginUser},
+        userCategory=${userCategory},
+        currentPage='/myInformation' )}">
+    </th:block>
+</head>
+</head>
+<body>
 
-    <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
-        <span th:text="${errorMessage}"></span>
-    </div>
+<div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
+    <span th:text="${errorMessage}"></span>
+</div>
 
-    <div class="main-contents">
-        <form th:action="@{/changePassword/{id}(id=${id})}" th:method="put" th:object="${password}">
+<div class="main-contents">
+    <form th:action="@{/changePassword/{id}(id=${id})}" th:method="put" th:object="${password}">
         新しいパスワード
         <input type="password" th:field="*{password}"/> <br/>
         新しいパスワード確認用
         <input type="password" th:field="*{checkPassword}"/> <br/>
         <input type="submit" value="更新">
-        </form>
-        <a href="/ISA/2025/6">
-            <button type="button">戻る</button>
-        </a>
-    </div>
-    </body>
-    </html>
+    </form>
+    <a href="/ISA/2025/6">
+        <button class="back-to-top-button" type="button">戻る</button>
+    </a>
+</div>
+</body>
+</html>

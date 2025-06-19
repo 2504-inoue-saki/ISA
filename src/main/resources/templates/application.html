@@ -6,11 +6,16 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
     <title>申請一覧画面</title>
+    <th:block th:insert="~{fragments/header :: commonHeader(
+        pageTitle='申請一覧',
+        isLoginPage=false,
+        isLoggedIn=${isLoggedIn},
+        loginUser=${loginUser},
+        userCategory=${userCategory},
+        currentPage='/application' )}">
+    </th:block>
 </head>
 <body>
-<!--<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false)}"></header>-->
-
-<h1>申請一覧画面</h1>
 
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>

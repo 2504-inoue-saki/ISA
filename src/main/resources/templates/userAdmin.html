@@ -6,6 +6,14 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script th:src="@{/js/confirmation.js}" charset="utf-8"></script>
     <title>ユーザ管理</title>
+    <th:block th:insert="~{fragments/header :: commonHeader(
+        pageTitle='ユーザ管理',
+        isLoginPage=false,
+        isLoggedIn=${isLoggedIn},
+        loginUser=${loginUser},
+        userCategory=${userCategory},
+        currentPage='/userAdmin' )}">
+    </th:block>
 </head>
 <body>
 <!--<header th:replace="~{fragments/header :: commonHeader('ユーザ管理', false, ${isLoggedIn}, ${userCategory})}"></header>-->
