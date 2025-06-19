@@ -66,7 +66,7 @@
                 <td th:text="${workingDatum.workingTimeDisplay}"></td>
                 <td th:text="${workingDatum.memo}"></td>
                 <td>
-                    <span th:if="${workingDatum.status <= 0}">未申請です</span>
+                    <span th:if="${workingDatum.status == 0}">未申請です</span>
                     <span th:if="${workingDatum.status == 1}">申請しました</span>
                     <span th:if="${workingDatum.status == 2}">承認されました</span>
                     <span th:if="${workingDatum.status == 3}">差し戻しがきました</span>
