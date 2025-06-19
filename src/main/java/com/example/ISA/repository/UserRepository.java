@@ -38,7 +38,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("UPDATE User u SET u.isStopped = :isStopped, u.updatedDate = CURRENT_TIMESTAMP WHERE u.id = :id")
     public void saveIsStopped(@Param("id") Integer id, @Param("isStopped") boolean isStopped);
 
-    public User findById(int id);
 
     @Transactional
     @Modifying

@@ -40,9 +40,9 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
             "c.dayOfWeek as dayOfWeek, " +
             "w.memo as memo " +
             "FROM Calendar c " +
-            "LEFT OUTER JOIN Working w " +
+            "INNER JOIN Working w " +
             "ON w.date = c.date " +
-            "LEFT OUTER JOIN User u " +
+            "INNER JOIN User u " +
             "ON w.userId = u.id " +
             "WHERE w.userId = :id " +
             "ORDER BY date ASC ")

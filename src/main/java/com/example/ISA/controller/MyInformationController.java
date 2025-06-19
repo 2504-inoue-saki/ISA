@@ -6,6 +6,7 @@ import com.example.ISA.groups.EditPasswordGroup;
 import com.example.ISA.groups.LoginGroup;
 import com.example.ISA.service.UserService;
 import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,8 @@ public class MyInformationController {
      *ユーザ情報編集画面表示処理(旭)
      */
     @GetMapping("/myInformation/{id}")
-    public ModelAndView editPassword(@PathVariable String id) {
+    public ModelAndView editPassword(@PathVariable(required = false) String id) {
+
         ModelAndView mav = new ModelAndView();
         UserForm password = new UserForm();
         mav.addObject("password", password);

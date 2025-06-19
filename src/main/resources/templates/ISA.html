@@ -47,6 +47,7 @@
                 <th>休憩時間</th>
                 <th>労働時間</th>
                 <th>メモ</th>
+                <th>申請状況</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -64,6 +65,12 @@
                 <td th:text="${workingDatum.breakTimeDisplay}"></td>
                 <td th:text="${workingDatum.workingTimeDisplay}"></td>
                 <td th:text="${workingDatum.memo}"></td>
+                <td>
+                    <span th:if="${workingDatum.status == 0}">未申請です</span>
+                    <span th:if="${workingDatum.status == 1}">申請しました</span>
+                    <span th:if="${workingDatum.status == 2}">承認されました</span>
+                    <span th:if="${workingDatum.status == 3}">差し戻しがきました</span>
+                </td>
                 <td>
                     <!-- 非活性：申請状況が申請１または承認２の時は入力できない-->
                     <button class="add-button" th:value="${workingDatum.id}" th:text="入力" th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2}"></button>
