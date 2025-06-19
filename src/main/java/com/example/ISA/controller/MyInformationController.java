@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
@@ -33,11 +34,14 @@ public class MyInformationController {
     @Autowired
     HttpServletRequest request;
 
+    @Autowired
+    HttpSession session;
+
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
     @GetMapping({"/myInformation/{id}", "/myInformation/"})
-    public ModelAndView editPassword(@PathVariable(required = false) String id) {
+    public ModelAndView editPassword(@PathVariable(required = false) String id, Model model) {
 
         //★URLパターンのエラメ（鈴木）
         HttpSession session = request.getSession(true);
@@ -57,6 +61,13 @@ public class MyInformationController {
         mav.addObject("password", password);
         mav.addObject("id", id);
         mav.setViewName("/myInformation");
+
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("userCategory", loginUser.getCategory());
+
         return mav;
     }
 

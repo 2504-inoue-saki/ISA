@@ -229,6 +229,7 @@ public class WorkingService {
                 //変更箇所
                 workingEntity.setStatus(-1);
             } else {
+                // ★★★
                 workingEntity.setStatus(dailyForm.getStatus());
             }
 

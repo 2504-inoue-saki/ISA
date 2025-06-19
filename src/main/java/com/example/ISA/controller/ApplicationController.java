@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class ApplicationController {
      * 申請一覧画面表示処理
      */
     @GetMapping("/application")
-    public ModelAndView applicationView() {
+    public ModelAndView applicationView(Model model) {
         ModelAndView mav = new ModelAndView();
 
         //▲自身の個人申請詳細画面のエラメ処理
@@ -108,9 +109,13 @@ public class ApplicationController {
         // 画面遷移先指定
         mav.setViewName("/application");
 
-        // ヘッダー表示処理
-        // ログアウトボタンを表示する
-        mav.addObject("isLoginPage", false);
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        // ヘッダー用の情報
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("userCategory", loginUser.getCategory());
+        model.addAttribute("currentPage", "/application"); // 現在のページのパス
+
         //フォワード
         return mav;
     }

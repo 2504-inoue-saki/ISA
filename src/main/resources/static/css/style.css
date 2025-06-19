@@ -102,6 +102,10 @@ header {
 header h1 {
     margin: 0;
     font-size: 1.8em;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 .header-nav {
@@ -503,6 +507,15 @@ header h1 {
         background-color: #FFA000;
     }
 
+    .delete-button {
+        background-color: #FFC107;
+        color: #212121;
+        padding: 6px 12px;
+        font-size: 0.9em;
+        box-shadow: none;
+        transform: none;
+    }
+
     /* 申請ボタンのスタイル */
     .apply-button {
         background-color: #f0ad4e; /* 明るいオレンジ色 */
@@ -551,3 +564,18 @@ header h1 {
             cursor: not-allowed;
             opacity: 0.7; /* 少し透明度を下げる */
         }
+
+.login-button {
+    background-color: #007bff; /* 青色の例 */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}

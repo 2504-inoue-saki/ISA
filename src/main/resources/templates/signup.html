@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>ユーザ登録</title>
+    <th:block th:insert="~{fragments/header :: commonHeader(
+        pageTitle='ユーザ登録',
+        isLoginPage=false,
+        isLoggedIn=${isLoggedIn},
+        loginUser=${loginUser},
+        userCategory=${userCategory},
+        currentPage='/signup' )}">
+    </th:block>
+</head>
 </head>
 <body>
-<!--<header th:replace="~{fragments/header :: commonHeader('ユーザ登録', false, ${isLoggedIn}, ${userCategory})}"></header>-->
+
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
@@ -20,15 +29,16 @@
     <input type="password" th:field="*{checkPassword}"/> <br/>
     名前
     <input type="text" th:field="*{name}"/> <br/>
-        ユーザ区分
-        <select th:field="*{category}"> <br/>
-            <option value="0">選択してください</option>
-            <option value="1">一般ユーザ</option>
-            <option value="2">承認者</option>
-            <option value="3">システム管理者</option>
-        </select> <br/>
+    ユーザ区分
+    <select th:field="*{category}"> <br/>
+        <option value="0">選択してください</option>
+        <option value="1">一般ユーザ</option>
+        <option value="2">承認者</option>
+        <option value="3">システム管理者</option>
+    </select> <br/>
     <input type="submit" value="登録" class="primary-button">
-</form><br>
+</form>
+<br>
 <a href="/userAdmin">
     <button class="back-to-top-button" type="button">ユーザ管理画面に戻る</button>
 </a>

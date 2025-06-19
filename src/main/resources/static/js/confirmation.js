@@ -31,7 +31,7 @@ $(document).ready(function() {
     });
 
     // アカウント削除ボタン押下時の処理
-    	$('.delete').on('click', function() {
+    	$('.delete-button').on('click', function() {
     		if (confirm("削除します。よろしいですか?")) {
     			return true;
     		}
