@@ -7,12 +7,8 @@ import com.example.ISA.repository.entity.User;
 import io.micrometer.common.util.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +143,10 @@ public class UserService {
 
     // ユーザ情報の単品取得
     public UserForm findUserDateById(int id) {
-        User user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null){
+            return null;
+        };
         List<User> users = new ArrayList<>();
         users.add(user);
         //List<User>をList<UserForm>に詰め替えるメソッド呼び出し

@@ -16,7 +16,7 @@ public class ErrorMessage {
     public static final String E0012 = "終了時刻が未入力です";
     public static final String E0013 = "休憩開始時刻が未入力です";
     public static final String E0014 = "休憩終了時刻が未入力です";
-    public static final String E0015 = "時刻は半角文字かつ「〇〇:〇〇」の形で入力してください";
+    public static final String E0015 = "時刻は半角文字かつ「09:05」のように入力してください";
     public static final String E0016 = "メモは100文字以下で入力してください";
     public static final String E0017 = "未入力があるため申請できません";
     public static final String E0018 = "自身の個人申請承認画面は表示できません";
@@ -24,8 +24,8 @@ public class ErrorMessage {
     public static final String E0020 = "";
     public static final String E0021 = "";
     public static final String E0022 = "";
-    public static final String E0023 = "";
+    public static final String E0023 = "全て未申請のため表示するものがありません";
     public static final String E0024 = "（ログインフィルター）ログインしてください";
     public static final String E0025 = "（管理or承認フィルター）無効なアクセスです";
-    public static final String E0026 = "不正なパラメータが入力されました";
+    public static final String E0026 = "（URLパラメ異変）不正なパラメータが入力されました";
 }

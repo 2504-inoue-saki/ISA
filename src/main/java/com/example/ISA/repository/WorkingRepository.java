@@ -40,19 +40,24 @@ public interface WorkingRepository extends JpaRepository<Working, Integer> {
             "c.dayOfWeek as dayOfWeek, " +
             "w.memo as memo " +
             "FROM Calendar c " +
-            "LEFT OUTER JOIN Working w " +
+            "INNER JOIN Working w " +
             "ON w.date = c.date " +
-            "LEFT OUTER JOIN User u " +
+            "INNER JOIN User u " +
             "ON w.userId = u.id " +
-            "WHERE w.userId = :id " +
+            //変更箇所
+            "WHERE w.userId = :id AND w.status > 0 " +
             "ORDER BY date ASC ")
     public List<Object[]> findUserDateById(@Param("id") Integer id);
 
     //▲ある1人のユーザの申請状況を確認している
     public boolean existsByUserIdAndStatus(int userId, int status);
 
-    // ★勤怠登録していない新人さんを弾く用
+    //★勤怠登録していない新人さんを弾く用
+    //変更箇所■勤怠データのstatusが全部0の時
     public boolean existsByUserId(int userId);
+
+    //変更箇所▼勤怠データ全てが-1の人
+    public long countByUserIdAndStatus(int userId, int status);
 
     //♥未申請→申請の更新
     @Transactional

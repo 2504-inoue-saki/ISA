@@ -3,12 +3,15 @@ package com.example.ISA.controller;
 import com.example.ISA.Dto.AllForm;
 import com.example.ISA.controller.form.UserForm;
 import com.example.ISA.controller.form.WorkingForm;
+import com.example.ISA.repository.entity.Working;
 import com.example.ISA.service.UserService;
 import com.example.ISA.service.WorkingService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,11 +40,11 @@ public class ApplicationController {
      * 申請一覧画面表示処理
      */
     @GetMapping("/application")
-    public ModelAndView applicationView() {
+    public ModelAndView applicationView(Model model) {
         ModelAndView mav = new ModelAndView();
 
-        //▲自身の個人申請詳細画面は表示できないの処理
-        //セッションの獲得
+        //▲自身の個人申請詳細画面のエラメ処理
+        //★URLパターンのエラメ
         HttpSession session = request.getSession(true);
         //セッション内にエラーメッセージがある時
         if (session.getAttribute("ErrorMessage") != null) {
@@ -67,25 +70,26 @@ public class ApplicationController {
                     userIds.add(i);
                 }
             }
-            int userStatus = 2; //ユーザの申請が全て承認状態
-            // 勤怠登録の無い新人さん
+
+            int userStatus = 0; //statusが全て0→以下のifに引っかからず守り抜けば全て未申請になる
+            // 勤怠登録の無い
             if (userIds.size() == 0){
-                userStatus = 4;
+                userStatus = -1;
             }
             for (Integer userId: userIds){
-                int status = 0; //とある１日が未申請状態
-                if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    userStatus = 0; //ユーザの申請が少なくとも1つは未申請
-                    break;
-                }
-                status = 1; //とある１日が申請状態
+                int status = 1; //とある１日が申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
                     userStatus = 1; //ユーザの申請が少なくとも1つは申請
+                    break; //statusが1のものはここで打ち切り！
                 }
-                status = 3; //とある１日が差し戻し状態 userStatusが0でここに来る事はない
+                status = 3; //とある１日が差し戻し状態 statusが1のものはここまでこない
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    if (userStatus != 1){
-                        userStatus = 3; //ユーザの申請が少なくとも1つは差し戻し
+                    userStatus = 3; //stetusの少なくとも1つは3
+                }
+                status = 2; //とある１日が承認状態 statusが1のものはここまでこない
+                if (workingService.existCheckByUserIdAndStatus(userId,status)){
+                    if (userStatus != 3){ //statusが3のものは除外
+                        userStatus = 2; //stetusの少なくとも1つは2
                     }
                 }
             }
@@ -99,9 +103,13 @@ public class ApplicationController {
         // 画面遷移先指定
         mav.setViewName("/application");
 
-        // ヘッダー表示処理
-        // ログアウトボタンを表示する
-        mav.addObject("isLoginPage", false);
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        // ヘッダー用の情報
+        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("userCategory", loginUser.getCategory());
+        model.addAttribute("currentPage", "/application"); // 現在のページのパス
+
         //フォワード
         return mav;
     }
@@ -109,15 +117,21 @@ public class ApplicationController {
     /*
      * 個人申請詳細画面表示処理
      */
-    @GetMapping("/applicationPrivate/{checkId}")
+    @GetMapping({"/applicationPrivate/{checkId}", "/applicationPrivate/"})
     public ModelAndView applicationPrivateView(@PathVariable(required = false) String checkId) {
         ModelAndView mav = new ModelAndView();
+        //セッション獲得
+        HttpSession session = request.getSession(true);
 
+        //★URLパターンのエラメ
+        if(StringUtils.isBlank(checkId) || !checkId.matches("^[0-9]*$")) {
+            session.setAttribute("ErrorMessage", E0026);
+            //申請一覧画面へリダイレクト
+            return new ModelAndView("redirect:/application");
+        }
         int id = Integer.parseInt(checkId);
 
         //▲自身の個人申請詳細画面は表示できないの処理
-        //セッションからログインユーザの獲得
-        HttpSession session = request.getSession(true);
         Object loginUser = session.getAttribute("loginUser");
         //ログインユーザIDとリクエストのIDが同じ場合
         if (session.getAttribute("loginUser") != null ){
@@ -132,6 +146,13 @@ public class ApplicationController {
 
         // id(ユーザテーブルの主キー)を使ってその人の表示させたい情報を取得する
         List<AllForm> userData = workingService.findWorkDate(id);
+
+        //★URLパターンのエラメ
+        if(userData == null){
+            session.setAttribute("ErrorMessage", E0026);
+            //申請一覧画面へリダイレクト
+            return new ModelAndView("redirect:/application");
+        }
 
         // viewするデータ
         // 名前とアカウント名用
@@ -149,12 +170,11 @@ public class ApplicationController {
     /*
      * 個人申請承認処理
      */
-    @PostMapping("/approval/{subjectId}")
-    public ModelAndView approval(@PathVariable(required = false) String subjectId,
+    @PostMapping("/approval/{id}")
+    public ModelAndView approval(@PathVariable(required = false) int id,
                                  @RequestParam(name = "approval", required = false) int status,
                                  @RequestParam(name = "checkId", required = false) String checkId) {
         ModelAndView mav = new ModelAndView();
-        int id = Integer.parseInt(subjectId);
         //取得したリクエストをworkingFormにセットする
         WorkingForm workingForm = new WorkingForm();
         workingForm.setId(id);

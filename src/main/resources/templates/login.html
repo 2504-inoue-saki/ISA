@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
-    <title th:text="${pageTitle} ?: 'ログイン'"></title>
-</head>
-<body>
-<header th:insert="~{fragments/header :: commonHeader(
+    <title>ログイン</title>
+    <th:block th:insert="~{fragments/header :: commonHeader(
         pageTitle=${pageTitle},
         isLoginPage=${true},
         isLoggedIn=${false},
         userCategory=${-1},
         currentPage=${currentPage}
-    )}"></header>
-
+    )}">
+    </th:block>
+</head>
+<body>
 <div class="errorMessages" th:each="errorMessage : ${errorMessages}" th:if="${errorMessages != null}">
     <span th:text="${errorMessage}"></span>
 </div>
@@ -21,10 +21,10 @@
 <div class="main-contents">
     <form th:action="@{/loginProcess}" method="post" th:object="${loginUser}">
         アカウント
-        <input type="text" th:field="*{account}"/> <br />
+        <input type="text" th:field="*{account}"/> <br/>
         パスワード
-        <input type="password" th:field="*{password}"/> <br />
-        <input type="submit" value="ログイン">
+        <input type="password" th:field="*{password}"/> <br/>
+        <input type="submit" class="login-button" value="ログイン">
     </form>
 </div>
 </body>

@@ -36,7 +36,7 @@ public class UserController {
         //セッションの獲得
         HttpSession session = request.getSession(true);
 
-        //存在しないidの編集を行う際のエラーメッセージ表示処理
+        //★URLパターンのエラメ
         if (session.getAttribute("errorMessages") != null) {
             //フィルターメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
             List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
@@ -49,17 +49,16 @@ public class UserController {
         List<UserForm> userData = userService.findUserData();
         mav.addObject("users", userData);
 
-        // ヘッダー表示
-        // ログイン状態とユーザ区分の判定
-        mav.addObject("isLoginPage", false);
-
-        boolean isLoggedIn = true;
-        int userCategory = 3;
-        mav.addObject("isLoggedIn", isLoggedIn);
-        mav.addObject("userCategory", userCategory);
-
         //ユーザ状態を変更できないようにするためにログインユーザの情報を送る(旭)
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        mav.addObject("loginUser", loginUser);
+
+        // ヘッダー表示
+        mav.addObject("pageTitle", "ユーザ管理");
+        mav.addObject("isLoginPage", false);
+        mav.addObject("isLoggedIn", true);
+        mav.addObject("userCategory", loginUser.getCategory());
+        mav.addObject("currentPage", "/userAdmin");
         mav.addObject("loginUser", loginUser);
 
         //画面遷移先指定
@@ -72,13 +71,20 @@ public class UserController {
     @GetMapping("/signup")
     public ModelAndView signup() {
         ModelAndView mav = new ModelAndView();
+        HttpSession session = request.getSession(true);
+
         //空のインスタンスを用意しておく
         UserForm addUser = new UserForm();
         mav.addObject("addUser", addUser);
 
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+
         // ヘッダー表示
-        // ログイン状態とユーザ区分の判定
+        mav.addObject("pageTitle", "ユーザ登録");
         mav.addObject("isLoginPage", false);
+        mav.addObject("isLoggedIn", true);
+        mav.addObject("currentPage", "/signup");
+        mav.addObject("loginUser", loginUser);
 
         mav.setViewName("signup");
         return mav;
@@ -142,10 +148,12 @@ public class UserController {
     public ModelAndView editUser(@PathVariable(required = false) String checkId) {
         ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession(true);
+
+        //★URLパターンのエラメ
         if (StringUtils.isBlank(checkId) || !checkId.matches("^[0-9]*$")) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0025);
+            errorMessages.add(E0026);
             //エラーメッセージが詰まったセッションを用意
             session.setAttribute("errorMessages", errorMessages);
             //ユーザ管理画面へリダイレクト
@@ -155,10 +163,11 @@ public class UserController {
         int id = Integer.parseInt(checkId);
         UserForm editUser = userService.findUserDateById(id);
 
+        //★URLパターンのエラメ
         if (editUser == null) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0025);
+            errorMessages.add(E0026);
             //エラーメッセージが詰まったセッションを用意
             session.setAttribute("errorMessages", errorMessages);
             //ユーザ管理画面へリダイレクト
@@ -173,12 +182,12 @@ public class UserController {
 
         // ヘッダー表示
         // ログイン状態とユーザ区分の判定
+        mav.addObject("pageTitle", "ユーザ編集");
         mav.addObject("isLoginPage", false);
-
-        boolean isLoggedIn = true;
-        int userCategory = 3;
-        mav.addObject("isLoggedIn", isLoggedIn);
-        mav.addObject("userCategory", userCategory);
+        mav.addObject("isLoggedIn", true);
+        mav.addObject("userCategory", loginUser.getCategory());
+        mav.addObject("currentPage", "/userEdit");
+        mav.addObject("loginUser", loginUser);
 
         return mav;
     }

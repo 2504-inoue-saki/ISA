@@ -32,12 +32,13 @@ public class WorkingForm {
 
     @NotEmpty(message = E0011, groups = {PopupGroup.class})
     @Size(min = 3, max = 5, message = E0015, groups = {PopupGroup.class})
-    @Pattern(regexp = "^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
+    //@Pattern(regexp = "^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
+    @Pattern(regexp = "^([01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
     private String startWork;
 
     @NotEmpty(message = E0012, groups = {PopupGroup.class})
     @Size(min = 3, max = 5, message = E0015, groups = {PopupGroup.class})
-    @Pattern(regexp = "^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
+    @Pattern(regexp = "^([01][0-9]|2[0-3]):[0-5][0-9]$", message = E0015, groups = {PopupGroup.class})
     private String endWork;
 
     @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$|^$", message = E0009)

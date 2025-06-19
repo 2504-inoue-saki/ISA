@@ -62,8 +62,8 @@ public class PopupController{
         String start = workingForm.getStartBreak();
         String end = workingForm.getEndBreak();
         if (!StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)){
-            if ((start.length() < 3 || start.length() > 5) || start.matches("^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$")
-                    || (end.length() < 3 || end.length() > 5) || end.matches("^([0-9]|[01][0-9]|2[0-3]):[0-5][0-9]$")){
+            if ((start.length() < 3 || start.length() > 5) || !start.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")
+                    || (end.length() < 3 || end.length() > 5) || !end.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")){
                 errorMessages.add(E0015);
             }
         } else if (StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)) {
