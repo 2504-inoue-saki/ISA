@@ -15,8 +15,8 @@ public class FilterConfig {
         bean.setFilter(new LoginFilter());
         //ログイン情報が必要なURL
         bean.addUrlPatterns("/ISA/*"); //ホーム画面
-        bean.addUrlPatterns("/myInformation/"); //パスワード変更画面
-        bean.addUrlPatterns("/monthWork/*"); //月毎勤怠情報編集画面
+        bean.addUrlPatterns("/myInformation/*"); //パスワード変更画面
+        bean.addUrlPatterns("/monthWork"); //月毎勤怠情報編集画面
 
         //フィルターの優先順位
         bean.setOrder(1);
@@ -40,9 +40,9 @@ public class FilterConfig {
         FilterRegistrationBean<AdminFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new AdminFilter());
         //システム管理者権限が必要なURL
-        bean.addUrlPatterns("/userAdmin/"); //ユーザ管理画面
-        bean.addUrlPatterns("/userEdit/"); //ユーザ編集画面
-        bean.addUrlPatterns("/signup/"); //新規アカウント登録画面
+        bean.addUrlPatterns("/userAdmin"); //ユーザ管理画面
+        bean.addUrlPatterns("/userEdit/*"); //ユーザ編集画面
+        bean.addUrlPatterns("/signup"); //新規アカウント登録画面
 
         bean.setOrder(3);
         return bean;

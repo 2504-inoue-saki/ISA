@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Time;
 import java.time.Duration;
@@ -26,6 +27,8 @@ import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.ISA.constfolder.ErrorMessage.E0023;
 
 @Service
 @Transactional
@@ -223,7 +226,8 @@ public class WorkingService {
             workingEntity.setEndBreak(dailyForm.getEndBreak());
 
             if (dailyForm.getStatus() == null) {
-                workingEntity.setStatus(0);
+                //変更箇所
+                workingEntity.setStatus(-1);
             } else {
                 // ★★★
                 workingEntity.setStatus(dailyForm.getStatus());
@@ -280,8 +284,20 @@ public class WorkingService {
      */
     public List<AllForm> findWorkDate(int userId) {
         List<Object[]> results = workingRepository.findUserDateById(userId);
+        //★URLパターンのエラメ
+        if(results.size() == 0){
+            return null;
+        }
         //List<Object[]>をList<UserForm>に詰め替えるメソッド呼び出し
         return setListCalendarForm(results);
+    }
+
+    //変更箇所■勤怠データのstatusが全部0の時(上のfindUserDateByIdは勤怠データのstatusが0以上を集めているベン図)
+    public boolean existsByUserId(int userId) {
+        if (workingRepository.existsByUserId(userId)){
+            return true;
+        }
+        return false;
     }
 
     //List<Object[]>をList<UserForm>に詰め替えるメソッド
@@ -298,13 +314,22 @@ public class WorkingService {
             formAll.setEndWork((String) objects[6]);
             formAll.setStartBreak((String) objects[7]);
             formAll.setEndBreak((String) objects[8]);
-            //労働時間と休憩時間の計算
-            String breakDuration = convertToLocalTime(formAll.getStartBreak(), formAll.getEndBreak());
-            String workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
 
+            //休憩時間の差分計算
+            LocalTime breakDuration = convertToLocalTime(formAll.getStartBreak(), formAll.getEndBreak());
+            //LocalTime→String型変換
+            String breakTime = DateTimeFormatter.ofPattern("[]H:mm").format(breakDuration);
             //formAllにセット
-            formAll.setWorkDuration(workDuration);
-            formAll.setBreakDuration(breakDuration);
+            formAll.setBreakDuration(breakTime);
+
+            //労働時間の差分計算
+            LocalTime workDuration = convertToLocalTime(formAll.getStartWork(), formAll.getEndWork());
+            //労働時間と休憩時間の差分
+            Duration duration = Duration.between(breakDuration, workDuration);
+            //LocalTime→String型変換して返す
+            String workTime = DateTimeFormatter.ofPattern("[]H:mm").format(LocalTime.MIDNIGHT.plus(duration));
+            //formAllにセット
+            formAll.setWorkDuration(workTime);
 
             formAll.setStatus((int) objects[9]);
 
@@ -323,16 +348,20 @@ public class WorkingService {
     }
 
     //LocalTimeに型変換して差分をStringで取得するメソッド
-    public static String convertToLocalTime(String start, String end) {
+    public static LocalTime convertToLocalTime(String start, String end) {
         //LocalTimeに型変換
-        LocalTime startTime = LocalTime.parse(start, DateTimeFormatter.ofPattern("[]H:mm"));
-        LocalTime endTime = LocalTime.parse(end, DateTimeFormatter.ofPattern("[]H:mm"));
+        LocalTime startTime = LocalTime.parse(start, DateTimeFormatter.ofPattern("[]H:[]m"));
+        LocalTime endTime = LocalTime.parse(end, DateTimeFormatter.ofPattern("[]H:[]m"));
         //差分
         Duration duration = Duration.between(startTime, endTime);
         //Duration→LocalTime型変換
-        LocalTime localTime = LocalTime.MIDNIGHT.plus(duration);
-        //LocalTime→String型変換して返す
-        return DateTimeFormatter.ofPattern("[]H:mm").format(localTime);
+        return LocalTime.MIDNIGHT.plus(duration);
+    }
+
+    //変更箇所▼勤怠データ全てが-1の人
+    public long count(int userId) {
+        int status = -1;
+        return workingRepository.countByUserIdAndStatus(userId, status);
     }
 
     //▲ある1人のユーザの申請状況を確認している

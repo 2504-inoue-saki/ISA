@@ -58,8 +58,8 @@
                 </form>
             </td>
             <td>
-                <form th:action="@{/userDelete/{id}(id=${user.id})}" method="post">
-                    <input type="submit" value="削除" class="delete"/>
+                <form th:action="@{/userDelete/{id}(id=${user.id})}" method="post" >
+                    <input type="submit" value="削除" class="delete" th:disabled="${user.id==loginUser.id}"/>
                 </form>
             </td>
         </tr>

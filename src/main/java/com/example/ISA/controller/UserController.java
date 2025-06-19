@@ -36,7 +36,7 @@ public class UserController {
         //セッションの獲得
         HttpSession session = request.getSession(true);
 
-        //存在しないidの編集を行う際のエラーメッセージ表示処理
+        //★URLパターンのエラメ
         if (session.getAttribute("errorMessages") != null) {
             //フィルターメッセージをエラーメッセージ用リストに入れる（List<String>に合わせる）
             List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
@@ -148,10 +148,12 @@ public class UserController {
     public ModelAndView editUser(@PathVariable(required = false) String checkId) {
         ModelAndView mav = new ModelAndView();
         HttpSession session = request.getSession(true);
+
+        //★URLパターンのエラメ
         if (StringUtils.isBlank(checkId) || !checkId.matches("^[0-9]*$")) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0025);
+            errorMessages.add(E0026);
             //エラーメッセージが詰まったセッションを用意
             session.setAttribute("errorMessages", errorMessages);
             //ユーザ管理画面へリダイレクト
@@ -161,10 +163,11 @@ public class UserController {
         int id = Integer.parseInt(checkId);
         UserForm editUser = userService.findUserDateById(id);
 
+        //★URLパターンのエラメ
         if (editUser == null) {
             //エラーメッセージを入れる用のリストを作っておく
             List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add(E0025);
+            errorMessages.add(E0026);
             //エラーメッセージが詰まったセッションを用意
             session.setAttribute("errorMessages", errorMessages);
             //ユーザ管理画面へリダイレクト
