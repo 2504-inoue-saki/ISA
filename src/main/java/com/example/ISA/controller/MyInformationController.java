@@ -50,46 +50,40 @@ public class MyInformationController {
 
         String newPassword = password.getPassword();
 
-//        if (!StringUtils.isEmpty(newPassword) &&
-//                ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
-//            errorMessages.add(E0017);
-//            //エラーメッセージが詰まったリストをviewに送る
-//            mav.addObject("errorMessages", errorMessages);
-//            // 画面遷移先を指定
-//            mav.setViewName("/myInformation");
-//            return mav;
-//        }
         if (result.hasErrors()) {
             //result.getFieldErrors()はresultの持つ全エラーを要素にしたリスト→型はList<FieldError>
             //要素を1つ取り出してerrorに代入して処理→全ての要素が尽きるまで繰り返す
             for (FieldError error : result.getFieldErrors()) {
                 //error.getDefaultMessage()で取得したエラーメッセージをリストに追加
                 errorMessages.add(error.getDefaultMessage());
-            }
-
-            if (!StringUtils.isEmpty(newPassword) &&
-                    ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
-                errorMessages.add(E0005);
-
                 //エラーメッセージが詰まったリストをviewに送る
-                mav.addObject("errorMessages", errorMessages);
-                // 画面遷移先を指定
-                mav.setViewName("/myInformation");
-                return mav;
             }
+            mav.addObject("errorMessages", errorMessages);
+            mav.setViewName("/myInformation");
+            return mav;
+        }
 
-            //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
+        if (!StringUtils.isEmpty(newPassword) &&
+                ((newPassword.length() < 6 || newPassword.length() > 20) || newPassword.matches("^[!-~]$"))) {
+            errorMessages.add(E0005);
 
-            if (!password.getPassword().equals(password.getCheckPassword())) {
-                errorMessages.add(E0010);
+            //エラーメッセージが詰まったリストをviewに送る
+            mav.addObject("errorMessages", errorMessages);
+            // 画面遷移先を指定
+            mav.setViewName("/myInformation");
+            return mav;
+        }
 
-                //エラーメッセージが詰まったリストをviewに送る
-                mav.addObject("errorMessages", errorMessages);
-                // 画面遷移先を指定
-                mav.setViewName("/myInformation");
-                return mav;
-            }
+        //妥当性チェック①パスワードと確認用パスワードが異なる時にエラーメッセージ
 
+        if (!password.getPassword().equals(password.getCheckPassword())) {
+            errorMessages.add(E0010);
+
+            //エラーメッセージが詰まったリストをviewに送る
+            mav.addObject("errorMessages", errorMessages);
+            // 画面遷移先を指定
+            mav.setViewName("/myInformation");
+            return mav;
         }
         String pw = password.getPassword();
         userService.savePassword(pw, id);
@@ -98,3 +92,4 @@ public class MyInformationController {
         return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
     }
 }
+
