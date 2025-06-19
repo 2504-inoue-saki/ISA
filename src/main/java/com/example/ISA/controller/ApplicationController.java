@@ -73,7 +73,7 @@ public class ApplicationController {
             int userStatus = 0; //statusが全て0→以下のifに引っかからず守り抜けば全て未申請になる
             // 勤怠登録の無い
             if (userIds.size() == 0){
-                userStatus = 0;
+                userStatus = -1;
             }
             for (Integer userId: userIds){
                 int status = 1; //とある１日が申請状態
