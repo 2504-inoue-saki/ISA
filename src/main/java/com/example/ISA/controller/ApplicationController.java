@@ -71,31 +71,25 @@ public class ApplicationController {
                 }
             }
 
-            int userStatus = 2; //ユーザの申請が全て承認状態
-            int status = -1;
-            // 勤怠登録の無い人
+            int userStatus = 0; //statusが全て0→以下のifに引っかからず守り抜けば全て未申請になる
+            // 勤怠登録の無い
             if (userIds.size() == 0){
-                userStatus = 4;
-            } else if (workingService.existCheckByUserIdAndStatus(userIds.get(0),status)){ //変更箇所▼勤怠データ全てが-1の人
-                if (userIds.size() == (int)workingService.count(userIds.get(0))){
-                    userStatus = -1;
-                }
+                userStatus = -1;
             }
-
             for (Integer userId: userIds){
-                status = 0; //とある１日が未申請状態
-                if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    userStatus = 0; //ユーザの申請が少なくとも1つは未申請
-                    break;
-                }
-                status = 1; //とある１日が申請状態
+                int status = 1; //とある１日が申請状態
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
                     userStatus = 1; //ユーザの申請が少なくとも1つは申請
+                    break; //statusが1のものはここで打ち切り！
                 }
-                status = 3; //とある１日が差し戻し状態 userStatusが0でここに来る事はない
+                status = 3; //とある１日が差し戻し状態 statusが1のものはここまでこない
                 if (workingService.existCheckByUserIdAndStatus(userId,status)){
-                    if (userStatus != 1){
-                        userStatus = 3; //ユーザの申請が少なくとも1つは差し戻し
+                    userStatus = 3; //stetusの少なくとも1つは3
+                }
+                status = 2; //とある１日が承認状態 statusが1のものはここまでこない
+                if (workingService.existCheckByUserIdAndStatus(userId,status)){
+                    if (userStatus != 3){ //statusが3のものは除外
+                        userStatus = 2; //stetusの少なくとも1つは2
                     }
                 }
             }
@@ -155,16 +149,9 @@ public class ApplicationController {
 
         //★URLパターンのエラメ
         if(userData == null){
-            //変更箇所■勤怠データのstatusが全部0の時(上のfindUserDateByIdは勤怠データのstatusが0以上を集めているベン図)
-            if (workingService.existsByUserId(id)){
-                session.setAttribute("ErrorMessage", E0023);
-                //申請一覧画面へリダイレクト
-                return new ModelAndView("redirect:/application");
-            } else {
-                session.setAttribute("ErrorMessage", E0026);
-                //申請一覧画面へリダイレクト
-                return new ModelAndView("redirect:/application");
-            }
+            session.setAttribute("ErrorMessage", E0026);
+            //申請一覧画面へリダイレクト
+            return new ModelAndView("redirect:/application");
         }
 
         // viewするデータ

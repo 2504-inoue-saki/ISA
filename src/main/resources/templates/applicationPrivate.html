@@ -24,7 +24,6 @@
       <th>休憩時間</th>
       <th>労働時間</th>
       <th>メモ</th>
-      <th>申請状況</th>
       <th>承認状況</th>
     </tr>
     </thead>
@@ -42,11 +41,6 @@
         <td th:text="${workingDatum.workDuration}"></td>
         <td th:text="${workingDatum.memo}"></td>
         <td>
-          <span th:if="${workingDatum.status == 0}">未申請</span>
-          <span th:if="${workingDatum.status >= 1}">申請済み</span>
-        </td>
-        <td>
-          <span th:if="${workingDatum.status == 0}">申請されていません</span>
           <form th:action="@{/approval/{id}(id=${workingDatum.id})}" method="post" th:if="${workingDatum.status > 0}" class="switch-approval">
             <input type="hidden"  th:value="${workingDatum.date}" name="date" />
             <select name="approval" class="select-box">

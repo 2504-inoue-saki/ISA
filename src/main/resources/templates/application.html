@@ -34,17 +34,16 @@
         <div class="table-contents" th:each="user : ${users}">
             <tr>
                 <td>
-                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:if="${user.status < 4}" th:text="${user.account}" />
-                    <span th:if="${user.status == 4}" th:text="${user.account}" />
+                    <a th:href="@{/applicationPrivate/{checkId}(checkId=${user.id})}" th:if="${user.status > 0}" th:text="${user.account}" />
+                    <span th:if="${user.status <= 0}" th:text="${user.account}" />
                 </td>
                 <td th:text="${user.name}"></td>
                 <td>
-                    <span th:if="${user.status == 0}">未申請の日があります</span>
-                    <span th:if="${user.status == 1}">承認依頼があります</span>
-                    <span th:if="${user.status == 2}">全て承認しました</span>
+                    <span th:if="${user.status == -1}">勤怠の登録がありません</span>
+                    <span th:if="${user.status == 0}">申請が届いていません</span>
+                    <span th:if="${user.status == 1}">申請が届いています</span>
+                    <span th:if="${user.status == 2}">届いた申請は全て承認しました</span>
                     <span th:if="${user.status == 3}">差し戻しをしています</span>
-                    <span th:if="${user.status == 4}">勤怠登録がありません</span>
-                    <span th:if="${user.status == -1}">不正なデータが含まれています</span>
                 </td>
             </tr>
         </div>
