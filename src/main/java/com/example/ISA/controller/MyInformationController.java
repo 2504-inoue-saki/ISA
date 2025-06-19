@@ -37,9 +37,6 @@ public class MyInformationController {
     @Autowired
     HttpSession session;
 
-    @Autowired
-    HttpSession session;
-
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
@@ -75,8 +72,6 @@ public class MyInformationController {
         mav.addObject("password", password);
         mav.addObject("id", id);
         mav.setViewName("/myInformation");
-
-        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
 
         model.addAttribute("isLoggedIn", true);
         model.addAttribute("loginUser", loginUser);
