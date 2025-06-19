@@ -6,6 +6,7 @@ import com.example.ISA.groups.EditPasswordGroup;
 import com.example.ISA.groups.LoginGroup;
 import com.example.ISA.service.UserService;
 import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +30,27 @@ public class MyInformationController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    HttpServletRequest request;
 
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
-    @GetMapping("/myInformation/{id}")
+    @GetMapping({"/myInformation/{id}", "/myInformation/"})
     public ModelAndView editPassword(@PathVariable(required = false) String id) {
+
+        //★URLパターンのエラメ（鈴木）
+        HttpSession session = request.getSession(true);
+        if (StringUtils.isBlank(id) || !id.matches("^[0-9]*$")) {
+            //エラーメッセージを入れる用のリストを作っておく
+            List<String> errorMessages = new ArrayList<String>();
+            errorMessages.add(E0026);
+            //エラーメッセージが詰まったセッションを用意
+            session.setAttribute("popupErrorMessages", errorMessages);
+            //ホーム画面へリダイレクト
+            LocalDate today = LocalDate.now(); // 現在の年月を取得
+            return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
+        }
 
         ModelAndView mav = new ModelAndView();
         UserForm password = new UserForm();

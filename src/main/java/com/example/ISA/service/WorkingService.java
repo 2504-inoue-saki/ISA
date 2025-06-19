@@ -227,7 +227,7 @@ public class WorkingService {
 
             if (dailyForm.getStatus() == null) {
                 //変更箇所
-                workingEntity.setStatus(0);
+                workingEntity.setStatus(-1);
             } else {
                 workingEntity.setStatus(dailyForm.getStatus());
             }
@@ -357,6 +357,11 @@ public class WorkingService {
         return LocalTime.MIDNIGHT.plus(duration);
     }
 
+    //変更箇所▼勤怠データ全てが-1の人
+    public long count(int userId) {
+        int status = -1;
+        return workingRepository.countByUserIdAndStatus(userId, status);
+    }
 
     //▲ある1人のユーザの申請状況を確認している
     public boolean existCheckByUserIdAndStatus(int userId, int status) {
