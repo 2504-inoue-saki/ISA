@@ -37,9 +37,13 @@ public class MyInformationController {
     @Autowired
     HttpSession session;
 
+    @Autowired
+    HttpSession session;
+
     /*
      *ユーザ情報編集画面表示処理(旭)
      */
+
     @GetMapping({"/myInformation/{id}", "/myInformation/"})
     public ModelAndView editPassword(@PathVariable(required = false) String id, Model model) {
 
@@ -58,6 +62,16 @@ public class MyInformationController {
 
         ModelAndView mav = new ModelAndView();
         UserForm password = new UserForm();
+        //エラーメッセージを入れる用のリストを作っておく
+        List<String> errorMessages = new ArrayList<String>();
+        //ログインユーザとURLリクエストのidをチェック
+        UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+        if(!id.equals(loginUser.getId())){
+            session.setAttribute("errorMessage", E0026);
+            LocalDate today = LocalDate.now(); // 現在の年月を取得
+            return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
+        }
+
         mav.addObject("password", password);
         mav.addObject("id", id);
         mav.setViewName("/myInformation");
