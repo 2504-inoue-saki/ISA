@@ -24,7 +24,7 @@ public class ErrorMessage {
     public static final String E0020 = "";
     public static final String E0021 = "";
     public static final String E0022 = "";
-    public static final String E0023 = "";
+    public static final String E0023 = "不完全な勤怠データが含まれているため開けません";
     public static final String E0024 = "（ログインフィルター）ログインしてください";
     public static final String E0025 = "（管理or承認フィルター）無効なアクセスです";
     public static final String E0026 = "（URLパラメ異変）不正なパラメータが入力されました";

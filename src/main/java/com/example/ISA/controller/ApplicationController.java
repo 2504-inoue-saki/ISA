@@ -3,6 +3,7 @@ package com.example.ISA.controller;
 import com.example.ISA.Dto.AllForm;
 import com.example.ISA.controller.form.UserForm;
 import com.example.ISA.controller.form.WorkingForm;
+import com.example.ISA.repository.entity.Working;
 import com.example.ISA.service.UserService;
 import com.example.ISA.service.WorkingService;
 import io.micrometer.common.util.StringUtils;
@@ -68,8 +69,9 @@ public class ApplicationController {
                     userIds.add(i);
                 }
             }
+
             int userStatus = 2; //ユーザの申請が全て承認状態
-            // 勤怠登録の無い新人さん
+            // 勤怠登録の無い人
             if (userIds.size() == 0){
                 userStatus = 4;
             }
@@ -142,9 +144,16 @@ public class ApplicationController {
 
         //★URLパターンのエラメ
         if(userData == null){
-            session.setAttribute("ErrorMessage", E0026);
-            //申請一覧画面へリダイレクト
-            return new ModelAndView("redirect:/application");
+            //変更箇所■勤怠データのstatusが全部0の時(上のfindUserDateByIdは勤怠データのstatusが0以上を集めているベン図)
+            if (workingService.existsByUserId(id)){
+                session.setAttribute("ErrorMessage", E0023);
+                //申請一覧画面へリダイレクト
+                return new ModelAndView("redirect:/application");
+            } else {
+                session.setAttribute("ErrorMessage", E0026);
+                //申請一覧画面へリダイレクト
+                return new ModelAndView("redirect:/application");
+            }
         }
 
         // viewするデータ

@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Time;
 import java.time.Duration;
@@ -26,6 +27,8 @@ import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.ISA.constfolder.ErrorMessage.E0023;
 
 @Service
 @Transactional
@@ -223,7 +226,8 @@ public class WorkingService {
             workingEntity.setEndBreak(dailyForm.getEndBreak());
 
             if (dailyForm.getStatus() == null) {
-                workingEntity.setStatus(0);
+                //変更箇所
+                workingEntity.setStatus(-1);
             } else {
                 workingEntity.setStatus(dailyForm.getStatus());
             }
@@ -287,6 +291,14 @@ public class WorkingService {
         return setListCalendarForm(results);
     }
 
+    //変更箇所■勤怠データのstatusが全部0の時(上のfindUserDateByIdは勤怠データのstatusが0以上を集めているベン図)
+    public boolean existsByUserId(int userId) {
+        if (workingRepository.existsByUserId(userId)){
+            return true;
+        }
+        return false;
+    }
+
     //List<Object[]>をList<UserForm>に詰め替えるメソッド
     private List<AllForm> setListCalendarForm(List<Object[]> results) {
         List<AllForm> formAlls = new ArrayList<>();
@@ -344,7 +356,6 @@ public class WorkingService {
         //Duration→LocalTime型変換
         return LocalTime.MIDNIGHT.plus(duration);
     }
-
 
 
     //▲ある1人のユーザの申請状況を確認している
