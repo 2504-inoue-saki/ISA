@@ -78,7 +78,7 @@
                     <button class="apply-button"
                             th:data-id="${workingDatum.id}"
                             th:data-date="${#temporals.format(workingDatum.date, 'yyyy年MM月dd日')}"
-                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1 OR workingDatum.workingTimeDisplay == '0:00'}"
+                            th:disabled="${workingDatum.status == 1 OR workingDatum.status == 2 OR workingDatum.attend == -1}"
                     >申請
                     </button>
                 </td>

@@ -18,9 +18,6 @@ import java.util.Optional;
 @Repository
 public interface WorkingRepository extends JpaRepository<Working, Integer> {
 
-//     月毎勤怠（あさひ）
-    public List<Working> findByUserIdAndDateBetween(int userId, Date start, Date end);
-
     /*
      * 個人申請詳細画面表示処理
      */

@@ -10,17 +10,11 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.TextStyle;
@@ -53,11 +47,16 @@ public class WorkingService {
             if (existingWorking.getEndWork() != null && !existingWorking.getEndWork().isEmpty()) {
                 endWork = LocalTime.parse(existingWorking.getEndWork());
             }
+            // ★nullまたは空文字列の場合はLocalTime.MIDNIGHT (00:00) を設定
             if (existingWorking.getStartBreak() != null && !existingWorking.getStartBreak().isEmpty()) {
                 startBreak = LocalTime.parse(existingWorking.getStartBreak());
+            } else {
+                startBreak = LocalTime.MIDNIGHT;
             }
             if (existingWorking.getEndBreak() != null && !existingWorking.getEndBreak().isEmpty()) {
                 endBreak = LocalTime.parse(existingWorking.getEndBreak());
+            } else {
+                endBreak = LocalTime.MIDNIGHT;
             }
         } catch (DateTimeParseException e) {
             // パースエラーが発生した場合のハンドリング
@@ -77,7 +76,7 @@ public class WorkingService {
 
         // 休憩時間の計算
         long breakMinutes = 0;
-        if (startBreak != null && endBreak != null && startBreak.isBefore(endBreak)) {
+        if (startBreak.isBefore(endBreak)) {
             Duration breakDuration = Duration.between(startBreak, endBreak);
             breakMinutes = breakDuration.toMinutes();
 
@@ -151,6 +150,9 @@ public class WorkingService {
                 form.setBreakTimeDisplay("0:00");
                 form.setWorkingTimeDisplay("0:00");
                 form.setMemo(""); // 新規作成時は空のメモ
+                // 新規作成時、休憩時間がnullにならないように初期値を設定
+                form.setStartBreak("00:00");
+                form.setEndBreak("00:00");
             }
             monthlyWorkingForms.add(form);
         }
@@ -177,6 +179,9 @@ public class WorkingService {
             form.setBreakTimeDisplay("0:00");
             form.setWorkingTimeDisplay("0:00");
             form.setMemo("");
+            // 新規作成時、休憩時間がnullにならないように初期値を設定
+            form.setStartBreak("00:00");
+            form.setEndBreak("00:00");
         }
 
         Optional<Calendar> calendarOptional = calendarRepository.findByDate(date);
@@ -218,10 +223,22 @@ public class WorkingService {
                 workingEntity.setAttend(dailyForm.getAttend());
             }
 
+            // 休憩開始時間のnullチェックと"00:00"設定
+            if (StringUtils.isEmpty(dailyForm.getStartBreak())) {
+                workingEntity.setStartBreak("00:00");
+            } else {
+                workingEntity.setStartBreak(dailyForm.getStartBreak());
+            }
+
+            // 休憩終了時間のnullチェックと"00:00"設定
+            if (StringUtils.isEmpty(dailyForm.getEndBreak())) {
+                workingEntity.setEndBreak("00:00");
+            } else {
+                workingEntity.setEndBreak(dailyForm.getEndBreak());
+            }
+
             workingEntity.setStartWork(dailyForm.getStartWork());
             workingEntity.setEndWork(dailyForm.getEndWork());
-            workingEntity.setStartBreak(dailyForm.getStartBreak());
-            workingEntity.setEndBreak(dailyForm.getEndBreak());
 
             if (dailyForm.getStatus() == null) {
                 //変更箇所
@@ -235,26 +252,6 @@ public class WorkingService {
 
             workingRepository.save(workingEntity);
         }
-    }
-
-    //List<Object[]>をList<UserForm>に詰め替えるメソッド（旭）
-    private List<WorkingForm> setListWorkingForm(List<Working> results) {
-        List<WorkingForm> formMonth = new ArrayList<>();
-        for (Working w : results) {
-            WorkingForm formWorking = new WorkingForm();
-            formWorking.setId(w.getId());
-            formWorking.setUserId(w.getUserId());
-            formWorking.setDate(w.getDate());
-            formWorking.setAttend(w.getAttend());
-            formWorking.setStartWork(w.getStartWork());
-            formWorking.setEndWork(w.getEndWork());
-            formWorking.setStartBreak(w.getStartBreak());
-            formWorking.setEndBreak(w.getEndBreak());
-            formWorking.setStatus(w.getStatus());
-            formWorking.setMemo(w.getMemo());
-            formMonth.add(formWorking);
-        }
-        return formMonth;
     }
 
     /*

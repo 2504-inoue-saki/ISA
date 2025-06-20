@@ -27,8 +27,9 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.ISA.constfolder.ErrorMessage.*;
+
 @Controller
-public class PopupController{
+public class PopupController {
     @Autowired
     WorkingService workingService;
 
@@ -37,6 +38,7 @@ public class PopupController{
 
     @Autowired
     HttpServletRequest request;
+
     /*
      * 日毎勤怠情報編集機能
      */
@@ -61,9 +63,9 @@ public class PopupController{
         //休憩の入力がある場合は文字数&半角チェック
         String start = workingForm.getStartBreak();
         String end = workingForm.getEndBreak();
-        if (!StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)){
+        if (!StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)) {
             if ((start.length() < 3 || start.length() > 5) || !start.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")
-                    || (end.length() < 3 || end.length() > 5) || !end.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")){
+                    || (end.length() < 3 || end.length() > 5) || !end.matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")) {
                 errorMessages.add(E0015);
             }
         } else if (StringUtils.isEmpty(start) && !StringUtils.isEmpty(end)) {
@@ -71,8 +73,8 @@ public class PopupController{
         } else if (!StringUtils.isEmpty(start) && StringUtils.isEmpty(end)) {
             errorMessages.add(E0014);
         }
-        HttpSession session =request.getSession(true);
-        if (errorMessages.size() >= 1){
+        HttpSession session = request.getSession(true);
+        if (errorMessages.size() >= 1) {
             //エラーメッセージが詰まったリストをviewに送る
             session.setAttribute("popupErrorMessages", errorMessages);
             return new ModelAndView("redirect:/ISA/" + year + "/" + month);
@@ -88,12 +90,12 @@ public class PopupController{
      * 申請処理
      */
     @PostMapping("/ISA/apply/{workingId}")
-    public ModelAndView apply(@PathVariable(required = false) int workingId){
+    public ModelAndView apply(@PathVariable(required = false) int workingId) {
 
         //申請処理のヌルチェック
         WorkingForm workingDate = workingService.findDateDate(workingId);
-        if (StringUtils.isEmpty(workingDate.getStartWork()) || StringUtils.isEmpty(workingDate.getEndWork()) || StringUtils.isEmpty(workingDate.getStartBreak()) || StringUtils.isEmpty(workingDate.getEndBreak())){
-            HttpSession session =request.getSession(true);
+        if (StringUtils.isEmpty(workingDate.getStartWork()) || StringUtils.isEmpty(workingDate.getEndWork()) || StringUtils.isEmpty(workingDate.getStartBreak()) || StringUtils.isEmpty(workingDate.getEndBreak())) {
+            HttpSession session = request.getSession(true);
             session.setAttribute("errorMessage", E0017);
             LocalDate today = LocalDate.now(); // 現在の年月を取得
             return new ModelAndView("redirect:/ISA/" + today.getYear() + "/" + today.getMonthValue());
