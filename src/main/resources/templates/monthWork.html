@@ -72,9 +72,9 @@
                     <td><input type="time" th:field="*{workings[__${stat.index}__].endWork}"/></td>
                     <td><input type="time" th:field="*{workings[__${stat.index}__].startBreak}"/></td>
                     <td><input type="time" th:field="*{workings[__${stat.index}__].endBreak}"/></td>
-                    <td><input type="text" th:field="*{workings[__${stat.index}__].memo}"/></td>
+                    <td><input type="text" th:field="*{workings[__${stat.index}__].memo}" maxlength="100"/></td>
                     <td>
-                        <button type="button" class="reset-button" onclick="resetWorkingEntry(this)">リセット</button>
+                        <button type="button" class="reset-button" onclick="resetWorkingEntry(this)" th:disabled="*{workings[__${stat.index}__].status == 1 OR workings[__${stat.index}__].status == 2}">リセット</button>
                     </td>
                 </tr>
                 </tbody>

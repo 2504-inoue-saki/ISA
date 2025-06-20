@@ -20,10 +20,10 @@ public class ErrorMessage {
     public static final String E0016 = "メモは100文字以下で入力してください";
     public static final String E0017 = "未入力があるため申請できません";
     public static final String E0018 = "自身の個人申請承認画面は表示できません";
-    public static final String E0019 = "";
-    public static final String E0020 = "";
-    public static final String E0021 = "";
-    public static final String E0022 = "";
+    public static final String E0019 = "開始時刻が未入力です";
+    public static final String E0020 = "終了時刻が未入力です";
+    public static final String E0021 = "休憩開始時刻が未入力です";
+    public static final String E0022 = "休憩終了時刻が未入力です";
     public static final String E0023 = "全て未申請のため表示するものがありません";
     public static final String E0024 = "（ログインフィルター）ログインしてください";
     public static final String E0025 = "（管理or承認フィルター）無効なアクセスです";
