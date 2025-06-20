@@ -102,11 +102,6 @@ public class ISAController {
             model.addAttribute("popupErrorMessages", errorMessages);
         }
 
-//        if (loginUser == null) {
-//            // ログインしていない場合はログインページへリダイレクト
-//            return "redirect:/login";
-//        }
-
         int loggedInUserId = loginUser.getId();
 
         model.addAttribute("loginUser", loginUser);
