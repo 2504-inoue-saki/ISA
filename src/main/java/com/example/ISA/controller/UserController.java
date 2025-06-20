@@ -223,6 +223,9 @@ public class UserController {
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
             mav.setViewName("/userEdit");
+            //ユーザ区分を変更できないようにするためにログインユーザの情報を送る(旭)
+            UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+            mav.addObject("loginUser", loginUser);
             return mav;
         }
 
@@ -233,6 +236,9 @@ public class UserController {
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
             mav.setViewName("/userEdit");
+            //ユーザ区分を変更できないようにするためにログインユーザの情報を送る(旭)
+            UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+            mav.addObject("loginUser", loginUser);
             return mav;
         }
 
@@ -243,6 +249,9 @@ public class UserController {
             mav.addObject("errorMessages", errorMessages);
             // 画面遷移先を指定
             mav.setViewName("/userEdit");
+            //ユーザ区分を変更できないようにするためにログインユーザの情報を送る(旭)
+            UserForm loginUser = (UserForm) session.getAttribute("loginUser");
+            mav.addObject("loginUser", loginUser);
             return mav;
         }
 
